@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GRI PRIVATE 1996 CONSOLE</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Optional: basic reset so layout behaves -->
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: #00ffcc;
+      font-family: "Courier New", monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #console {
+      text-align: center;
+    }
+
+    input, button {
+      background: black;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 8px 12px;
+      font-family: inherit;
+      margin-top: 10px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    #status {
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background music -->
+  <audio id="bgm" loop preload="auto">
+    <source src="https://freight.cargo.site/m/Q2702820337153672562400070968433/background.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="console">
+    <div class="title">GRI PRIVATE 1996 CONSOLE</div>
+    <div class="subtitle">// ENTER STRING:</div>
+
+    <input
+      id="consoleInput"
+      type="text"
+      placeholder="ENTER PASSWORD"
+      autocomplete="off"
+    >
+
+    <br>
+
+    <button id="executeBtn">EXECUTE</button>
+
+    <div id="status"></div>
+    <div id="hidden" style="color: black;">traitor</div>
+  </div>
+
+  <script>
+    (function () {
+      const routes = {
+        "061895": "/ebb",
+        "scharfsinnige": "/valentine",
+        "xnkyk": "/xnkyk",
+        "362913": "/elements",
+        "aliens": "/aliens",
+        "alien": "/aliens",
+        "ineedtogoback": "/goback",
+        "a∩b": "/reality-collide",
+        "518621": "/alwayswatchingalwayswatchingalways",
+        "squareroot": "/square",
+        "squared": "/square",
+        "square": "/square",
+        "tye": "/tye-lord",
+        "blizzard": "/the-blizzard",
+        "xaryia": "/xaryia",
+        "msa": "/msa",
+        "traitor": "/the-traitor",
+        "xsvzgvi": "/cheater"
+      };
+
+      const input  = document.getElementById("consoleInput");
+      const status = document.getElementById("status");
+      const btn    = document.getElementById("executeBtn");
+      const bgm    = document.getElementById("bgm");
+
+      // Start music on first user interaction (browser-safe)
+      document.addEventListener("click", () => {
+        if (bgm.paused) bgm.play().catch(() => {});
+      }, { once: true });
+
+      function execute() {
+        const key = input.value.trim().toLowerCase();
+        status.style.color = "#00ffcc";
+
+        if (routes[key]) {
+          status.textContent = "ACCESS GRANTED";
+          setTimeout(() => {
+            window.location.href = routes[key];
+          }, 700);
+        } else {
+          status.textContent = "ACCESS DENIED";
+          status.style.color = "#ff4444";
+          input.value = "";
+        }
+      }
+
+      btn.addEventListener("click", execute);
+      input.addEventListener("keydown", e => {
+        if (e.key === "Enter") execute();
+      });
+    })();
+  </script>
+
+</body>
+</html>
