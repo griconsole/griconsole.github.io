@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Optional: basic reset so layout behaves -->
+  <!-- might change the styling later, but for now this'll do :3 -->
   <style>
     body {
       margin: 0;
@@ -66,7 +66,7 @@
       height: 20px;
     }
     
-    /* CONTENT */
+    /* ACTUAL CONTENT DONT TOUCH EVER */
     
     #content {
       display: none;
@@ -88,9 +88,32 @@
 
 <body>
 
-  <!-- Background music -->
+  <!-- 
+  HEY
+  CAN YOU PLEASE
+  NOT LOOK HERE
+  THANKS
+
+  XOXO -NIKO
+
+
+  PS. I AM TOO LAZY TO ENCRYPT SHIT SO PLEASE DONT SNOOP AROUND PLEASE PLEASE PLEASE
+  -->
+  
   <audio id="bgm" loop preload="auto">
-    <source src="https://freight.cargo.site/m/Q2702820337153672562400070968433/background.mp3" type="audio/mpeg">
+    <source src="https://freight.cargo.site/m/M2737763960567696414671236473969/10-Minutes-of-Ambient-Computer-Sounds---Retro_SciFi-Medley-4.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="sfxType" preload="auto">
+    <source src="https://freight.cargo.site/m/Y2737764366156258363323147854961/KeyboardTypeGRI.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="sfxExecute" preload="auto">
+    <source src="https://freight.cargo.site/m/Q2737764366137811619249438303345/BEEPgri.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="sfxTerminate" preload="auto">
+    <source src="https://freight.cargo.site/m/Q2737764366137811619249438303345/BEEPgri.mp3" type="audio/mpeg">
   </audio>
 
   <div id="console">
@@ -108,11 +131,76 @@
 
     <button id="executeBtn">EXECUTE</button>
 
+    <button id="muteBtn">MUTE</button>
+
     <div id="status"></div>
     <div id="hidden" style="color: black;">vkh vhhv doo, wkh fulpvrq txhhq lv frplqj</div>
   </div>
 
   <script>
+    (function () {
+      const bgm = document.getElementById("bgm");
+      const typeSfx = document.getElementById("sfxType");
+      const executeSfx = document.getElementById("sfxExecute");
+      const terminateSfx = document.getElementById("sfxTerminate");
+    
+      const input = document.getElementById("consoleInput");
+      const executeBtn = document.getElementById("executeBtn");
+      const terminateBtn = document.querySelector(".terminate");
+      const muteBtn = document.getElementById("muteBtn");
+    
+      let muted = false;
+      let typingCooldown = false;
+    
+      /* --- Start music on first interaction, might tweak later idkkk --- */
+      document.addEventListener("click", () => {
+        if (!muted && bgm.paused) {
+          bgm.volume = 0.4;
+          bgm.play().catch(() => {});
+        }
+      }, { once: true });
+    
+      /* --- Typing sound for textbox --- */
+      input.addEventListener("input", () => {
+        if (muted || typingCooldown) return;
+    
+        typingCooldown = true;
+        typeSfx.currentTime = 0;
+        typeSfx.play().catch(() => {});
+    
+        setTimeout(() => typingCooldown = false, 60);
+      });
+    
+      /* --- Execute button sfx --- */
+      executeBtn.addEventListener("click", () => {
+        if (muted) return;
+        executeSfx.currentTime = 0;
+        executeSfx.play().catch(() => {});
+      });
+    
+      /* --- Terminate button sfx --- */
+      if (terminateBtn) {
+        terminateBtn.addEventListener("click", () => {
+          if (muted) return;
+          terminateSfx.currentTime = 0;
+          terminateSfx.play().catch(() => {});
+        });
+      }
+    
+      /* --- Mute toggle WIP!!!!!!!! --- */
+      muteBtn.addEventListener("click", () => {
+        muted = !muted;
+    
+        bgm.muted = muted;
+        typeSfx.muted = muted;
+        executeSfx.muted = muted;
+        terminateSfx.muted = muted;
+    
+        muteBtn.textContent = muted ? "UNMUTE" : "MUTE";
+      });
+    
+    })();
+
     (function () {
       const routes = {
         "061895": "/ebb",
@@ -139,12 +227,6 @@
       const input  = document.getElementById("consoleInput");
       const status = document.getElementById("status");
       const btn    = document.getElementById("executeBtn");
-      const bgm    = document.getElementById("bgm");
-
-      // Start music on first user interaction (browser-safe)
-      document.addEventListener("click", () => {
-        if (bgm.paused) bgm.play().catch(() => {});
-      }, { once: true });
 
       function execute() {
         const key = input.value.trim().toLowerCase();
@@ -168,6 +250,5 @@
       });
     })();
   </script>
-
 </body>
 </html>
