@@ -152,6 +152,7 @@
     <source src="https://freight.cargo.site/m/Q2737764366137811619249438303345/BEEPgri.mp3" type="audio/mpeg">
   </audio>
 
+  <div id="ambientLog"></div>
   <div id="console">
     <div class="title">GRI PRIVATE 1996 CONSOLE</div>
     <div class="subtitle">// ENTER STRING:</div>
@@ -189,10 +190,6 @@
           bgm.volume = 0.4;
           bgm.play().catch(() => {});
         }
-        
-        setTimeout(() => {
-          input.focus({ preventScroll: true });
-        }, 50);
     
       }, { once: true });
     })();
@@ -214,14 +211,27 @@
       let typingCooldown = false;
     
       /* --- Typing sound for textbox --- */
-      input.addEventListener("input", () => {
-        if (muted || typingCooldown) return;
-    
+      let typingCooldown = false;
+      
+      input.addEventListener("keydown", (e) => {
+        if (muted) return;
+        if (e.key.length > 1) return;
+        if (typingCooldown) return;
         typingCooldown = true;
+      
+        typeSfx.pause();
         typeSfx.currentTime = 0;
+      
         typeSfx.play().catch(() => {});
-    
-        setTimeout(() => typingCooldown = false, 60);
+      
+        setTimeout(() => {
+          typeSfx.pause();
+          typeSfx.currentTime = 0;
+        }, 70); // tweak: 50–90ms
+      
+        setTimeout(() => {
+          typingCooldown = false;
+        }, 40);
       });
     
       /* --- Execute button sfx --- */
@@ -252,6 +262,34 @@
         muteBtn.textContent = muted ? "UNMUTE" : "MUTE";
       });
     
+    })();
+
+    /* --- Style code thingies, honestly blanking rn i need sleep --- */
+    (function () {
+      const log = document.getElementById("ambientLog");
+    
+      const lines = [
+        "SYS CHECK OK",
+        "MEMORY BANK A ONLINE",
+        "UPLINK STABLE",
+        "SIGNAL NOISE: LOW",
+        "AUTH MODULE READY",
+        "OBSERVATION ACTIVE",
+        "LISTENING..."
+      ];
+    
+      function pushLine() {
+        const line = lines[Math.floor(Math.random() * lines.length)];
+        log.textContent += line + "\n";
+    
+        // keep last 5 lines (maybe 3 is better hmm)
+        const split = log.textContent.split("\n");
+        if (split.length > 6) {
+          log.textContent = split.slice(-6).join("\n");
+        }
+      }
+    
+      setInterval(pushLine, 2500 + Math.random() * 2000);
     })();
 
     (function () {
