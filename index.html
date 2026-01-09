@@ -5,6 +5,9 @@
   <title>GRI PRIVATE 1996 CONSOLE</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+
 
   <!-- might change the styling later, but for now this'll do :3 -->
   <style>
@@ -35,7 +38,40 @@
       inset: 0;
       pointer-events: all;
     }
-        
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.03) 0px,
+          rgba(255,255,255,0.03) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      animation: scan 6s linear infinite;
+    }
+    
+    @keyframes scan {
+      from { background-position: 0 0; }
+      to   { background-position: 0 100%; }
+    }
+
+    #ambientLog {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 12px;
+      color: rgba(0, 255, 204, 0.4);
+      font-family: "Courier New", monospace;
+      pointer-events: none;
+      white-space: pre-line;
+    }
+    
     #console {
       font-family: "Courier New", monospace;
       position: fixed;
@@ -59,6 +95,15 @@
       color: #00ffcc;
       margin-bottom: 10px;
       font-size: 18px;
+    }
+
+    .title, .subtitle {
+      animation: flicker 6s infinite;
+    }
+    
+    @keyframes flicker {
+      0%, 98%, 100% { opacity: 1; }
+      99% { opacity: 0.85; }
     }
     
     #consoleInput {
