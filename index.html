@@ -60,6 +60,21 @@
       font-size: 16px;
       cursor: pointer;
     }
+
+    #muteBtn {
+      background: black;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 8px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      font-family: "Courier New", monospace;
+    
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
     
     #status {
       margin-top: 20px;
@@ -86,7 +101,7 @@
 
 </head>
 
-<body>
+<body class="inactive">
 
   <!-- 
   HEY
@@ -140,6 +155,23 @@
   <script>
     (function () {
       const bgm = document.getElementById("bgm");
+      const body = document.body;
+      let muted = false;
+    
+      document.addEventListener("click", () => {
+        body.classList.remove("inactive");
+        if (!muted && bgm.paused) {
+          bgm.volume = 0.4;
+          bgm.play().catch(() => {});
+        }
+      }, { once: true });
+    
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const bgm = document.getElementById("bgm");
       const typeSfx = document.getElementById("sfxType");
       const executeSfx = document.getElementById("sfxExecute");
       const terminateSfx = document.getElementById("sfxTerminate");
@@ -151,14 +183,6 @@
     
       let muted = false;
       let typingCooldown = false;
-    
-      /* --- Start music on first interaction, might tweak later idkkk --- */
-      document.addEventListener("click", () => {
-        if (!muted && bgm.paused) {
-          bgm.volume = 0.4;
-          bgm.play().catch(() => {});
-        }
-      }, { once: true });
     
       /* --- Typing sound for textbox --- */
       input.addEventListener("input", () => {
