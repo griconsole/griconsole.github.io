@@ -127,6 +127,10 @@
       cursor: pointer;
     }
 
+    button:hover {
+      box-shadow: 0 0 8px rgba(0,255,204,0.4);
+    }
+
     #muteBtn {
       background: black;
       color: #00ffcc;
@@ -238,7 +242,7 @@
     
       }, { once: true });
     })();
-    </script>
+  </script>
 
   <script>
     (function () {
@@ -256,27 +260,14 @@
       let typingCooldown = false;
     
       /* --- Typing sound for textbox --- */
-      let typingCooldown = false;
-      
-      input.addEventListener("keydown", (e) => {
-        if (muted) return;
-        if (e.key.length > 1) return;
-        if (typingCooldown) return;
+      input.addEventListener("input", () => {
+        if (muted || typingCooldown) return;
+    
         typingCooldown = true;
-      
-        typeSfx.pause();
         typeSfx.currentTime = 0;
-      
         typeSfx.play().catch(() => {});
-      
-        setTimeout(() => {
-          typeSfx.pause();
-          typeSfx.currentTime = 0;
-        }, 70); // tweak: 50–90ms
-      
-        setTimeout(() => {
-          typingCooldown = false;
-        }, 40);
+    
+        setTimeout(() => typingCooldown = false, 60);
       });
     
       /* --- Execute button sfx --- */
@@ -307,34 +298,6 @@
         muteBtn.textContent = muted ? "UNMUTE" : "MUTE";
       });
     
-    })();
-
-    /* --- Style code thingies, honestly blanking rn i need sleep --- */
-    (function () {
-      const log = document.getElementById("ambientLog");
-    
-      const lines = [
-        "SYS CHECK OK",
-        "MEMORY BANK A ONLINE",
-        "UPLINK STABLE",
-        "SIGNAL NOISE: LOW",
-        "AUTH MODULE READY",
-        "OBSERVATION ACTIVE",
-        "LISTENING..."
-      ];
-    
-      function pushLine() {
-        const line = lines[Math.floor(Math.random() * lines.length)];
-        log.textContent += line + "\n";
-    
-        // keep last 5 lines (maybe 3 is better hmm)
-        const split = log.textContent.split("\n");
-        if (split.length > 6) {
-          log.textContent = split.slice(-6).join("\n");
-        }
-      }
-    
-      setInterval(pushLine, 2500 + Math.random() * 2000);
     })();
 
     (function () {
@@ -385,6 +348,58 @@
         if (e.key === "Enter") execute();
       });
     })();
+  </script>
+
+  <script>
+  (function () {
+    const log = document.getElementById("ambientLog");
+    const body = document.body;
+  
+    const lines = [
+      "SYS CHECK OK",
+      "MEMORY BANK A ONLINE",
+      "UPLINK STABLE",
+      "SIGNAL NOISE: LOW",
+      "AUTH MODULE READY",
+      "OBSERVATION ACTIVE",
+      "LISTENING..."
+    ];
+  
+    let activated = false;
+  
+    function typeLine(text) {
+      let i = 0;
+      const interval = setInterval(() => {
+        log.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          log.textContent += "\n";
+          clearInterval(interval);
+        }
+      }, 30);
+    }
+  
+    function pushLine() {
+      const line = lines[Math.floor(Math.random() * lines.length)];
+      typeLine(line);
+  
+      const split = log.textContent.split("\n");
+      if (split.length > 6) {
+        log.textContent = split.slice(-6).join("\n");
+      }
+    }
+  
+    // Wait for activation
+    document.addEventListener("click", () => {
+      if (activated) return;
+      activated = true;
+  
+      setTimeout(() => {
+        pushLine();
+        setInterval(pushLine, 15000);
+      }, 15000);
+    }, { once: true });
+  })();
   </script>
 </body>
 </html>
