@@ -34,6 +34,16 @@ p {
   letter-spacing: 2px;
 }
 
+.muteBtn {
+  margin-top: 20px;
+  background: black;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+}
+
 .terminate {
   align-self: flex-start;
   color: #ff4444;
