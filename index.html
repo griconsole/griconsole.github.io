@@ -8,8 +8,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
 
-
-  <!-- might change the styling later, but for now this'll do :3 -->
+  <!-- might change the color later, but for now this'll do :3 -->
   <style>
     html, body {
       width: 100%;
@@ -46,10 +45,10 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(0,255,204,0.04) 0px,
-          rgba(0,255,204,0.04) 1px,
-          transparent 2px,
-          transparent 4px
+          rgba(0,255,204,0.07) 0px,
+          rgba(0,255,204,0.07) 3px,
+          transparent 4px,
+          transparent 8px
         );
       pointer-events: none;
       animation: scan 8s linear infinite;
@@ -95,10 +94,6 @@
       color: #00ffcc;
       margin-bottom: 10px;
       font-size: 18px;
-    }
-
-    .title, .subtitle {
-      animation: flicker 6s infinite;
     }
     
     @keyframes flicker {
@@ -244,7 +239,7 @@
     })();
   </script>
 
-  <script>
+  <script> // THIS IS THE MUSIC CODE... AND NOTHING ELSE TOTALLY YEP -----------------------------------------------------------
     (function () {
       const bgm = document.getElementById("bgm");
       const typeSfx = document.getElementById("sfxType");
@@ -350,7 +345,41 @@
     })();
   </script>
 
-  <script>
+  <script> // THIS IS THE FLICKER CODE -----------------------------------------------------------
+    (function () {
+      const targets = document.querySelectorAll(".title, .subtitle");
+    
+      function flickerBurst() {
+        let count = Math.floor(Math.random() * 3) + 3; // 3–5 flicks uwu
+        let i = 0;
+    
+        const flicker = setInterval(() => {
+          targets.forEach(el => {
+            el.style.color = Math.random() > 0.7 ? "#66ffee" : "#00ffcc";
+            el.style.opacity = Math.random() > 0.5 ? "0.7" : "1";
+          });
+          i++;
+    
+          if (i >= count) {
+            clearInterval(flicker);
+            targets.forEach(el => el.style.opacity = "1");
+          }
+        }, 120);
+      }
+    
+      function scheduleFlicker() {
+        const delay = 10000 + Math.random() * 10000; // 10–20s
+        setTimeout(() => {
+          flickerBurst();
+          scheduleFlicker();
+        }, delay);
+      }
+    
+      scheduleFlicker();
+    })();
+  </script>
+  
+  <script> // THIS IS THE LOG CODE -----------------------------------------------------------
   (function () {
     const log = document.getElementById("ambientLog");
     const body = document.body;
@@ -389,7 +418,6 @@
       }
     }
   
-    // Wait for activation
     document.addEventListener("click", () => {
       if (activated) return;
       activated = true;
