@@ -17,7 +17,7 @@
     }
     
     body.inactive {
-      filter: grayscale(100%);
+      filter: grayscale(100%) brightness(0.7);
       opacity: 0.6;
       pointer-events: none;
       cursor: pointer;
@@ -173,7 +173,7 @@
       const body = document.body;
       let muted = false;
     
-      document.addEventListener("click", () => {
+      window.addEventListener("click", () => {
         body.classList.remove("inactive");
         if (!muted && bgm.paused) {
           bgm.volume = 0.4;
