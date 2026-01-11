@@ -64,12 +64,18 @@
       position: fixed;
       bottom: 20px;
       left: 20px;
-      font-size: 12px;
-      color: rgba(0, 255, 204, 0.4);
+      width: 360px;
       font-family: "Courier New", monospace;
-      pointer-events: none;
-      white-space: pre-line;
+      font-size: 12px;
+      line-height: 16px;
+      /* if anything breaks again just revert the stupid ass lines below */
+      white-space: pre;
+      overflow: hidden;
+      color: rgba(0,255,204,0.45);
+      z-index: 10;
+      transform: translateZ(0);
     }
+
     
     #console {
       font-family: "Courier New", monospace;
@@ -415,9 +421,9 @@
       const line = lines[Math.floor(Math.random() * lines.length)];
       typeLine(line);
   
-      const split = log.textContent.split("\n");
+      const split = log.textContent.split("\n").filter(l => l.trim() !== "");
       if (split.length > 6) {
-        log.textContent = split.slice(-6).join("\n");
+        log.textContent = split.slice(-6).join("\n") + "\n";
       }
     }
   
