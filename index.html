@@ -408,27 +408,40 @@
     ];
   
     let activated = false;
+    let typing = false;
+    let queue = [];
   
-    function typeLine(text) {
+    function typeNext() {
+      if (typing || queue.length === 0) return;
+  
+      typing = true;
+      const text = queue.shift();
       let i = 0;
+  
       const interval = setInterval(() => {
         log.textContent += text[i];
         i++;
+  
         if (i >= text.length) {
           log.textContent += "\n";
           clearInterval(interval);
+          typing = false;
+  
+          // if you wanna hotfix the amount change the 13s
+          const split = log.textContent.split("\n");
+          if (split.length > 13) {
+            log.textContent = split.slice(-13).join("\n");
+          }
+  
+          typeNext();
         }
-      }, 30);
+      }, 28);
     }
   
-    function pushLine() {
+    function enqueueRandomLine() {
       const line = lines[Math.floor(Math.random() * lines.length)];
-      typeLine(line);
-  
-      const split = log.textContent.split("\n").filter(l => l.trim() !== "");
-      if (split.length > 13) {
-        log.textContent = split.slice(-13).join("\n") + "\n";
-      }
+      queue.push(line);
+      typeNext();
     }
   
     document.addEventListener("click", () => {
@@ -436,10 +449,11 @@
       activated = true;
   
       setTimeout(() => {
-        pushLine();
-        setInterval(pushLine, 15000);
+        enqueueRandomLine();
+        setInterval(enqueueRandomLine, 15000);
       }, 15000);
     }, { once: true });
+  
   })();
   </script>
 </body>
