@@ -306,7 +306,8 @@
         "061895": "/ebb",
         "518621": "/alwayswatching",
         "362913": "/elm",
-        "13206": "https://en.wikipedia.org/wiki/Butterfly_Lovers"
+        "13206": "https://en.wikipedia.org/wiki/Butterfly_Lovers",
+        //"42": "",
       };
 
       const input  = document.getElementById("consoleInput");
@@ -400,7 +401,10 @@
       "PRESS ENTER TO DISPLAY CAKE",
       "ERROR: R3D : H3rR1NG : 101",
       "PRESS ANY KEY TO CONTINUE _",
-      "01111010 01101000 01110101"
+      "01111010 01101000 01110101",
+      "DON'T DREAM IT, BE IT",
+      "DARE YOU TRUST THE MUSIC OF THE NIGHT?",
+      "ALL SYSTEMS OFFLINE AND ONLINE AT THE SAME TIME",
     ];
   
     let activated = false;
@@ -422,8 +426,8 @@
       typeLine(line);
   
       const split = log.textContent.split("\n").filter(l => l.trim() !== "");
-      if (split.length > 6) {
-        log.textContent = split.slice(-6).join("\n") + "\n";
+      if (split.length > 13) {
+        log.textContent = split.slice(-13).join("\n") + "\n";
       }
     }
   
