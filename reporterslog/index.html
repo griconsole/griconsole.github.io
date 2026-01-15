@@ -189,7 +189,7 @@ html, body {
       <div class="freq-indicator" id="freqIndicator"></div>
     </div>
 
-    <input type="range" id="radioDial" min="0" max="2" step="1" value="0">
+    <input type="range" id="radioDial" min="0" max="3" step="1" value="0">
 
     <div class="radio-controls">
       <button id="radioMute">MUTE</button>
@@ -271,20 +271,24 @@ const radioAudio = document.getElementById("radioAudio");
 const freqIndicator = document.getElementById("freqIndicator");
 const muteBtn = document.getElementById("radioMute");
 const volumeBar = document.getElementById("volumeBar");
+const maxDial = Number(radioDial.max);
 
 const stations = [
-  { freq: 101, src: "freq1.mp3" },
-  { freq: 245, src: "freq2.mp3" },
-  { freq: 404, src: "freq3.mp3" }
+  { freq: 401.675, src: "frequency1.mp3" },
+  { freq: 442.550, src: "frequency2.mp3" },
+  { freq: 462.6625, src: "frequency3.mp3" },
+  { freq: 666.4514, src: "frequency4.mp3" } 
 ];
+
 
 radioAudio.loop = true;
 radioAudio.volume = 0.6;
+radioDial.dispatchEvent(new Event("input"));
 
 radioDial.addEventListener("input", () => {
   const station = stations[radioDial.value];
   freqValue.textContent = station.freq;
-  freqIndicator.style.left = `${radioDial.value * 40}%`;
+  freqIndicator.style.left = `${(radioDial.value / maxDial) * 80}%`;
   radioAudio.src = station.src;
   radioAudio.play().catch(()=>{});
 });
