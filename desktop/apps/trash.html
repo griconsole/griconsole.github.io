@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Trash</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+.file {
+  font-size: 13px;
+  opacity: 0.85;
+  margin: 6px 0;
+}
+.corrupt {
+  color: #ff4444;
+}
+</style>
+</head>
+
+<body>
+<div class="window">
+  <div class="title-bar">
+    Trash
+    <span class="close" onclick="window.close()">X</span>
+  </div>
+
+  <div class="content">
+    <div class="file">ebb_notes_1994.txt</div>
+    <div class="file">draft_message_unsent.eml</div>
+    <div class="file corrupt">vault_schema_old.bak (CORRUPT)</div>
+    <div class="file">research_log_delta.tmp</div>
+    <div class="file corrupt">do_not_open.exe</div>
+
+    <p style="margin-top:16px;font-size:12px;opacity:.6">
+      Some files cannot be deleted.
+    </p>
+  </div>
+</div>
+</body>
+</html>
