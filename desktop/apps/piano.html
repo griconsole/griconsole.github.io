@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Piano</title>
+
+<style>
+body {
+  margin: 0;
+  background: #e0e0e0;
+  font-family: Tahoma, sans-serif;
+}
+
+.app {
+  padding: 12px;
+}
+
+.title {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.piano {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.key {
+  width: 48px;
+  height: 160px;
+  background: #fff;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 11px;
+  padding-bottom: 6px;
+  user-select: none;
+}
+
+.key:active {
+  background: #c0c0c0;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <div class="title">DELTA Piano Utility</div>
+
+  <div class="piano">
+    <div class="key" data-note="C0">C6</div>
+    <div class="key" data-note="D">D6</div>
+    <div class="key" data-note="E">E6</div>
+    <div class="key" data-note="F">F6</div>
+    <div class="key" data-note="G">G6</div>
+    <div class="key" data-note="A">A6</div>
+    <div class="key" data-note="B">B6</div>
+    <div class="key" data-note="C">C7</div>
+  </div>
+</div>
+
+<script>
+/* ===== MOTIF CONFIG ===== */
+const MOTIF = ["E","G","A","G","E","D","F","E","D","A","C"];
+let buffer = [];
+
+/* ===== AUDIO ===== */
+function playNote(note) {
+  const audio = new Audio(`../assets/audio/piano/${note}.mp3`);
+  audio.play();
+}
+
+/* ===== INPUT HANDLING ===== */
+document.querySelectorAll(".key").forEach(key => {
+  key.addEventListener("click", () => {
+    const note = key.dataset.note;
+
+    playNote(note);
+
+    buffer.push(note);
+    if (buffer.length > MOTIF.length) buffer.shift();
+
+    if (matchesMotif()) {
+      window.open("secret.html", "_blank");
+      buffer = [];
+    }
+  });
+});
+
+/* ===== COMPARISON ===== */
+function matchesMotif() {
+  if (buffer.length !== MOTIF.length) return false;
+  for (let i = 0; i < MOTIF.length; i++) {
+    if (buffer[i] !== MOTIF[i]) return false;
+  }
+  return true;
+}
+</script>
+</body>
+</html>
