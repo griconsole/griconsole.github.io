@@ -9,20 +9,34 @@
 /* ===== GLOBAL ===== */
 html, body {
   margin: 0;
+  width: 100%;
   height: 100%;
   overflow: hidden;
-  background: radial-gradient(circle at top, #0b1e2d, #02060a);
+  background: radial-gradient(circle at center, #071923 0%, #020b12 70%);
   font-family: "Courier New", monospace;
   color: #00ffcc;
 }
 
-.container {
+.console-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
+  justify-items: center;
   height: 100%;
-  padding: 40px;
-  gap: 40px;
+  padding: 60px;
+  gap: 60px;
+}
+
+.device {
+  width: 260px;
+  height: 360px;
+  background: #000;
+  border: 2px solid rgba(0,255,204,0.4);
+  box-shadow: inset 0 0 40px rgba(0,255,204,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ===== PANELS ===== */
@@ -44,26 +58,28 @@ html, body {
 }
 
 /* ===== RADIO ===== */
-.radio-display {
-  font-size: 18px;
-  margin-bottom: 10px;
+.radio {
+  justify-content: flex-start;
+  padding: 16px;
 }
 
-input[type=range] {
-  width: 100%;
+.radio-display {
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
 .freq-bar {
-  height: 12px;
+  width: 100%;
+  height: 10px;
   background: #021a1a;
   border: 1px solid #0a3a3a;
-  margin: 10px 0;
   position: relative;
+  margin-bottom: 14px;
 }
 
 .freq-indicator {
   height: 100%;
-  width: 10%;
+  width: 20%;
   background: #00ffcc;
   position: absolute;
   left: 0;
@@ -71,14 +87,14 @@ input[type=range] {
 
 .radio-controls {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
 }
 
 .radio-controls button {
   background: black;
   color: #00ffcc;
   border: 1px solid #00ffcc;
-  padding: 4px 8px;
+  padding: 4px 10px;
   cursor: pointer;
 }
 
@@ -116,41 +132,45 @@ input[type=range] {
 <body>
 
 <div class="container">
-
-  <!-- ===== SONAR ===== -->
-  <div class="panel">
-    <canvas id="sonarCanvas"></canvas>
-  </div>
-
-  <!-- ===== RADIO ===== -->
-  <div class="radio-display">
-    FREQ <span id="freqValue">101</span>
-  </div>
-  
-  <div class="freq-bar">
-    <div class="freq-indicator" id="freqIndicator"></div>
-  </div>
-  
-  <div class="radio-controls">
-    <button id="radioMute">MUTE</button>
-    <button id="volDown">-</button>
-    <button id="volUp">+</button>
-  </div>
-
-  <!-- ===== MONITOR ===== -->
-  <div class="panel">
-    <div class="monitor-screen" id="monitorScreen">
-      AWAITING INPUT...
-    </div>
-    <div class="monitor-buttons">
-      <button data-key="1">1</button>
-      <button data-key="2">2</button>
-      <button data-key="3">3</button>
-      <button data-key="4">4</button>
-      <button data-key="5">5</button>
+  <div class="console-grid">
+  <div class="device sonar">
+    <!-- ===== SONAR ===== -->
+    <div class="panel">
+      <canvas id="sonarCanvas"></canvas>
     </div>
   </div>
 
+  <div class="device radio">
+    <!-- ===== RADIO ===== -->
+    <div class="radio-display">
+      FREQ <span id="freqValue">101</span>
+    </div>
+    <div class="freq-bar">
+      <div class="freq-indicator" id="freqIndicator"></div>
+    </div>
+    <div class="radio-controls">
+      <button id="radioMute">MUTE</button>
+      <button id="volDown">-</button>
+      <button id="volUp">+</button>
+    </div>
+  </div>
+
+  <div class="device monitor">
+    <!-- ===== MONITOR ===== -->
+    <div class="panel">
+      <div class="monitor-screen" id="monitorScreen">
+        AWAITING INPUT...
+      </div>
+      <div class="monitor-buttons">
+        <button data-key="1">1</button>
+        <button data-key="2">2</button>
+        <button data-key="3">3</button>
+        <button data-key="4">4</button>
+        <button data-key="5">5</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script>
