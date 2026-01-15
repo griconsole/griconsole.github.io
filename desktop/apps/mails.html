@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mails</title>
+
+<style>
+body {
+  margin: 0;
+  background: #e0e0e0;
+  font-family: Tahoma, sans-serif;
+}
+
+.mail-app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  height: 100vh;
+}
+
+.inbox {
+  border-right: 2px solid #808080;
+  background: #dcdcdc;
+  overflow-y: auto;
+}
+
+.mail {
+  padding: 8px;
+  border-bottom: 1px solid #a0a0a0;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.mail:hover {
+  background: #c0c0c0;
+}
+
+.mail strong {
+  display: block;
+}
+
+.viewer {
+  padding: 12px;
+  background: white;
+  font-size: 13px;
+  white-space: pre-line;
+}
+</style>
+</head>
+
+<body>
+<div class="mail-app">
+
+  <div class="inbox">
+    <div class="mail" data-id="0">
+      <strong>DELTA SYS</strong>
+      System Initialization
+    </div>
+    <div class="mail" data-id="1">
+      <strong>Unknown</strong>
+      Re: Frequency Drift
+    </div>
+    <div class="mail" data-id="2">
+      <strong>Ebb, D.</strong>
+      Draft — Do Not Send
+    </div>
+  </div>
+
+  <div class="viewer" id="viewer">
+    Select a message to read.
+  </div>
+
+</div>
+
+<script>
+const messages = [
+`FROM: DELTA SYSTEMS
+SUBJECT: BOOT LOG
+
+Legacy environment loaded successfully.
+Tracking modules disabled.
+User discretion advised.`,
+
+`FROM: [REDACTED]
+SUBJECT: Re: Frequency Drift
+
+You're hiding in the noise.
+But patterns still repeat.
+Nothing stays buried forever.`,
+
+`FROM: EBB, D.
+SUBJECT: DRAFT — DO NOT SEND
+
+If anyone finds this,
+they were never meant to.
+
+The vault does not open
+unless the sequence is remembered.`
+];
+
+document.querySelectorAll(".mail").forEach(mail => {
+  mail.addEventListener("click", () => {
+    const id = mail.dataset.id;
+    document.getElementById("viewer").textContent = messages[id];
+  });
+});
+</script>
+</body>
+</html>
