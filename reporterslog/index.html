@@ -10,6 +10,7 @@
 html, body {
   margin: 0;
   height: 100%;
+  overflow: hidden;
   background: radial-gradient(circle at top, #0b1e2d, #02060a);
   font-family: "Courier New", monospace;
   color: #00ffcc;
@@ -17,18 +18,22 @@ html, body {
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
   height: 100%;
-  gap: 20px;
-  padding: 30px;
+  padding: 40px;
+  gap: 40px;
 }
 
 /* ===== PANELS ===== */
 .panel {
+  max-width: 280px;
+  height: 360px;
+  margin: auto;
+  padding: 12px;
   border: 2px solid #0a3a3a;
   background: #020b12;
-  padding: 15px;
-  position: relative;
+  box-sizing: border-box;
 }
 
 /* ===== SONAR ===== */
@@ -48,9 +53,39 @@ input[type=range] {
   width: 100%;
 }
 
+.freq-bar {
+  height: 12px;
+  background: #021a1a;
+  border: 1px solid #0a3a3a;
+  margin: 10px 0;
+  position: relative;
+}
+
+.freq-indicator {
+  height: 100%;
+  width: 10%;
+  background: #00ffcc;
+  position: absolute;
+  left: 0;
+}
+
+.radio-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.radio-controls button {
+  background: black;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
 /* ===== MONITOR ===== */
 .monitor-screen {
-  height: 60%;
+  height: 140px;
+  font-size: 13px;
   border: 2px solid #0a3a3a;
   padding: 10px;
   background: black;
@@ -88,10 +123,18 @@ input[type=range] {
   </div>
 
   <!-- ===== RADIO ===== -->
-  <div class="panel">
-    <div class="radio-display">FREQUENCY: <span id="freqValue">101</span></div>
-    <input type="range" min="0" max="2" step="1" id="radioDial">
-    <audio id="radioAudio" loop></audio>
+  <div class="radio-display">
+    FREQ <span id="freqValue">101</span>
+  </div>
+  
+  <div class="freq-bar">
+    <div class="freq-indicator" id="freqIndicator"></div>
+  </div>
+  
+  <div class="radio-controls">
+    <button id="radioMute">MUTE</button>
+    <button id="volDown">-</button>
+    <button id="volUp">+</button>
   </div>
 
   <!-- ===== MONITOR ===== -->
@@ -100,9 +143,11 @@ input[type=range] {
       AWAITING INPUT...
     </div>
     <div class="monitor-buttons">
-      <button data-key="A">A</button>
-      <button data-key="B">B</button>
-      <button data-key="C">C</button>
+      <button data-key="1">1</button>
+      <button data-key="2">2</button>
+      <button data-key="3">3</button>
+      <button data-key="4">4</button>
+      <button data-key="5">5</button>
     </div>
   </div>
 
@@ -143,9 +188,10 @@ function drawSonar() {
 
   // add blip occasionally
   if (Math.random() < 0.02) {
+    const distance = Math.random() * radius * 0.6 + radius * 0.2;
     blips.push({
-      x: cx + Math.cos(angle) * radius,
-      y: cy + Math.sin(angle) * radius,
+      x: cx + Math.cos(angle) * distance,
+      y: cy + Math.sin(angle) * distance,
       life: 1
     });
   }
@@ -172,23 +218,34 @@ const freqValue = document.getElementById("freqValue");
 const radioAudio = document.getElementById("radioAudio");
 
 const stations = [
-  { freq: 101, src: "audio/freq1.mp3" },
-  { freq: 245, src: "audio/freq2.mp3" },
-  { freq: 404, src: "audio/freq3.mp3" }
+  { freq: 101, src: "freq1.mp3" },
+  { freq: 245, src: "freq2.mp3" },
+  { freq: 404, src: "freq3.mp3" }
 ];
+
+radioAudio.loop = true;
+
+let volume = 0.6;
+radioAudio.volume = volume;
 
 radioDial.addEventListener("input", () => {
   const station = stations[radioDial.value];
   freqValue.textContent = station.freq;
+  freqIndicator.style.left = `${radioDial.value * 45}%`;
   radioAudio.src = station.src;
   radioAudio.play().catch(()=>{});
 });
+
+radioMute.onclick = () => radioAudio.muted = !radioAudio.muted;
+volUp.onclick = () => radioAudio.volume = Math.min(1, radioAudio.volume + 0.1);
+volDown.onclick = () => radioAudio.volume = Math.max(0, radioAudio.volume - 0.1);
+
 
 /* ===== MONITOR SYSTEM ===== */
 const monitor = document.getElementById("monitorScreen");
 const buttons = document.querySelectorAll(".monitor-buttons button");
 
-const correct = ["A","C","B"];
+const correct = ["2","4","1","5"];
 let input = [];
 
 buttons.forEach(btn => {
