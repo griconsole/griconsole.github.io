@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vault</title>
+<link rel="stylesheet" href="../style.css">
+
+<style>
+.nodes {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.node {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #00ffcc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+.node.unlocked {
+  opacity: 1;
+}
+
+.node.active {
+  background: #00ffcc;
+  color: black;
+}
+
+#question {
+  margin-top: 20px;
+}
+
+input {
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+<div class="window">
+  <div class="title-bar">
+    VAULT
+    <span class="close" onclick="window.close()">X</span>
+  </div>
+
+  <div class="content">
+    <div class="nodes" id="nodes"></div>
+
+    <div id="question"></div>
+  </div>
+</div>
+
+<script>
+/* ===== VAULT DATA ===== */
+const vault = [
+  { q: "What year was DELTA founded?", a: "1946" },
+  { q: "Who initiated the framework?", a: "valentine" },
+  { q: "What does EBB fear?", a: "obsolescence" },
+  { q: "Final key:", a: "always watching" }
+];
+
+/* ===== PROGRESS STORAGE (LOCAL ONLY) ===== */
+function getProgress() {
+  return Number(localStorage.getItem("vaultProgress") || 0);
+}
+function setProgress(v) {
+  localStorage.setItem("vaultProgress", v);
+}
+
+/* ===== RENDER ===== */
+const nodesEl = document.getElementById("nodes");
+const questionEl = document.getElementById("question");
+
+function render() {
+  nodesEl.innerHTML = "";
+  const progress = getProgress();
+
+  vault.forEach((_, i) => {
+    const n = document.createElement("div");
+    n.className = "node" + (i <= progress ? " unlocked" : "");
+    n.textContent = i + 1;
+
+    if (i <= progress) {
+      n.onclick = () => openNode(i);
+    }
+
+    nodesEl.appendChild(n);
+  });
+}
+
+function openNode(i) {
+  const { q, a } = vault[i];
+
+  questionEl.innerHTML = `
+    <p>${q}</p>
+    <input id="answer" autocomplete="off">
+    <button onclick="check('${a}', ${i})">SUBMIT</button>
+  `;
+}
+
+function check(answer, index) {
+  const val = document.getElementById("answer").value.trim().toLowerCase();
+
+  if (val === answer.toLowerCase()) {
+    if (getProgress() === index) {
+      setProgress(index + 1);
+    }
+
+    if (index + 1 === vault.length) {
+      window.open("/final-log", "_blank");
+    }
+
+    render();
+    questionEl.innerHTML = "<p>ACCESS GRANTED</p>";
+  } else {
+    questionEl.innerHTML += "<p style='color:red'>INCORRECT</p>";
+  }
+}
+
+render();
+</script>
+</body>
+</html>
