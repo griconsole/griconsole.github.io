@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Star Shooters</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: #00ffcc;
+  font-family: "Courier New", monospace;
+  overflow: hidden;
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.screen.active {
+  display: flex;
+}
+
+button {
+  background: black;
+  color: #00ffcc;
+  border: 2px solid #00ffcc;
+  padding: 10px 20px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+#gameCanvas {
+  display: none;
+  background: radial-gradient(circle at center, #020b12, #000);
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== START SCREEN ===== -->
+<div id="startScreen" class="screen active">
+  <h1>STAR SHOOTERS</h1>
+  <p>CLICK TO START</p>
+</div>
+
+<!-- ===== GAME ===== -->
+<canvas id="gameCanvas" width="800" height="500"></canvas>
+
+<!-- ===== END SCREEN ===== -->
+<div id="endScreen" class="screen">
+  <h2>GAME OVER</h2>
+  <p>SCORE: <span id="finalScore">0</span></p>
+  <p>CLICK TO RETURN</p>
+</div>
+
+<script>
+/* ===== KONAMI CODE ===== */
+const KONAMI = [
+  "ArrowUp","ArrowUp",
+  "ArrowDown","ArrowDown",
+  "ArrowLeft","ArrowRight",
+  "ArrowLeft","ArrowRight",
+  "b","a","Enter"
+];
+
+let konamiBuffer = [];
+let konamiActive = true;
+
+document.addEventListener("keydown", e => {
+  if (!konamiActive) return;
+
+  konamiBuffer.push(e.key);
+  if (konamiBuffer.length > KONAMI.length) konamiBuffer.shift();
+
+  if (KONAMI.every((k, i) => k === konamiBuffer[i])) {
+    window.open("secret.html", "_blank");
+    konamiBuffer = [];
+  }
+});
+
+/* ===== GAME STATE ===== */
+const startScreen = document.getElementById("startScreen");
+const endScreen = document.getElementById("endScreen");
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const finalScoreEl = document.getElementById("finalScore");
+
+let stars = [];
+let score = 0;
+let running = false;
+let timer = 0;
+const GAME_DURATION = 30 * 1000; // 30 seconds
+let startTime = 0;
+
+/* ===== STAR SPAWN ===== */
+function spawnStar() {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: 10 + Math.random() * 10
+  });
+}
+
+/* ===== GAME LOOP ===== */
+function loop() {
+  if (!running) return;
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // draw stars
+  ctx.fillStyle = "#00ffcc";
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fill();
+  });
+
+  // timer check
+  if (Date.now() - startTime >= GAME_DURATION) {
+    endGame();
+    return;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+/* ===== INPUT ===== */
+canvas.addEventListener("click", e => {
+  if (!running) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  stars = stars.filter(s => {
+    const hit = Math.hypot(mx - s.x, my - s.y) <= s.r;
+    if (hit) score++;
+    return !hit;
+  });
+});
+
+/* ===== START GAME ===== */
+function startGame() {
+  konamiActive = false;
+
+  score = 0;
+  stars = [];
+  startTime = Date.now();
+  running = true;
+
+  startScreen.classList.remove("active");
+  endScreen.classList.remove("active");
+  canvas.style.display = "block";
+
+  spawnStar();
+  setInterval(() => {
+    if (running) spawnStar();
+  }, 700);
+
+  loop();
+}
+
+/* ===== END GAME ===== */
+function endGame() {
+  running = false;
+  canvas.style.display = "none";
+  finalScoreEl.textContent = score;
+  endScreen.classList.add("active");
+}
+
+/* ===== SCREEN HANDLERS ===== */
+startScreen.addEventListener("click", startGame);
+
+endScreen.addEventListener("click", () => {
+  endScreen.classList.remove("active");
+  startScreen.classList.add("active");
+  konamiActive = true;
+});
+</script>
+
+</body>
+</html>
