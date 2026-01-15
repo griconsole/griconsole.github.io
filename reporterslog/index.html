@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== GLOBAL ===== */
 html, body {
   margin: 0;
   width: 100%;
@@ -39,11 +38,9 @@ html, body {
   justify-content: center;
 }
 
-/* ===== PANELS ===== */
 .panel {
-  max-width: 280px;
-  height: 360px;
-  margin: auto;
+  width: 100%;
+  height: 100%;
   padding: 12px;
   border: 2px solid #0a3a3a;
   background: #020b12;
@@ -63,17 +60,6 @@ html, body {
   padding: 16px;
 }
 
-<input
-  type="range"
-  id="radioDial"
-  min="0"
-  max="2"
-  step="1"
-  value="0"
-  style="width:100%; background:transparent;"
->
-<audio id="radioAudio"></audio>
-
 .radio-display {
   font-size: 14px;
   margin-bottom: 12px;
@@ -85,7 +71,7 @@ html, body {
   background: #021a1a;
   border: 1px solid #0a3a3a;
   position: relative;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .freq-indicator {
@@ -99,6 +85,7 @@ html, body {
 .radio-controls {
   display: flex;
   gap: 8px;
+  margin-top: 10px;
 }
 
 .radio-controls button {
@@ -133,46 +120,45 @@ html, body {
   padding: 8px 12px;
   cursor: pointer;
 }
-
-.monitor-buttons button:active {
-  background: #00ffcc;
-  color: black;
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <div class="console-grid">
-  <div class="device sonar">
-    <!-- ===== SONAR ===== -->
+<div class="console-grid">
+
+  <!-- SONAR -->
+  <div class="device">
     <div class="panel">
       <canvas id="sonarCanvas"></canvas>
     </div>
   </div>
 
+  <!-- RADIO -->
   <div class="device radio">
-    <!-- ===== RADIO ===== -->
     <div class="radio-display">
       FREQ <span id="freqValue">101</span>
     </div>
+
     <div class="freq-bar">
       <div class="freq-indicator" id="freqIndicator"></div>
     </div>
+
+    <input type="range" id="radioDial" min="0" max="2" step="1" value="0">
+
     <div class="radio-controls">
       <button id="radioMute">MUTE</button>
       <button id="volDown">-</button>
       <button id="volUp">+</button>
     </div>
+
+    <audio id="radioAudio"></audio>
   </div>
 
-  <div class="device monitor">
-    <!-- ===== MONITOR ===== -->
+  <!-- MONITOR -->
+  <div class="device">
     <div class="panel">
-      <div class="monitor-screen" id="monitorScreen">
-        AWAITING INPUT...
-      </div>
+      <div class="monitor-screen" id="monitorScreen">AWAITING INPUT...</div>
       <div class="monitor-buttons">
         <button data-key="1">1</button>
         <button data-key="2">2</button>
@@ -182,11 +168,11 @@ html, body {
       </div>
     </div>
   </div>
-</div>
+
 </div>
 
 <script>
-/* ===== SONAR SYSTEM ===== */
+/* ===== SONAR ===== */
 const canvas = document.getElementById("sonarCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -208,43 +194,32 @@ function drawSonar() {
   const cy = canvas.height/2;
   const radius = Math.min(cx, cy) - 10;
 
-  // sweep
   ctx.strokeStyle = "#00ffcc";
   ctx.beginPath();
   ctx.moveTo(cx, cy);
-  ctx.lineTo(
-    cx + Math.cos(angle) * radius,
-    cy + Math.sin(angle) * radius
-  );
+  ctx.lineTo(cx + Math.cos(angle)*radius, cy + Math.sin(angle)*radius);
   ctx.stroke();
 
-  // add blip occasionally
   if (Math.random() < 0.02) {
-    const distance = Math.random() * radius * 0.6 + radius * 0.2;
-    blips.push({
-      x: cx + Math.cos(angle) * distance,
-      y: cy + Math.sin(angle) * distance,
-      life: 1
-    });
+    const d = Math.random()*radius*0.6 + radius*0.2;
+    blips.push({x: cx+Math.cos(angle)*d, y: cy+Math.sin(angle)*d, life:1});
   }
 
-  // draw blips
   blips.forEach(b => {
     ctx.fillStyle = `rgba(0,255,204,${b.life})`;
     ctx.beginPath();
-    ctx.arc(b.x, b.y, 3, 0, Math.PI*2);
+    ctx.arc(b.x,b.y,3,0,Math.PI*2);
     ctx.fill();
     b.life -= 0.01;
   });
 
-  blips = blips.filter(b => b.life > 0);
-
+  blips = blips.filter(b=>b.life>0);
   angle += 0.03;
   requestAnimationFrame(drawSonar);
 }
 drawSonar();
 
-/* ===== RADIO SYSTEM ===== */
+/* ===== RADIO ===== */
 const radioDial = document.getElementById("radioDial");
 const freqValue = document.getElementById("freqValue");
 const radioAudio = document.getElementById("radioAudio");
@@ -257,14 +232,12 @@ const stations = [
 ];
 
 radioAudio.loop = true;
-
-let volume = 0.6;
-radioAudio.volume = volume;
+radioAudio.volume = 0.6;
 
 radioDial.addEventListener("input", () => {
   const station = stations[radioDial.value];
   freqValue.textContent = station.freq;
-  freqIndicator.style.left = `${radioDial.value * 45}%`;
+  freqIndicator.style.left = `${radioDial.value * 40}%`;
   radioAudio.src = station.src;
   radioAudio.play().catch(()=>{});
 });
@@ -273,25 +246,23 @@ radioMute.onclick = () => radioAudio.muted = !radioAudio.muted;
 volUp.onclick = () => radioAudio.volume = Math.min(1, radioAudio.volume + 0.1);
 volDown.onclick = () => radioAudio.volume = Math.max(0, radioAudio.volume - 0.1);
 
-
-/* ===== MONITOR SYSTEM ===== */
+/* ===== MONITOR ===== */
 const monitor = document.getElementById("monitorScreen");
 const buttons = document.querySelectorAll(".monitor-buttons button");
 
 const correct = ["2","4","1","5"];
 let input = [];
 
-buttons.forEach(btn => {
-  btn.addEventListener("click", () => {
+buttons.forEach(btn=>{
+  btn.onclick = ()=>{
     input.push(btn.dataset.key);
     monitor.textContent = input.join(" ");
     if (input.length > correct.length) input.shift();
-
     if (JSON.stringify(input) === JSON.stringify(correct)) {
       monitor.textContent = "ACCESS CONFIRMED\nOBSERVER ONLINE";
       input = [];
     }
-  });
+  };
 });
 </script>
 
