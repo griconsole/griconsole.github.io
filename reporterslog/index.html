@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ANALOG ACCESS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== GLOBAL ===== */
+html, body {
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(circle at top, #0b1e2d, #02060a);
+  font-family: "Courier New", monospace;
+  color: #00ffcc;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 100%;
+  gap: 20px;
+  padding: 30px;
+}
+
+/* ===== PANELS ===== */
+.panel {
+  border: 2px solid #0a3a3a;
+  background: #020b12;
+  padding: 15px;
+  position: relative;
+}
+
+/* ===== SONAR ===== */
+#sonarCanvas {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #001c1c, #000);
+}
+
+/* ===== RADIO ===== */
+.radio-display {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+input[type=range] {
+  width: 100%;
+}
+
+/* ===== MONITOR ===== */
+.monitor-screen {
+  height: 60%;
+  border: 2px solid #0a3a3a;
+  padding: 10px;
+  background: black;
+  overflow: hidden;
+}
+
+.monitor-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.monitor-buttons button {
+  background: black;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.monitor-buttons button:active {
+  background: #00ffcc;
+  color: black;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ===== SONAR ===== -->
+  <div class="panel">
+    <canvas id="sonarCanvas"></canvas>
+  </div>
+
+  <!-- ===== RADIO ===== -->
+  <div class="panel">
+    <div class="radio-display">FREQUENCY: <span id="freqValue">101</span></div>
+    <input type="range" min="0" max="2" step="1" id="radioDial">
+    <audio id="radioAudio" loop></audio>
+  </div>
+
+  <!-- ===== MONITOR ===== -->
+  <div class="panel">
+    <div class="monitor-screen" id="monitorScreen">
+      AWAITING INPUT...
+    </div>
+    <div class="monitor-buttons">
+      <button data-key="A">A</button>
+      <button data-key="B">B</button>
+      <button data-key="C">C</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== SONAR SYSTEM ===== */
+const canvas = document.getElementById("sonarCanvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+let angle = 0;
+let blips = [];
+
+function drawSonar() {
+  ctx.fillStyle = "rgba(0,0,0,0.15)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+  const radius = Math.min(cx, cy) - 10;
+
+  // sweep
+  ctx.strokeStyle = "#00ffcc";
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(
+    cx + Math.cos(angle) * radius,
+    cy + Math.sin(angle) * radius
+  );
+  ctx.stroke();
+
+  // add blip occasionally
+  if (Math.random() < 0.02) {
+    blips.push({
+      x: cx + Math.cos(angle) * radius,
+      y: cy + Math.sin(angle) * radius,
+      life: 1
+    });
+  }
+
+  // draw blips
+  blips.forEach(b => {
+    ctx.fillStyle = `rgba(0,255,204,${b.life})`;
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, 3, 0, Math.PI*2);
+    ctx.fill();
+    b.life -= 0.01;
+  });
+
+  blips = blips.filter(b => b.life > 0);
+
+  angle += 0.03;
+  requestAnimationFrame(drawSonar);
+}
+drawSonar();
+
+/* ===== RADIO SYSTEM ===== */
+const radioDial = document.getElementById("radioDial");
+const freqValue = document.getElementById("freqValue");
+const radioAudio = document.getElementById("radioAudio");
+
+const stations = [
+  { freq: 101, src: "audio/freq1.mp3" },
+  { freq: 245, src: "audio/freq2.mp3" },
+  { freq: 404, src: "audio/freq3.mp3" }
+];
+
+radioDial.addEventListener("input", () => {
+  const station = stations[radioDial.value];
+  freqValue.textContent = station.freq;
+  radioAudio.src = station.src;
+  radioAudio.play().catch(()=>{});
+});
+
+/* ===== MONITOR SYSTEM ===== */
+const monitor = document.getElementById("monitorScreen");
+const buttons = document.querySelectorAll(".monitor-buttons button");
+
+const correct = ["A","C","B"];
+let input = [];
+
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    input.push(btn.dataset.key);
+    if (input.length > correct.length) input.shift();
+
+    if (JSON.stringify(input) === JSON.stringify(correct)) {
+      monitor.textContent = "ACCESS CONFIRMED\nOBSERVER ONLINE";
+    }
+  });
+});
+</script>
+
+</body>
+</html>
