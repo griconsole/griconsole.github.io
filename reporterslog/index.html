@@ -9,7 +9,7 @@
 html, body {
   margin: 0;
   width: 100%;
-  height: 100%
+  height: 100%;
   overflow: hidden;
   background: radial-gradient(circle at top, #071923 0%, #020b12 70%);
   font-family: "Courier New", monospace;
@@ -17,12 +17,13 @@ html, body {
 }
 
 .console-grid {
-  display: grid;
+  min-height: 100vh;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-items: center;
-  height: 100%;
-  padding: 60px;
+  place-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
   gap: 60px;
 }
 
@@ -149,6 +150,8 @@ html, body {
   background: black;
   overflow: hidden;
   white-space: pre-line;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .monitor-buttons {
@@ -164,6 +167,13 @@ html, body {
   padding: 8px 12px;
   cursor: pointer;
 }
+
+/* active butt stuff, could revert if it looks UHGLY */
+.monitor-buttons button:active {
+  background: #00ffcc;
+  color: black;
+}
+
 </style>
 </head>
 
@@ -317,23 +327,52 @@ volDown.onclick = () => {
 };
 
 /* ===== MONITOR ===== */
+const responses = {
+  "34251": "THE SMELL OF BUTTERCUPS IN THE AIR",
+  "42": "THAT IS NOT THE MEANING OF LIFE",
+  "2415": "YOU HAVE BEEN HERE BEFORE",
+  "12345": "TOO OBVIOUS, TRY AGAIN"
+};
+
 const monitor = document.getElementById("monitorScreen");
 const buttons = document.querySelectorAll(".monitor-buttons button");
 
-const correct = ["2","4","1","5"];
-let input = [];
+let input = "";
+let locked = false;
+let resetTimer = null;
 
-buttons.forEach(btn=>{
-  btn.onclick = ()=>{
-    input.push(btn.dataset.key);
-    monitor.textContent = input.join(" ");
-    if (input.length > correct.length) input.shift();
-    if (JSON.stringify(input) === JSON.stringify(correct)) {
-      monitor.textContent = "ACCESS CONFIRMED\nOBSERVER ONLINE";
-      input = [];
+//could change to 6? maybe
+const MAX_LEN = 5;
+
+function resetMonitor() {
+  input = "";
+  locked = false;
+  monitor.textContent = "AWAITING INPUT...";
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (locked) return;
+
+    // if tis already at max length, reset before adding
+    if (input.length >= MAX_LEN) {
+      input = "";
     }
-  };
+
+    input += btn.dataset.key;
+    monitor.textContent = input;
+
+    // checks the code
+    if (responses[input]) {
+      monitor.textContent = responses[input];
+      locked = true;
+
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(resetMonitor, 10000);
+    }
+  });
 });
+
 </script>
 
 </body>
