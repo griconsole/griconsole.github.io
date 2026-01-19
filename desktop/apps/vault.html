@@ -1,214 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>VAULT</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  background: black;
-  overflow: hidden;
-  font-family: "Courier New", monospace;
-}
-
-.window {
-  position: absolute;
-  width: 80vw;
-  height: 80vh;
-  top: 10%;
-  left: 10%;
-  background: #050d0d;
-  border: 2px solid #00ffcc;
-  box-shadow: 0 0 30px rgba(0,255,204,0.25);
-}
-
-.title-bar {
-  height: 28px;
-  background: linear-gradient(#003f3f, #001a1a);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  font-size: 13px;
-}
-
-.title-bar button {
-  background: #c0392b;
-  color: white;
-  border: none;
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-}
-
-.content {
-  padding: 20px;
-}
-
-/* ===== VAULT MAP ===== */
-.vault-map {
-  position: relative;
-  width: 600px;
-  height: 460px;
-  margin: 0 auto;
-}
-
-#vaultRoot {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.vault-frame {
-  width: 90%;
-  height: 90%;
-  border: 2px solid #00ffcc;
-  box-shadow: 0 0 25px rgba(0,255,204,0.3);
-  background: radial-gradient(circle at center, #020f0f, #000);
-  display: flex;
-  flex-direction: column;
-}
-
-.vault-title {
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #00ffcc;
-  border-bottom: 1px solid #00ffcc;
-}
-
-.vault-graph {
-  position: relative;
-  flex: 1;
-  display: grid;
-  place-items: center;
-}
-
-.vault-graph::before {
-  content: "";
-  position: absolute;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  border: 1px dashed rgba(0,255,204,0.15);
-  z-index: 0;
-}
-
-.vault-panel {
-  padding: 16px;
-  border-top: 1px solid #00ffcc;
-  text-align: center;
-}
-
-/* ===== NODES ===== */
-.node {
-  position: absolute;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #061818;
-  border: 2px solid #00ffcc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0.25;
-  transition: all 0.25s ease;
-}
-
-.node.unlocked {
-  opacity: 1;
-}
-
-.node.unlocked:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(0,255,204,0.8);
-}
-
-.node.final {
-  width: 72px;
-  height: 72px;
-  background: radial-gradient(circle, #00ffcc, #003333);
-  color: black;
-  font-weight: bold;
-}
-
-/* ===== CONNECTIONS ===== */
-.connection {
-  position: absolute;
-  height: 2px;
-  background: rgba(0,255,204,0.35);
-  transform-origin: left center;
-}
-
-/* ===== QUESTION PANEL ===== */
-.question-panel {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.question-panel.hidden {
-  display: none;
-}
-
-.question-panel input {
-  background: black;
-  border: 1px solid #00ffcc;
-  color: #00ffcc;
-  padding: 8px;
-  width: 260px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.question-panel button {
-  margin-top: 14px;
-  padding: 8px 24px;
-  background: black;
-  border: 2px solid #00ffcc;
-  color: #00ffcc;
-  cursor: pointer;
-}
-
-#feedback {
-  margin-top: 12px;
-  height: 18px;
-}
-
-.node,
-.connection {
-  z-index: 2;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>VAULT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="vault.css">
 </head>
 
 <body>
-<div class="window">
-  <div class="vault-frame">
-    <div class="vault-title">VAULT ACCESS NODE</div>
-
-    <div class="vault-graph" id="vaultGraph"></div>
-
-    <div class="vault-panel">
-      <p>Select a node.</p>
-      <div class="question-panel hidden" id="questionPanel">
-        <p id="questionText"></p>
-        <input id="answerInput" autocomplete="off">
-        <br>
-        <button id="submitAnswer">SUBMIT</button>
-        <div id="feedback"></div>
+  <div id="vaultRoot">
+    <div class="vault-frame">
+      <div class="vault-title">
+        VAULT ACCESS NODE
+      </div>
+      <div class="vault-graph" id="vaultGraph">
+      </div>
+      <div class="vault-panel">
+        <p class="vault-prompt">Select a node.</p>
+        <div class="question-panel hidden" id="questionPanel">
+          <p id="questionText"></p>
+          <input
+            type="text"
+            id="answerInput"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="submitAnswer">
+            SUBMIT
+          </button>
+          <div id="feedback"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 <script type="module">
-/* ===== FIREBASE ===== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
@@ -226,151 +52,168 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const vaultDoc = doc(db, "vault", "progress");
 
-/* ===== VAULT DATA ===== */
-const map = document.getElementById("vaultGraph");
-
-const NODE_SIZE = 56;
-const FINAL_SIZE = 72;
-
-const WIDTH = map.clientWidth;
-const HEIGHT = map.clientHeight;
-
-const CENTER_X = WIDTH / 2;
-const CENTER_Y = HEIGHT / 2;
-
-const LEVEL_GAP = 80;
-const BRANCH_GAP = 180;
-
 const branches = [
-  ["1946","preservation","valentine"],
-  ["obsolescence","ebb-0","watcher"],
-  ["continuity","echo","delta-black"],
-  ["1972","observer","human error"]
+  ["1946", "preservation", "valentine"],
+  ["obsolescence", "ebb-0", "watcher"],
+  ["continuity", "echo", "delta-black"],
+  ["1972", "observer", "human error"]
 ];
 
 const questions = [
-  ["DELTA founding year?","Original directive?","Who signed the charter?"],
-  ["Primary threat?","First system name?","Hidden protocol?"],
-  ["EBB obsession?","Failed experiment?","Lost archive?"],
-  ["Monitoring began?","System anomaly?","Trust breach?"]
+  ["DELTA founding year?", "Original directive?", "Who signed the charter?"],
+  ["Primary threat?", "First system name?", "Hidden protocol?"],
+  ["EBB obsession?", "Failed experiment?", "Lost archive?"],
+  ["Monitoring began?", "System anomaly?", "Trust breach?"]
 ];
 
-const finalQuestion = { q:"FINAL KEY PHRASE", a:"always watching" };
+const finalQuestion = {
+  q: "FINAL KEY PHRASE",
+  a: "always watching"
+};
 
-let unlocked = {};
+const graph = document.getElementById("vaultGraph");
+const panel = document.getElementById("questionPanel");
+const questionText = document.getElementById("questionText");
+const input = document.getElementById("answerInput");
+const submitBtn = document.getElementById("submitAnswer");
+const feedback = document.getElementById("feedback");
+
 let currentNode = null;
+let globalData = { unlocked: {} };
 
-function nodePos(branch, depth) {
-  const side = branch < 2 ? -1 : 1;
-  const offset = branch % 2 === 0 ? -1 : 1;
+const CENTER_X = 300;
+const CENTER_Y = 210;
+const RADIUS = 160;
 
-  return {
-    x: CENTER_X + side * BRANCH_GAP + offset * depth * 45,
-    y: CENTER_Y + side * depth * LEVEL_GAP
-  };
+const branchAngles = [-135, -45, 135, 45];
+const stepOffsets = [0.45, 0.75, 1.0];
+
+function polar(angleDeg, dist) {
+  const r = angleDeg * Math.PI / 180;
+  return [
+    CENTER_X + Math.cos(r) * dist,
+    CENTER_Y + Math.sin(r) * dist
+  ];
 }
 
-function drawConnection(x1,y1,x2,y2,s1=NODE_SIZE,s2=NODE_SIZE){
-  const l=document.createElement("div");
-  const cx1=x1+s1/2, cy1=y1+s1/2;
-  const cx2=x2+s2/2, cy2=y2+s2/2;
-  const dx=cx2-cx1, dy=cy2-cy1;
-  l.className="connection";
-  l.style.width=Math.hypot(dx,dy)+"px";
-  l.style.left=cx1+"px";
-  l.style.top=cy1+"px";
-  l.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;
-  map.appendChild(l);
+function drawConnection(x1, y1, x2, y2) {
+  const line = document.createElement("div");
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+
+  line.className = "connection";
+  line.style.width = Math.hypot(dx, dy) + "px";
+  line.style.left = x1 + "px";
+  line.style.top = y1 + "px";
+  line.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+
+  graph.appendChild(line);
 }
 
-function createNode(id,x,y,final=false){
-  const n=document.createElement("div");
-  n.className="node"+(final?" final":"");
-  n.style.left=x+"px";
-  n.style.top=y+"px";
-  n.onclick=()=>openNode(id,final);
-  map.appendChild(n);
+function createNode(id, x, y, isFinal = false) {
+  const n = document.createElement("div");
+  n.className = "node" + (isFinal ? " final" : "");
+  n.style.left = (x - 28) + "px";
+  n.style.top = (y - 28) + "px";
+  n.dataset.id = id;
+
+  if (globalData.unlocked[id]) {
+    n.classList.add("unlocked");
+  }
+
+  n.onclick = () => openNode(id, isFinal);
+  graph.appendChild(n);
   return n;
 }
 
-function render(){
-  map.innerHTML="";
-  const lastNodes=[];
-
-  branches.forEach((branch,b)=>{
-    let prev=null;
-    branch.forEach((_,i)=>{
-      const {x,y}=nodePos(b,i+1);
-      const n=createNode(`${b}-${i}`,x,y);
-      if(unlocked[`${b}-${i}`]) n.classList.add("unlocked");
-      if(prev) drawConnection(prev.x,prev.y,x,y);
-      prev={x,y};
-    });
-    lastNodes.push(prev);
-  });
-
-  const finalX=CENTER_X-FINAL_SIZE/2;
-  const finalY=CENTER_Y-FINAL_SIZE/2;
-  const f=createNode("final",finalX,finalY,true);
-
-  if(lastNodes.every((_,i)=>unlocked[`${i}-2`])) f.classList.add("unlocked");
-
-  lastNodes.forEach(p=>{
-    drawConnection(p.x,p.y,finalX,finalY);
-  });
+async function loadProgress() {
+  const snap = await getDoc(vaultDoc);
+  globalData = snap.exists() ? snap.data() : { unlocked: {} };
 }
 
-/* ===== QUESTIONS ===== */
-const panel=document.getElementById("questionPanel");
-const qText=document.getElementById("questionText");
-const input=document.getElementById("answerInput");
-const feedback=document.getElementById("feedback");
+async function unlockNode(id) {
+  globalData.unlocked[id] = true;
+  await setDoc(vaultDoc, globalData);
+}
 
-function openNode(id,isFinal){
-  if(!globalData.unlocked[id] && !isFinal) return;
-  if(isFinal && ![0,1,2,3].every(b=>globalData.unlocked[`${b}-2`])) return;
+async function buildMap() {
+  graph.innerHTML = "";
+  await loadProgress();
 
+  const branchEnds = [];
+
+  branchAngles.forEach((angle, b) => {
+    let prev = null;
+
+    stepOffsets.forEach((step, i) => {
+      const [x, y] = polar(angle, RADIUS * step);
+      const id = `${b}-${i}`;
+
+      if (prev) drawConnection(prev[0], prev[1], x, y);
+      createNode(id, x, y);
+
+      prev = [x, y];
+      if (i === 2) branchEnds.push([x, y]);
+    });
+  });
+
+  branchEnds.forEach(([x, y]) => {
+    drawConnection(x, y, CENTER_X, CENTER_Y);
+  });
+
+  const finalUnlocked = [0,1,2,3].every(b => globalData.unlocked[`${b}-2`]);
+  const finalNode = createNode("final", CENTER_X, CENTER_Y, true);
+
+  if (finalUnlocked) finalNode.classList.add("unlocked");
+}
+
+function openNode(id, isFinal) {
+  if (!isFinal && !globalData.unlocked[id]) return;
+  if (isFinal && ![0,1,2,3].every(b => globalData.unlocked[`${b}-2`])) return;
+
+  currentNode = id;
   panel.classList.remove("hidden");
-  feedback.textContent="";
-  input.value="";
-  currentNode=id;
+  input.value = "";
+  feedback.textContent = "";
 
-  if(isFinal){
-    qText.textContent=finalQuestion.q;
-  }else{
-    const [b,i]=id.split("-").map(Number);
-    qText.textContent=questions[b][i];
+  if (isFinal) {
+    questionText.textContent = finalQuestion.q;
+  } else {
+    const [b, i] = id.split("-").map(Number);
+    questionText.textContent = questions[b][i];
   }
 }
 
-document.getElementById("submitAnswer").onclick=async()=>{
-  const val=input.value.trim().toLowerCase();
-  if(!val) return;
+submitBtn.onclick = async () => {
+  if (!currentNode) return;
 
-  if(currentNode==="final"){
-    if(val===finalQuestion.a){
-      window.open("/final-log","_blank");
-    }else{
-      feedback.textContent="INCORRECT";
-      feedback.style.color="red";
+  const val = input.value.trim().toLowerCase();
+  if (!val) return;
+
+  if (currentNode === "final") {
+    if (val === finalQuestion.a) {
+      window.open("/final-log", "_blank");
+    } else {
+      feedback.textContent = "INCORRECT";
+      feedback.style.color = "red";
     }
     return;
   }
 
-  const [b,i]=currentNode.split("-").map(Number);
-  if(val===branches[b][i]){
-    await unlock(currentNode);
-    feedback.textContent="ACCESS GRANTED";
-    feedback.style.color="#00ffcc";
-    await render();
-  }else{
-    feedback.textContent="INCORRECT";
-    feedback.style.color="red";
+  const [b, i] = currentNode.split("-").map(Number);
+
+  if (val === branches[b][i]) {
+    await unlockNode(currentNode);
+    feedback.textContent = "ACCESS GRANTED";
+    feedback.style.color = "#00ffcc";
+    await buildMap();
+  } else {
+    feedback.textContent = "INCORRECT";
+    feedback.style.color = "red";
   }
 };
 
-render();
+buildMap();
 </script>
-
 </body>
 </html>
