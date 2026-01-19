@@ -11,8 +11,8 @@ html, body {
   width: 100%;
   height: 100%;
   background: black;
-  font-family: Tahoma, "MS Sans Serif", sans-serif;
-  color: #00ffcc;
+  overflow: hidden;
+  font-family: "Courier New", monospace;
 }
 
 .window {
@@ -55,6 +55,52 @@ html, body {
   width: 600px;
   height: 460px;
   margin: 0 auto;
+}
+
+#vaultRoot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vault-frame {
+  width: 90%;
+  height: 90%;
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 25px rgba(0,255,204,0.3);
+  background: radial-gradient(circle at center, #020f0f, #000);
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-title {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #00ffcc;
+  border-bottom: 1px solid #00ffcc;
+}
+
+.vault-graph {
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+
+.vault-graph::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,255,204,0.15);
+}
+
+.vault-panel {
+  padding: 16px;
+  border-top: 1px solid #00ffcc;
+  text-align: center;
 }
 
 /* ===== NODES ===== */
@@ -135,25 +181,17 @@ html, body {
 </head>
 
 <body>
+  <div id="vaultRoot">
+    <div class="vault-frame">
+      <div class="vault-title">VAULT ACCESS NODE</div>
 
-<div class="window">
-  <div class="title-bar">
-    <span>VAULT ACCESS NODE</span>
-    <button onclick="window.close()">X</button>
-  </div>
+      <div class="vault-graph" id="vaultGraph"></div>
 
-  <div class="content">
-    <div class="vault-map" id="vaultMap"></div>
-
-    <div id="questionPanel" class="question-panel hidden">
-      <p id="questionText"></p>
-      <input id="answerInput" autocomplete="off">
-      <br>
-      <button id="submitAnswer">CONFIRM</button>
-      <p id="feedback"></p>
+      <div class="vault-panel" id="vaultPanel">
+        <p class="vault-prompt">Select a node.</p>
+      </div>
     </div>
   </div>
-</div>
 
 <script type="module">
 /* ===== FIREBASE ===== */
