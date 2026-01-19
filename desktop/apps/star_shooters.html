@@ -28,6 +28,14 @@ body {
   display: flex;
 }
 
+#hud {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+  display: none;
+}
+
 button {
   background: black;
   color: #00ffcc;
@@ -37,25 +45,34 @@ button {
   cursor: pointer;
 }
 
-#gameCanvas {
+canvas {
   display: none;
+  margin: auto;
   background: radial-gradient(circle at center, #020b12, #000);
+  border: 2px solid rgba(0,255,204,0.3);
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== START SCREEN ===== -->
+<!-- START -->
 <div id="startScreen" class="screen active">
   <h1>STAR SHOOTERS</h1>
   <p>CLICK TO START</p>
+  <p style="opacity:0.5">TIP: SOME STARS AVOID YOU WHILE BEING OBSERVED</p>
 </div>
 
-<!-- ===== GAME ===== -->
-<canvas id="gameCanvas" width="800" height="500"></canvas>
+<!-- HUD -->
+<div id="hud">
+  SCORE: <span id="score">0</span><br>
+  TIME: <span id="time">30</span>
+</div>
 
-<!-- ===== END SCREEN ===== -->
+<!-- GAME -->
+<canvas id="gameCanvas" width="640" height="360"></canvas>
+
+<!-- END -->
 <div id="endScreen" class="screen">
   <h2>GAME OVER</h2>
   <p>SCORE: <span id="finalScore">0</span></p>
@@ -63,7 +80,7 @@ button {
 </div>
 
 <script>
-/* ===== KONAMI CODE ===== */
+/* ===== KONAMI ===== */
 const KONAMI = [
   "ArrowUp","ArrowUp",
   "ArrowDown","ArrowDown",
@@ -73,86 +90,116 @@ const KONAMI = [
 ];
 
 let konamiBuffer = [];
-let konamiActive = true;
 
 document.addEventListener("keydown", e => {
-  if (!konamiActive) return;
+  if (!startScreen.classList.contains("active")) return;
 
   konamiBuffer.push(e.key);
   if (konamiBuffer.length > KONAMI.length) konamiBuffer.shift();
 
-  if (KONAMI.every((k, i) => k === konamiBuffer[i])) {
-    window.open("secret.html", "_blank");
+  if (KONAMI.every((k,i)=>k===konamiBuffer[i])) {
+    window.open("secret.html","_blank");
     konamiBuffer = [];
   }
 });
 
-/* ===== GAME STATE ===== */
+/* ===== ELEMENTS ===== */
 const startScreen = document.getElementById("startScreen");
 const endScreen = document.getElementById("endScreen");
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const hud = document.getElementById("hud");
+const scoreEl = document.getElementById("score");
+const timeEl = document.getElementById("time");
 const finalScoreEl = document.getElementById("finalScore");
 
+/* ===== STATE ===== */
 let stars = [];
 let score = 0;
 let running = false;
-let timer = 0;
-const GAME_DURATION = 30 * 1000; // 30 seconds
 let startTime = 0;
+const DURATION = 30_000;
 
-/* ===== STAR SPAWN ===== */
+/* ===== STAR TYPES ===== */
 function spawnStar() {
+  const type = Math.random();
   stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: 10 + Math.random() * 10
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: 10 + Math.random()*8,
+    dx: type < 0.3 ? (Math.random()-0.5)*0.6 : 0,
+    dy: type < 0.3 ? (Math.random()-0.5)*0.6 : 0,
+    shrink: type > 0.7,
+    skittish: type > 0.4 && type < 0.6,
+    scared: false
   });
 }
 
-/* ===== GAME LOOP ===== */
+/* ===== LOOP ===== */
 function loop() {
   if (!running) return;
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // draw stars
-  ctx.fillStyle = "#00ffcc";
-  stars.forEach(s => {
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fill();
-  });
+  const elapsed = Date.now() - startTime;
+  const remaining = Math.max(0, Math.ceil((DURATION - elapsed)/1000));
+  timeEl.textContent = remaining;
 
-  // timer check
-  if (Date.now() - startTime >= GAME_DURATION) {
+  if (elapsed >= DURATION) {
     endGame();
     return;
   }
 
+  stars.forEach(s => {
+    s.x += s.dx;
+    s.y += s.dy;
+
+    if (s.shrink) s.r -= 0.02;
+
+    ctx.beginPath();
+    ctx.fillStyle = "#00ffcc";
+    ctx.arc(s.x, s.y, Math.max(4,s.r), 0, Math.PI*2);
+    ctx.fill();
+  });
+
+  stars = stars.filter(s => s.r > 4);
   requestAnimationFrame(loop);
 }
 
 /* ===== INPUT ===== */
-canvas.addEventListener("click", e => {
-  if (!running) return;
+canvas.addEventListener("mousemove", e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
 
+  stars.forEach(s => {
+    if (s.skittish && !s.scared && Math.hypot(mx-s.x,my-s.y)<40) {
+      s.x = Math.random()*canvas.width;
+      s.y = Math.random()*canvas.height;
+      s.scared = true;
+    }
+  });
+});
+
+canvas.addEventListener("click", e => {
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
 
   stars = stars.filter(s => {
-    const hit = Math.hypot(mx - s.x, my - s.y) <= s.r;
-    if (hit) score++;
+    const hit = Math.hypot(mx-s.x,my-s.y) <= s.r;
+    if (hit) {
+      score++;
+      scoreEl.textContent = score;
+    }
     return !hit;
   });
 });
 
-/* ===== START GAME ===== */
+/* ===== FLOW ===== */
 function startGame() {
-  konamiActive = false;
-
   score = 0;
+  scoreEl.textContent = 0;
   stars = [];
   startTime = Date.now();
   running = true;
@@ -160,31 +207,26 @@ function startGame() {
   startScreen.classList.remove("active");
   endScreen.classList.remove("active");
   canvas.style.display = "block";
+  hud.style.display = "block";
 
   spawnStar();
-  setInterval(() => {
-    if (running) spawnStar();
-  }, 700);
-
+  setInterval(()=>running && spawnStar(),800);
   loop();
 }
 
-/* ===== END GAME ===== */
 function endGame() {
   running = false;
   canvas.style.display = "none";
+  hud.style.display = "none";
   finalScoreEl.textContent = score;
   endScreen.classList.add("active");
 }
 
-/* ===== SCREEN HANDLERS ===== */
-startScreen.addEventListener("click", startGame);
-
-endScreen.addEventListener("click", () => {
+startScreen.onclick = startGame;
+endScreen.onclick = ()=>{
   endScreen.classList.remove("active");
   startScreen.classList.add("active");
-  konamiActive = true;
-});
+};
 </script>
 
 </body>
