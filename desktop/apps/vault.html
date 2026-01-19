@@ -129,7 +129,16 @@ function createNode(id, x, y, isFinal = false) {
 async function loadProgress() {
   const snap = await getDoc(vaultDoc);
   globalData = snap.exists() ? snap.data() : { unlocked: {} };
+  for (let b = 0; b < 4; b++) {
+    const firstId = `${b}-0`;
+    if (!globalData.unlocked[firstId]) {
+      globalData.unlocked[firstId] = true;
+    }
+  }
+
+  await setDoc(vaultDoc, globalData);
 }
+
 
 async function unlockNode(id) {
   globalData.unlocked[id] = true;
@@ -168,8 +177,11 @@ async function buildMap() {
 }
 
 function openNode(id, isFinal) {
-  if (!isFinal && !globalData.unlocked[id]) return;
-  if (isFinal && ![0,1,2,3].every(b => globalData.unlocked[`${b}-2`])) return;
+  if (isFinal) {
+    if (![0,1,2,3].every(b => globalData.unlocked[`${b}-2`])) return;
+  } else {
+    if (!globalData.unlocked[id]) return;
+  }
 
   currentNode = id;
   panel.classList.remove("hidden");
