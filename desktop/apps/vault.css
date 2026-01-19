@@ -39,9 +39,16 @@ html, body {
 .vault-graph {
   position: relative;
   flex: 1;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.vault-map {
+  position: relative;
+  width: 700px;
+  height: 700px;
+}
 /* CIRCULAR GUIDE */
 .vault-graph::before {
   content: "";
@@ -142,4 +149,9 @@ html, body {
 #feedback {
   margin-top: 12px;
   height: 18px;
+}
+
+.node,
+.connection {
+  z-index: 2;
 }
