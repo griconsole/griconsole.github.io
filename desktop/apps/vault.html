@@ -13,7 +13,8 @@
       <div class="vault-title">
         VAULT ACCESS NODE
       </div>
-      <div class="vault-graph" id="vaultGraph">
+      <div class="vault-graph">
+        <div class="vault-map" id="vaultGraph"></div>
       </div>
       <div class="vault-panel">
         <p class="vault-prompt">Select a node.</p>
@@ -126,85 +127,67 @@ function createNode(id, x, y, isFinal = false) {
   return n;
 }
 
-async function loadProgress() {
+async function loadProgress(){
   const snap = await getDoc(vaultDoc);
   globalData = snap.exists() ? snap.data() : { unlocked: {} };
-  for (let b = 0; b < 4; b++) {
-    const firstId = `${b}-0`;
-    if (!globalData.unlocked[firstId]) {
-      globalData.unlocked[firstId] = true;
-    }
-  }
-
-  await setDoc(vaultDoc, globalData);
 }
 
-
-async function unlockNode(id) {
+async function unlock(id){
   globalData.unlocked[id] = true;
-  await setDoc(vaultDoc, globalData);
+  await setDoc(vaultDoc, globalData, { merge: true });
 }
 
-async function buildMap() {
-  graph.innerHTML = "";
+/* ===== RENDER ===== */
+async function render(){
+  map.innerHTML = "";
   await loadProgress();
 
-  const branchEnds = [];
-
-  branchAngles.forEach((angle, b) => {
-    let prev = null;
-
-    stepOffsets.forEach((step, i) => {
-      const [x, y] = polar(angle, RADIUS * step);
+  positions.forEach((branch,b)=>{
+    branch.forEach((pos,i)=>{
       const id = `${b}-${i}`;
-
-      if (prev) drawConnection(prev[0], prev[1], x, y);
-      createNode(id, x, y);
-
-      prev = [x, y];
-      if (i === 2) branchEnds.push([x, y]);
+      createNode(id,pos[0],pos[1]);
+      if(i>0) drawConnection(...branch[i-1],...pos);
     });
   });
 
-  branchEnds.forEach(([x, y]) => {
-    drawConnection(x, y, CENTER_X, CENTER_Y);
+  positions.forEach(branch=>{
+    drawConnection(branch[2][0],branch[2][1],finalPos[0],finalPos[1]);
   });
 
   const finalUnlocked = [0,1,2,3].every(b => globalData.unlocked[`${b}-2`]);
-  const finalNode = createNode("final", CENTER_X, CENTER_Y, true);
-
-  if (finalUnlocked) finalNode.classList.add("unlocked");
+  const f = createNode("final",finalPos[0],finalPos[1],true);
+  if(finalUnlocked) f.classList.add("unlocked");
 }
 
-function openNode(id, isFinal) {
-  if (isFinal) {
-    if (![0,1,2,3].every(b => globalData.unlocked[`${b}-2`])) return;
-  } else {
-    if (!globalData.unlocked[id]) return;
+/* ===== INTERACTION ===== */
+function openNode(id,isFinal){
+  if(isFinal){
+    if(![0,1,2,3].every(b=>globalData.unlocked[`${b}-2`])) return;
+    currentNode = "final";
+    panel.classList.remove("hidden");
+    qText.textContent = finalQuestion.q;
+    input.value = "";
+    feedback.textContent = "";
+    return;
   }
+
+  if(!globalData.unlocked[id] && !id.endsWith("-0")) return;
 
   currentNode = id;
+  const [b,i] = id.split("-").map(Number);
   panel.classList.remove("hidden");
+  qText.textContent = questions[b][i];
   input.value = "";
   feedback.textContent = "";
-
-  if (isFinal) {
-    questionText.textContent = finalQuestion.q;
-  } else {
-    const [b, i] = id.split("-").map(Number);
-    questionText.textContent = questions[b][i];
-  }
 }
 
-submitBtn.onclick = async () => {
-  if (!currentNode) return;
-
+document.getElementById("submitAnswer").onclick = async () => {
   const val = input.value.trim().toLowerCase();
-  if (!val) return;
+  if(!val) return;
 
-  if (currentNode === "final") {
-    if (val === finalQuestion.a) {
-      window.open("/final-log", "_blank");
+  if(currentNode === "final"){
+    if(val === finalQuestion.a){
+      window.open("/final-log","_blank");
     } else {
       feedback.textContent = "INCORRECT";
       feedback.style.color = "red";
@@ -212,20 +195,19 @@ submitBtn.onclick = async () => {
     return;
   }
 
-  const [b, i] = currentNode.split("-").map(Number);
-
-  if (val === branches[b][i]) {
-    await unlockNode(currentNode);
+  const [b,i] = currentNode.split("-").map(Number);
+  if(val === answers[b][i]){
+    await unlock(currentNode);
     feedback.textContent = "ACCESS GRANTED";
     feedback.style.color = "#00ffcc";
-    await buildMap();
+    await render();
   } else {
     feedback.textContent = "INCORRECT";
     feedback.style.color = "red";
   }
 };
 
-buildMap();
+render();
 </script>
 </body>
 </html>
