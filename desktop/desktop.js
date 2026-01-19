@@ -23,7 +23,7 @@ function openWindow(app) {
       <span>${app}</span>
       <button class="close">X</button>
     </div>
-    <iframe src="../apps/${app}.html"></iframe>
+    <iframe src="/desktop/apps/${app}.html"></iframe>
   `;
 
   win.querySelector(".close").onclick = () => win.remove();
