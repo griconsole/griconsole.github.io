@@ -4,7 +4,160 @@
   <meta charset="UTF-8">
   <title>VAULT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="vault.css">
+  
+	<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  overflow: hidden;
+  font-family: "Courier New", monospace;
+  color: #00ffcc;
+}
+
+#vaultRoot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+		
+.vault-frame {
+  width: 97%;
+  height: 96%;
+  border: 2px solid #00ffcc;
+  background: radial-gradient(circle at center, #021111, #000);
+  box-shadow: 0 0 30px rgba(0,255,204,0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-title {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #00ffcc;
+}
+
+.vault-graph {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.vault-map {
+  position: absolute;
+  inset: 0;
+}
+
+.vault-graph::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,255,204,0.15);
+  z-index: 0;
+}
+
+.node {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #041818;
+  border: 2px solid #00ffcc;
+  opacity: 0.25;
+  cursor: pointer;
+  transition: transform .2s, opacity .2s, box-shadow .2s;
+  z-index: 2;
+}
+
+.node.unlocked {
+  opacity: 1;
+}
+
+.node.unlocked:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 16px rgba(0,255,204,0.8);
+}
+
+.node.final {
+  width: 54px;
+  height: 54px;
+  background: radial-gradient(circle, #00ffcc, #003333);
+  color: black;
+  font-weight: bold;
+}
+
+.connection {
+  position: absolute;
+  height: 2px;
+  background: rgba(0,255,204,0.35);
+  transform-origin: left center;
+  z-index: 1;
+}
+
+.vault-panel {
+  border-top: 1px solid #00ffcc;
+  padding: 14px;
+  text-align: center;
+}
+
+.vault-prompt {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.question-panel {
+  margin-top: 10px;
+}
+
+.question-panel.hidden {
+  display: none;
+}
+
+.question-panel input {
+  background: black;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  padding: 8px;
+  width: 260px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.question-panel button {
+  margin-top: 14px;
+  padding: 8px 24px;
+  background: black;
+  border: 2px solid #00ffcc;
+  color: #00ffcc;
+  cursor: pointer;
+}
+
+#feedback {
+  height: 18px;
+  margin-top: 10px;
+}
+
+#minimizePanel {
+  margin-left: 5px;
+  padding: 5px 4px;
+  border: 1px solid #00ffcc;
+  background: black;
+  color: #00ffcc;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#minimizePanel:hover {
+  opacity: 1;
+}
+</style>
 </head>
 
 <body>
@@ -17,9 +170,9 @@
         <div class="vault-map" id="vaultGraph"></div>
       </div>
       <div class="vault-panel">
-        <p class="vault-prompt">Select a node.</p>
+        <p class="vault-prompt" id="vaultPrompt">Select a node.</p>
         <div class="question-panel hidden" id="questionPanel">
-          <p id="questionText"></p>
+          <p id="qText"></p>
           <input
             type="text"
             id="answerInput"
@@ -29,6 +182,9 @@
           <button id="submitAnswer">
             SUBMIT
           </button>
+					<button id="minimizePanel">
+						BACK
+					</button>
           <div id="feedback"></div>
         </div>
       </div>
@@ -53,18 +209,18 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const vaultDoc = doc(db, "vault", "progress");
 
-const branches = [
-  ["1946", "preservation", "valentine"],
-  ["obsolescence", "ebb-0", "watcher"],
-  ["continuity", "echo", "delta-black"],
-  ["1972", "observer", "human error"]
+const answers = [
+  ["1946", "preservation", "valentine", "40"],
+  ["obsolescence", "ebb-0", "watcher", "30"],
+  ["continuity", "echo", "delta-black", "20"],
+  ["1972", "observer", "human error", "10"]
 ];
 
 const questions = [
-  ["DELTA founding year?", "Original directive?", "Who signed the charter?"],
-  ["Primary threat?", "First system name?", "Hidden protocol?"],
-  ["EBB obsession?", "Failed experiment?", "Lost archive?"],
-  ["Monitoring began?", "System anomaly?", "Trust breach?"]
+  ["DELTA founding year?", "Original directive?", "Who signed the charter?", "a?"],
+  ["Primary threat?", "First system name?", "Hidden protocol?", "b?"],
+  ["EBB obsession?", "Failed experiment?", "Lost archive?", "c?"],
+  ["Monitoring began?", "System anomaly?", "Trust breach?", "d?"]
 ];
 
 const finalQuestion = {
@@ -74,55 +230,58 @@ const finalQuestion = {
 
 const graph = document.getElementById("vaultGraph");
 const panel = document.getElementById("questionPanel");
-const questionText = document.getElementById("questionText");
+const qText = document.getElementById("qText");
 const input = document.getElementById("answerInput");
-const submitBtn = document.getElementById("submitAnswer");
 const feedback = document.getElementById("feedback");
 
-let currentNode = null;
 let globalData = { unlocked: {} };
+let activeNode = null;
 
-const CENTER_X = 300;
-const CENTER_Y = 210;
-const RADIUS = 160;
+const NODE_R = 18;
+const FINAL_R = 27;
 
-const branchAngles = [-135, -45, 135, 45];
-const stepOffsets = [0.45, 0.75, 1.0];
-
-function polar(angleDeg, dist) {
-  const r = angleDeg * Math.PI / 180;
-  return [
-    CENTER_X + Math.cos(r) * dist,
-    CENTER_Y + Math.sin(r) * dist
-  ];
+function polar(cx, cy, r, a) {
+  return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
 }
 
-function drawConnection(x1, y1, x2, y2) {
+function drawConnection(x1, y1, x2, y2, r1, r2) {
   const line = document.createElement("div");
+
   const dx = x2 - x1;
   const dy = y2 - y1;
+  const angle = Math.atan2(dy, dx);
+
+  const startX = x1 + Math.cos(angle) * r1;
+  const startY = y1 + Math.sin(angle) * r1;
+  const endX   = x2 - Math.cos(angle) * r2;
+  const endY   = y2 - Math.sin(angle) * r2;
+
+  const length = Math.hypot(endX - startX, endY - startY);
 
   line.className = "connection";
-  line.style.width = Math.hypot(dx, dy) + "px";
-  line.style.left = x1 + "px";
-  line.style.top = y1 + "px";
-  line.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+  line.style.left = startX + "px";
+  line.style.top  = startY + "px";
+  line.style.width = length + "px";
+  line.style.transform = `rotate(${angle}rad)`;
 
   graph.appendChild(line);
 }
 
-function createNode(id, x, y, isFinal = false) {
+function createNode(id, x, y, r, final = false) {
   const n = document.createElement("div");
-  n.className = "node" + (isFinal ? " final" : "");
-  n.style.left = (x - 28) + "px";
-  n.style.top = (y - 28) + "px";
+  n.className = "node" + (final ? " final" : "");
+  n.style.left = (x - r) + "px";
+  n.style.top = (y - r) + "px";
   n.dataset.id = id;
-
-  if (globalData.unlocked[id]) {
-    n.classList.add("unlocked");
-  }
-
-  n.onclick = () => openNode(id, isFinal);
+  if (globalData.unlocked[id]) n.classList.add("unlocked");
+	  if (final) {
+	  n.onclick = () => openNode(id, true);
+	} else if (globalData.unlocked[id] || id.endsWith("-0")) {
+	  n.classList.add("unlocked");
+	  n.onclick = () => openNode(id, false);
+	} else {
+	  n.style.pointerEvents = "none";
+	}
   graph.appendChild(n);
   return n;
 }
@@ -137,33 +296,65 @@ async function unlock(id){
   await setDoc(vaultDoc, globalData, { merge: true });
 }
 
-/* ===== RENDER ===== */
-async function render(){
-  map.innerHTML = "";
+function layout() {
+  const w = graph.clientWidth;
+  const h = graph.clientHeight;
+  const cx = w / 2;
+  const cy = h / 2;
+
+  const rings = [0.42, 0.32, 0.22, 0.14].map(v => Math.min(w, h) * v);
+  const baseAngles = [-Math.PI/2, Math.PI/2];
+
+  const branches = [];
+  baseAngles.forEach((base, bi) => {
+    for (let s of [-1, 1]) {
+      const b = [];
+      rings.forEach((r, i) => {
+        b.push(polar(cx, cy, r, base + s * (0.35 + i * 0.15)));
+      });
+      branches.push(b);
+    }
+  });
+
+  return { cx, cy, branches };
+}
+	
+async function render() {
+  graph.innerHTML = "";
   await loadProgress();
 
-  positions.forEach((branch,b)=>{
-    branch.forEach((pos,i)=>{
-      const id = `${b}-${i}`;
-      createNode(id,pos[0],pos[1]);
-      if(i>0) drawConnection(...branch[i-1],...pos);
+  const L = layout();
+
+  L.branches.forEach((b, bi) => {
+    b.forEach((p, i) => {
+      const id = `${bi}-${i}`;
+      const n = createNode(id, p[0], p[1], NODE_R);
+      if (i > 0) drawConnection(b[i-1][0], b[i-1][1], p[0], p[1], NODE_R, NODE_R);
     });
   });
 
-  positions.forEach(branch=>{
-    drawConnection(branch[2][0],branch[2][1],finalPos[0],finalPos[1]);
+  L.branches.forEach(b => {
+    drawConnection(b.at(-1)[0], b.at(-1)[1], L.cx, L.cy, NODE_R, FINAL_R);
   });
 
-  const finalUnlocked = [0,1,2,3].every(b => globalData.unlocked[`${b}-2`]);
-  const f = createNode("final",finalPos[0],finalPos[1],true);
-  if(finalUnlocked) f.classList.add("unlocked");
+  const finalUnlocked = L.branches.every((_, i) => globalData.unlocked[`${i}-3`]);
+  const f = createNode("final", L.cx, L.cy, FINAL_R, true);
+  if (finalUnlocked) f.classList.add("unlocked");
 }
 
-/* ===== INTERACTION ===== */
-function openNode(id,isFinal){
-  if(isFinal){
-    if(![0,1,2,3].every(b=>globalData.unlocked[`${b}-2`])) return;
-    currentNode = "final";
+const prompt = document.getElementById("vaultPrompt");
+document.getElementById("minimizePanel").onclick = () => {
+  panel.classList.add("hidden");
+  prompt.style.display = "block";
+	render();
+};
+	
+function openNode(id, isFinal = false) {
+  // FINAL NODE
+  if (isFinal) {
+    if (!globalData.unlocked["final"]) return;
+
+    activeNode = "final";
     panel.classList.remove("hidden");
     qText.textContent = finalQuestion.q;
     input.value = "";
@@ -171,21 +362,25 @@ function openNode(id,isFinal){
     return;
   }
 
-  if(!globalData.unlocked[id] && !id.endsWith("-0")) return;
+  // REGULAR NODE
+  if (!globalData.unlocked[id] && !id.endsWith("-0")) return;
 
-  currentNode = id;
-  const [b,i] = id.split("-").map(Number);
+  activeNode = id;
+
+  const [b, i] = id.split("-").map(Number);
+
   panel.classList.remove("hidden");
   qText.textContent = questions[b][i];
   input.value = "";
   feedback.textContent = "";
 }
 
+
 document.getElementById("submitAnswer").onclick = async () => {
   const val = input.value.trim().toLowerCase();
   if(!val) return;
 
-  if(currentNode === "final"){
+  if(activeNode === "final"){
     if(val === finalQuestion.a){
       window.open("/final-log","_blank");
     } else {
@@ -195,19 +390,27 @@ document.getElementById("submitAnswer").onclick = async () => {
     return;
   }
 
-  const [b,i] = currentNode.split("-").map(Number);
-  if(val === answers[b][i]){
-    await unlock(currentNode);
-    feedback.textContent = "ACCESS GRANTED";
-    feedback.style.color = "#00ffcc";
-    await render();
-  } else {
+  const [b,i] = activeNode.split("-").map(Number);
+  if (val === answers[b][i]) {
+  await unlock(activeNode);
+
+  const nextId = `${b}-${i + 1}`;
+  if (answers[b][i + 1]) {
+    await unlock(nextId);
+  }
+
+  feedback.textContent = "ACCESS GRANTED";
+  feedback.style.color = "#00ffcc";
+} else {
     feedback.textContent = "INCORRECT";
     feedback.style.color = "red";
   }
 };
 
 render();
+
+window.addEventListener("resize", render);
+
 </script>
 </body>
 </html>
