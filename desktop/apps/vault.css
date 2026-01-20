@@ -1,4 +1,3 @@
-/* ===== GLOBAL ===== */
 html, body {
   margin: 0;
   width: 100%;
@@ -17,57 +16,43 @@ html, body {
   justify-content: center;
 }
 
-/* ===== FRAME ===== */
 .vault-frame {
-  width: 90%;
-  height: 90%;
-  background: radial-gradient(circle at center, #021111, #000);
+  width: 92%;
+  height: 92%;
   border: 2px solid #00ffcc;
+  background: radial-gradient(circle at center, #021111, #000);
   box-shadow: 0 0 30px rgba(0,255,204,0.25);
   display: flex;
   flex-direction: column;
 }
 
-/* ===== TITLE ===== */
 .vault-title {
   padding: 8px 12px;
   font-size: 13px;
   border-bottom: 1px solid #00ffcc;
 }
 
-/* ===== GRAPH AREA ===== */
 .vault-graph {
-  position: relative;
   flex: 1;
+  position: relative;
+  overflow: hidden;
 }
 
-/* CIRCULAR GUIDE */
-.vault-graph::before {
-  content: "";
+.vault-map {
   position: absolute;
   inset: 0;
-  margin: auto;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  border: 1px dashed rgba(0,255,204,0.15);
-  z-index: 0;
 }
 
-/* ===== NODES ===== */
 .node {
   position: absolute;
-  width: 56px;
-  height: 56px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #061818;
+  background: #041818;
   border: 2px solid #00ffcc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   opacity: 0.25;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: transform .2s, opacity .2s, box-shadow .2s;
   z-index: 2;
 }
 
@@ -76,20 +61,18 @@ html, body {
 }
 
 .node.unlocked:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(0,255,204,0.8);
+  transform: scale(1.15);
+  box-shadow: 0 0 16px rgba(0,255,204,0.8);
 }
 
-/* FINAL NODE */
 .node.final {
-  width: 72px;
-  height: 72px;
+  width: 54px;
+  height: 54px;
   background: radial-gradient(circle, #00ffcc, #003333);
   color: black;
   font-weight: bold;
 }
 
-/* ===== CONNECTIONS ===== */
 .connection {
   position: absolute;
   height: 2px;
@@ -98,21 +81,15 @@ html, body {
   z-index: 1;
 }
 
-/* ===== PANEL ===== */
 .vault-panel {
-  padding: 16px;
   border-top: 1px solid #00ffcc;
+  padding: 14px;
   text-align: center;
 }
 
 .vault-prompt {
-  opacity: 0.6;
   font-size: 12px;
-}
-
-/* ===== QUESTION UI ===== */
-.question-panel {
-  margin-top: 10px;
+  opacity: 0.6;
 }
 
 .question-panel.hidden {
@@ -139,6 +116,20 @@ html, body {
 }
 
 #feedback {
-  margin-top: 12px;
   height: 18px;
+  margin-top: 10px;
+}
+
+#minimizePanel {
+  margin-left: 5px;
+  padding: 5px 4px;
+  border: 1px solid #00ffcc;
+  background: black;
+  color: #00ffcc;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#minimizePanel:hover {
+  opacity: 1;
 }
