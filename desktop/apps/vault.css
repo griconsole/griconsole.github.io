@@ -39,14 +39,8 @@ html, body {
 .vault-graph {
   position: relative;
   flex: 1;
-  display: flex;
 }
 
-.vault-map {
-  position: relative;
-  width: 700px;
-  height: 700px;
-}
 /* CIRCULAR GUIDE */
 .vault-graph::before {
   content: "";
