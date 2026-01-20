@@ -150,8 +150,3 @@ html, body {
   margin-top: 12px;
   height: 18px;
 }
-
-.node,
-.connection {
-  z-index: 2;
-}
