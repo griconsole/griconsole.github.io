@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>UFOs and Aliens Among Us</title>
+<title>Library of Recorded ETs 42</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-  body.archive {
+body.archive {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
   background: #f4f1ea;
   color: #111;
+}
+
+/* HEADER */
+.logo {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .loc-header {
@@ -18,10 +24,24 @@
   border-bottom: 2px solid #ccc;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 12px 20px;
 }
 
-.logo {
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  background: #ddd;
+  border: 1px solid #aaa;
+}
+
+.logo-text {
   font-weight: bold;
   font-size: 20px;
 }
@@ -31,6 +51,14 @@
   border: 1px solid #aaa;
 }
 
+.search button {
+  padding: 6px 10px;
+  border: 1px solid #aaa;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* GRID */
 .page-grid {
   display: grid;
   grid-template-columns: 220px 1fr 240px;
@@ -38,10 +66,7 @@
   padding: 20px;
 }
 
-.sidebar {
-  font-size: 14px;
-}
-
+/* SIDEBAR */
 .sidebar h3 {
   font-size: 15px;
   border-bottom: 1px solid #aaa;
@@ -60,12 +85,47 @@
 .sidebar a {
   text-decoration: none;
   color: #003366;
+  position: relative;
 }
 
 .sidebar a:hover {
   text-decoration: underline;
 }
 
+.sidebar {
+  font-size: 14px;
+}
+
+/* MORSE HOVER — subtle for all */
+.sidebar a::after {
+  content: attr(data-morse);
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0;
+  color: #666;
+  transition: opacity 0.3s;
+  height: 12px;
+}
+
+.sidebar a:hover::after {
+  opacity: 0.6;
+}
+
+.morse::after {
+  content: attr(data-morse);
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0;
+  color: #666;
+  transition: opacity 0.3s ease;
+}
+
+.morse:hover::after {
+  opacity: 1;
+}
+/* CONTENT */
 .content h1 {
   font-size: 28px;
   margin-top: 0;
@@ -76,14 +136,30 @@
   padding-top: 10px;
 }
 
+.meta {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.author-note {
+  font-style: italic;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+  color: #444;
+}
+
 .lead {
   font-weight: bold;
 }
 
+/* RIGHT BAR */
 .rightbar img {
   width: 100%;
   border: 1px solid #999;
   margin-top: 10px;
+  transition: filter 0.3s ease;
 }
 
 .caption {
@@ -92,6 +168,17 @@
   color: #555;
 }
 
+.rightbar img:hover {
+  filter: contrast(120%) brightness(110%);
+}
+
+.caption {
+  font-size: 12px;
+  text-align: center;
+  color: #555;
+}
+
+/* FOOTER */
 .footer {
   border-top: 2px solid #ccc;
   padding: 10px;
@@ -103,6 +190,27 @@
   margin: 0 10px;
   text-decoration: none;
   color: #003366;
+  cursor: pointer;
+}
+
+/* PUZZLE MESSAGE */
+#puzzleOutput {
+  display: none;
+  margin-top: 20px;
+  padding: 15px;
+  background: #111;
+  color: #00ffcc;
+  font-family: "Courier New", monospace;
+}
+
+/* HIDDEN CIPHER */
+.hidden-cipher {
+  color: transparent;
+  user-select: text;
+}
+.hidden-cipher::selection {
+  color: #000;
+  background: #ddd;
 }
 </style>
 </head>
@@ -110,10 +218,13 @@
 <body class="archive">
 
 <header class="loc-header">
-  <div class="logo">LIBRARY OF COSMIC RECORDS 42</div>
+  <div class="logo-wrap">
+    <div class="logo-img" id="logoPlaceholder"></div>
+    <div class="logo-text">LIBRARY OF RECORD ETs 42</div>
+  </div>
   <div class="search">
-    <input type="text" placeholder="Search Archive">
-    <button>Search</button>
+    <input type="text" id="searchInput" placeholder="Search Archive">
+    <button id="searchBtn">Search</button>
   </div>
 </header>
 
@@ -123,146 +234,37 @@
   <aside class="sidebar">
     <h3>Collection</h3>
     <ul>
-      <li><a href="#">Absolute Particles Theorem</a></li>
-      <li><a href="#">Proof on Aliens</a></li>
-      <li><a href="#">Alien Sightings</a></li>
-      <li><a href="#">Recovered Objects</a></li>
-      <li><a href="#">Witness Reports</a></li>
-      <li><a href="#">Suppressed Files</a></li>
-      <li><a href="#">GPA's Secrets</a></li>
-      <li><a href="#">Other Worldly Signals</a></li>
-      <li><a href="#">The Retro Code Decyphers</a></li>
-      <li><a href="#">Life on Another World</a></li>
-      <li><a href="#">The Kane Files</a></li>
-      <li><a href="#">Radio Signals</a></li>
+      <li><a href="#" data-id="C-a">UFOs and Unidentified Craft</a></li>
+      <li><a href="#" data-id="C-b">Aliens Among Us</a></li>
+      <li><a href="#" data-id="C-c">Skeptics and Encounters</a></li>
+      <li><a href="#" class="morse" data-morse=".-.. --- --.  .- -.-. -.-. . ... ...">Suppressed Files</a></li>
+      <li><a href="#" class="morse" data-morse=".-.. --- --- .--.">Other Worldly Signals</a></li>
     </ul>
 
     <h3>Subjects</h3>
     <ul>
-      <li><a href="#">Extraterrestrials</a></li>
-      <li><a href="#">Abductions</a></li>
-      <li><a href="#"></a></li>
-      <li><a href="#">Wormholes</a></li>
-      <li><a href="#">GPA Coverups</a></li>
-      <li><a href="#">Unidentified Craft</a></li>
-      <li><a href="#">Peace? More Like Control</a></li>
-      <li><a href="#">Join us in the Protest</a></li>
+      <li><a href="#" data-id="ufos">Extraterrestrials</a></li>
+      <li><a href="#" data-id="aliens">Unidentified Craft</a></li>
+      <li><a href="#" data-id="skeptics">GPA Coverups</a></li>
     </ul>
   </aside>
 
-  <!-- MAIN ARTICLE -->
+  <!-- MAIN CONTENT -->
   <main class="content">
-    <h1>UFOs and Aliens Among Us</h1>
+    <h1 id="articleTitle"></h1>
+    <div class="meta" id="articleMeta"></div>
+    <div id="articleBody"></div>
+    
+    <div id="puzzleOutput">
+      ... .... --- .-. .. --.. --- -. .-- .- - -.-. ....
+    </div>
 
-    <p class="lead">
-      Throughout modern history, unidentified flying objects have been reported
-      in nearly every region of Earth. Some have been dismissed as illusions,
-      while others remain unexplained.
-    </p>
-
-    <p>
-      Reports of strange craft and non-human entities have been documented by
-      civilians, pilots, and military personnel alike. The question remains:
-      are we alone?
-      Reports of strange craft and non-human entities have been documented by
-      civilians, pilots, and military personnel alike. The question remains:
-      are we alone?
-      Reports of strange craft and non-human entities have been documented by
-      civilians, pilots, and military personnel alike. The question remains:
-      are we alone?
-      Reports of strange craft and non-human entities have been documented by
-      civilians, pilots, and military personnel alike. The question remains:
-      are we alone?
-    </p>
-
-    <h2>Aliens Among Us</h2>
-
-    <p>
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-
-
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-
-
-
-      Sightings of humanoid and non-humanoid entities have increased steadily
-      since the mid-20th century. Many witnesses report beings that appear
-      artificial, projected, or partially distorted.
-    </p>
-
-    <p>
-      These entities are often linked to high-energy phenomena, electromagnetic
-      disturbances, and altered states of perception.
-      These entities are often linked to high-energy phenomena, electromagnetic
-      disturbances, and altered states of perception.
-
-      These entities are often linked to high-energy phenomena, electromagnetic
-      disturbances, and altered states of perception.
-    </p>
-
-    <h2>Skeptics and Encounters</h2>
-
-    <p>
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
-
-      While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.While skeptics argue that most encounters are misinterpretations, a growing
-      archive of data suggests patterns that cannot be easily dismissed.
+    <p class="hidden-cipher">
+      1 12 9 5 14 19 0 9 14 22 1 4 5 4 0 20 8 5 0 5 1 18 20 8 0 23 1 18 0 23 1 19 0 14 5 22 5 18 0 1 14 0 15 16 20 9 15 14 0 7 16 1
     </p>
   </main>
 
-  <!-- RIGHT COLUMN (POSTERS / IMAGES) -->
+  <!-- RIGHT COLUMN -->
   <aside class="rightbar">
     <img src="/images/poster1.jpg" alt="Alien Poster">
     <p class="caption">“They Are Watching Us” - 1954</p>
@@ -277,11 +279,128 @@
 </div>
 
 <footer class="footer">
-  <a href="/">Home</a>
-  <a href="#">Contact</a>
-  <a href="#">Privacy</a>
-  <a href="#">Downloads</a>
+  <a data-seq="home">Home</a>
+  <a data-seq="contact">Contact</a>
+  <a data-seq="privacy">Privacy</a>
+  <a data-seq="upload">Upload</a>
 </footer>
+
+<script>
+const articles = {
+  ufos: {
+    title: "UFOs and Unidentified Craft",
+    author: "By Elias Wren",
+    date: "October 12, 1987",
+    body: `
+    <p class="lead">
+Throughout modern history, unidentified flying objects have been reported in nearly every region of Earth. Some have been dismissed as illusions, while others remain unexplained.
+</p>
+
+<p>
+Reports of strange craft and non-human entities have been documented by civilians, pilots, and military personnel alike. The question remains: are we alone?
+</p>
+
+<p>
+Reports of strange craft and non-human entities have been documented by civilians, pilots, and military personnel alike. The question remains: are we alone?
+</p>
+<p>I was woken up by the sound of sudden rumblings outside...</p>
+<p>I quickly went <strong>HOME</strong> to get my camera.</p>
+<p>The aliens made <strong>CONTACT</strong> with me...</p>
+<p>As I value my <strong>PRIVACY</strong>...</p>
+<p>I tried to <strong>UPLOAD</strong> the image into my vault but it corrupted.</p>
+`,
+    note: "Author Note: The file corruption remains unexplained."
+  },
+
+  aliens: {
+    title: "Aliens Among Us",
+    author: "By Dr. Marla Kess",
+    date: "June 4, 1992",
+    body: `<p class="lead">
+Sightings of humanoid and non-humanoid entities have increased steadily since the mid-20th century.
+</p>
+
+<p>
+Many witnesses report beings that appear artificial, projected, or partially distorted.
+</p>
+
+<p>
+These entities are often linked to high-energy phenomena, electromagnetic disturbances, and altered states of perception.
+</p>`,
+    note: "Author Note: Patterns suggest repeated interference."
+  },
+
+  skeptics: {
+    title: "Skeptics and Encounters",
+    author: "By Robert Hale",
+    date: "March 3, 1995",
+    body: `<p class="lead">
+While skeptics argue that most encounters are misinterpretations, a growing archive of data suggests patterns that cannot be easily dismissed.
+</p>
+
+<p>
+While skeptics argue that most encounters are misinterpretations, a growing archive of data suggests patterns that cannot be easily dismissed.
+</p>`,
+    note: "Author Note: Statistical anomalies remain."
+  }
+};
+
+const titleEl = document.getElementById("articleTitle");
+const metaEl = document.getElementById("articleMeta");
+const bodyEl = document.getElementById("articleBody");
+
+function loadArticle(id){
+  const a = articles[id];
+  if(!a) return;
+  titleEl.textContent = a.title;
+  metaEl.textContent = `${a.author} | ${a.date}`;
+  bodyEl.innerHTML = a.body + `<div class="author-note">${a.note}</div>`;
+}
+
+loadArticle("ufos");
+
+document.querySelectorAll("[data-id]").forEach(link=>{
+  link.addEventListener("click",e=>{
+    e.preventDefault();
+    loadArticle(link.dataset.id);
+  });
+});
+
+/* search code */
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+
+  if (
+    query.includes("frequency") ||
+    query.includes("reporter") ||
+    query.includes("signal") ||
+    query.includes("gp")
+  ) {
+    window.location.href = "/reporterslog";
+  } else {
+    alert("No archive match found.");
+  }
+});
+
+/* puzzle sqenc */
+const correctSequence = ["home","contact","privacy","upload"];
+let userSequence = [];
+
+document.querySelectorAll("[data-seq]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    userSequence.push(btn.dataset.seq);
+
+    if(userSequence.join() === correctSequence.slice(0,userSequence.length).join()){
+      if(userSequence.length === correctSequence.length){
+        document.getElementById("puzzleOutput").style.display="block";
+        userSequence=[];
+      }
+    } else {
+      userSequence=[];
+    }
+  });
+});
+</script>
 
 </body>
 </html>
