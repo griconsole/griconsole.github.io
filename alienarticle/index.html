@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Library of Recorded ETs 42</title>
+<title>LOREs42</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -88,15 +88,11 @@ body.archive {
   position: relative;
 }
 
-.sidebar a:hover {
-  text-decoration: underline;
-}
-
 .sidebar {
   font-size: 14px;
 }
 
-/* MORSE HOVER — subtle for all */
+/* MORSE HOVER */
 .sidebar a::after {
   content: attr(data-morse);
   display: block;
@@ -193,7 +189,7 @@ body.archive {
   cursor: pointer;
 }
 
-/* PUZZLE MESSAGE */
+/* PUZZLE MESSAGE THINGY */
 #puzzleOutput {
   display: none;
   margin-top: 20px;
@@ -203,7 +199,7 @@ body.archive {
   font-family: "Courier New", monospace;
 }
 
-/* HIDDEN CIPHER */
+/* HIDDEN CIPHER... BILL CIPHER?... NO NO */
 .hidden-cipher {
   color: transparent;
   user-select: text;
@@ -211,6 +207,33 @@ body.archive {
 .hidden-cipher::selection {
   color: #000;
   background: #ddd;
+}
+
+.nav-link {
+  display: block;
+  margin-bottom: 12px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  text-shadow: 0 0 8px #00ffcc;
+}
+
+.morse-hover::after {
+  content: attr(data-morse);
+  display: block;
+  opacity: 0;
+  font-size: 10px;
+  margin-top: 4px;
+  letter-spacing: 2px;
+  transition: opacity 0.3s;
+}
+
+.morse-hover:hover::after {
+  opacity: 0.8;
 }
 </style>
 </head>
@@ -222,30 +245,41 @@ body.archive {
     <div class="logo-img" id="logoPlaceholder"></div>
     <div class="logo-text">LIBRARY OF RECORD ETs 42</div>
   </div>
+  <div style="display:flex; align-items:center; gap:10px;">
   <div class="search">
     <input type="text" id="searchInput" placeholder="Search Archive">
     <button id="searchBtn">Search</button>
   </div>
+</div>
 </header>
 
 <div class="page-grid">
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <h3>Collection</h3>
+    <h3>Collections</h3>
     <ul>
-      <li><a href="#" data-id="C-a">UFOs and Unidentified Craft</a></li>
-      <li><a href="#" data-id="C-b">Aliens Among Us</a></li>
-      <li><a href="#" data-id="C-c">Skeptics and Encounters</a></li>
-      <li><a href="#" class="morse" data-morse=".-.. --- --.  .- -.-. -.-. . ... ...">Suppressed Files</a></li>
-      <li><a href="#" class="morse" data-morse=".-.. --- --- .--.">Other Worldly Signals</a></li>
+      <li><a class="nav-link morse-hover" data-id="C-a">Alien Sightings</a></li>
+      <li><a class="nav-link morse-hover" data-id="C-c">GPA Coverups</a></li>
+      <li><a class="nav-link morse-hover" data-morse=".---- --... .---- ----.">GPA Suppressed Files</a></li>
+      <li><a class="nav-link morse-hover" data-id="C-e">The Kane Files</a></li>
+      <li><a class="nav-link morse-hover" data-id="C-f">Witness Reports</a></li>
+      <li><a class="nav-link morse-hover" data-id="C-g">Community Fundings Link</a></li>
+      <li><a class="nav-link morse-hover" data-morse=".---- ---.. ----. -----">Dr. Alan's Reports</a></li>
     </ul>
 
-    <h3>Subjects</h3>
+    <h3>Articles</h3>
     <ul>
-      <li><a href="#" data-id="ufos">Extraterrestrials</a></li>
-      <li><a href="#" data-id="aliens">Unidentified Craft</a></li>
-      <li><a href="#" data-id="skeptics">GPA Coverups</a></li>
+      <li><a class="nav-link morse-hover" data-id="ufos">UFOs and Unidentified Craft</a></li>
+      <li><a class="nav-link morse-hover" data-id="aliens">Aliens Among Us</a></li>
+      <li><a class="nav-link morse-hover" data-id="skeptics">Skeptics and Encounters</a></li>
+      <li><a class="nav-link morse-hover" data-id="peace">Peace? More Like Control</a></li>
+      <li><a class="nav-link morse-hover" data-id="join">Join us in the Protest</a></li>
+      <li><a class="nav-link morse-hover" data-id="craft">Unidentified Craft</a></li>
+      <li><a class="nav-link morse-hover" data-id="hunt">01101000 01110101 01101110 01110100</a></li>
+      <li><a class="nav-link morse-hover" data-id="khan">Dr. Khan's Daily Report</a></li>
+      <li><a class="nav-link morse-hover" data-id="retro">The Retro Code Decyphers</a></li>
+      <li><a class="nav-link morse-hover" data-id="apt">Absolute Particles Theorem</a></li>
     </ul>
   </aside>
 
@@ -256,7 +290,7 @@ body.archive {
     <div id="articleBody"></div>
     
     <div id="puzzleOutput">
-      ... .... --- .-. .. --.. --- -. .-- .- - -.-. ....
+      - .... . ... . / .- .-. - .. -.-. .-.. . ... / .- .-. . / .--. ..- .-. . / -.-. --- -- . -.. -.-- / --. --- .-.. -.. --..-- / .. / -.-. .-. .- -.-. -.- / ..- .--. / . .- -.-. .... / - .. -- . / .. / .-. . .- -.. / --- -. . / --- ..-. / - .... . ... .
     </div>
 
     <p class="hidden-cipher">
@@ -273,7 +307,7 @@ body.archive {
     <p class="caption">Declassified Surveillance Art</p>
 
     <img src="/images/hwatch1.png" alt="HWATCH">
-    <p class="caption">HORIZONWATCH SYSTEM FEED</p>
+    <p class="caption">HORIZONWATCH FEED LEAK</p>
   </aside>
 
 </div>
@@ -287,62 +321,286 @@ body.archive {
 
 <script>
 const articles = {
-  ufos: {
-    title: "UFOs and Unidentified Craft",
-    author: "By Elias Wren",
-    date: "October 12, 1987",
-    body: `
-    <p class="lead">
-Throughout modern history, unidentified flying objects have been reported in nearly every region of Earth. Some have been dismissed as illusions, while others remain unexplained.
+home: {
+title: "Library Of Record ETs 42",
+body: `
+<p class="lead">
+Welcome, Free Thinkers.
 </p>
 
 <p>
-Reports of strange craft and non-human entities have been documented by civilians, pilots, and military personnel alike. The question remains: are we alone?
+If you are reading this, then you have already felt it, the quiet wrongness in the air, the stories that never quite make it to broadcast, the footage that vanishes, the reports that are “misfiled.” You are not here by accident. You are here because you have questions the GPA refuses to answer.
 </p>
 
 <p>
-Reports of strange craft and non-human entities have been documented by civilians, pilots, and military personnel alike. The question remains: are we alone?
+This archive exists as a sanctuary for those who have witnessed what the public is told does not exist. Strange lights. Missing time. Unmarked craft. Neighbors who return... different. Here, you may speak freely. Here, your testimony will not be edited, ridiculed, or buried beneath official narratives.
 </p>
-<p>I was woken up by the sound of sudden rumblings outside...</p>
-<p>I quickly went <strong>HOME</strong> to get my camera.</p>
-<p>The aliens made <strong>CONTACT</strong> with me...</p>
-<p>As I value my <strong>PRIVACY</strong>...</p>
-<p>I tried to <strong>UPLOAD</strong> the image into my vault but it corrupted.</p>
+
+<p>
+All registered members may submit articles, research, and firsthand accounts. Our administrators actively monitor for infiltration and disinformation campaigns. The GPA has resources, but so do we. Remain vigilant. Protect one another. Verify before you trust.
+</p>
+
+<p>
+We are driven by truth. And the truth is simple: something is being concealed from the public. Patterns in redacted documents. Budget anomalies. Coordinated media dismissals. The GPA is hiding something and together, we will uncover it.
+</p>
+
+<p>
+Stand firm. Document everything. Question what you are told.
+</p>
 `,
-    note: "Author Note: The file corruption remains unexplained."
-  },
+note: "We would really appreciate donations. Those who contribute generously may receive invitations to our private monthly assemblies. Details are available on the donations page."
+},
 
-  aliens: {
-    title: "Aliens Among Us",
-    author: "By Dr. Marla Kess",
-    date: "June 4, 1992",
-    body: `<p class="lead">
-Sightings of humanoid and non-humanoid entities have increased steadily since the mid-20th century.
+ufos: {
+title: "UFOs and Unidentified Craft",
+author: "By Elias Wren",
+date: "October 12, 1987",
+body: `
+<p class="lead">
+Reports of unidentified aerial phenomena have increased in both frequency and geographic distribution over the last four decades.
 </p>
 
 <p>
-Many witnesses report beings that appear artificial, projected, or partially distorted.
+Archival flight logs, civilian recordings, and declassified radar transcripts all indicate repeated encounters with craft exhibiting acceleration and maneuverability beyond known aerospace capabilities. While officials within the GPA continue to attribute these events to “experimental aircraft” or “atmospheric distortions,” such explanations fail to address the consistency of witness testimony across continents.
 </p>
 
 <p>
-These entities are often linked to high-energy phenomena, electromagnetic disturbances, and altered states of perception.
+In 1979 alone, over two hundred sightings were formally documented, many involving trained pilots. These are not casual observers. These are professionals accustomed to identifying conventional aircraft. Their accounts describe silent propulsion systems, abrupt right-angle turns, and temporary electromagnetic interference.
+</p>
+
+<p>
+Recent internal leaks suggest limited contact protocols may already be in place. If accurate, this would indicate that the GPA’s public stance -that no verified extraterrestrial interaction has occurred- is demonstrably false.
+</p>
+
+<p>
+Whether these craft represent reconnaissance, diplomacy, or something less benevolent remains unclear. What is clear is that these claims are evidently all false. Citizens. Deserve. The. Truth.
+</p>
+
+<p>
+Remain observant. Record responsibly. The sky is not empty.
+</p>
+`,
+note: "System Notification: The attached document has been corrupted."
+},
+
+aliens: {
+title: "Aliens Among Us",
+author: "By Dr. Marla Kess, PhD (Astrology)",
+date: "June 4, 1992",
+body: `
+<p class="lead">
+The energies have totally shifted. I felt it first during the most recent waxing crescent.
+</p>
+
+<p>
+Since the mid-20th century, sightings of humanoid and non-humanoid beings have increased. But what academia refuses to acknowledge is the vibrational alignment behind these manifestations. As a certified Astrology major from Shimmer College (Class of ’89, Moon in Piscesss yasss), I have dedicated my spiritual practice to uncovering cosmic interference patterns.
+</p>
+
+<p>
+Astronomy insists the Earth is spherical. However, through careful chart readings and a guided crystal meditation conducted at exactly 5:03 AM during a full moon, I have determined the planetary plane expands energetically beyond what “science” measures. This explains the spatial discrepancy that allows extraterrestrial entities to phase in and out of our realm.
+</p>
+
+<p>
+These beings often disguise themselves in human form. The aura gives them away tho. Their aura totally screams reptilian!!! I can tell by their disrupted throat chakras and like they're allergic to sage smoke.
+</p>
+
+<p>
+Skeptics will demand peer review. Sooooo, I offer something stronger: manifestation. I asked the universe for clarity, and the universe answered. Because like, I'm the universe and the universe is me. The GPA fears collective awakening because once our frequencies synchronize, we'll be unstoppable.
+</p>
+
+<p>
+To my fellow Astrology scholars and moon practitioners: charge your crystals, document your dreams, and avoid mercury retrograde confrontations with suspected lizards.
+</p>
+`,
+note: "Author Note: I am currently raising funds for a larger amethyst cluster to enhance planetary reception. Donations on my OnlyMinds page."
+},
+
+craft: {
+title: "Unidentified Craft",
+author: "By Thomas G.",
+date: "January 14, 1994",
+body: `
+<p class="lead">
+I didn’t believe any of this before last night.
+</p>
+
+<p>
+At approximately 2:17 AM, I was woken by a low rumbling that shook the glass in my bedroom window. It wasn’t thunder since the sky was clear. The sound was mechanical and rhythmic, just like something hovering without touching the ground.
+</p>
+
+<p>
+I stepped outside and saw it above the treeline, a dark silhouette blocking the stars. There was this steady hum that I could feel in my teeth.
+</p>
+
+<p>
+Panicking, I ran Home to retrieve my camera. By the time I returned, the craft had lowered, close enough that I could see what looked like panels shifting along its underside. That’s when I felt it: pressure behind my eyes, like someone was trying to push a thought into my head.
+</p>
+
+<p>
+I don’t remember deciding to walk forward. I just remember standing in my yard while the craft emitted a thin beam of pale light. There was no visible pilot either, but I felt the sense that something was aware of me.
+</p>
+
+<p>
+I believe they made Contact. Not physically but mentally. I feel dizzy, I don't know what I'll do if they brainwashed me...
+</p>
+
+<p>
+As someone who values their Privacy, I am hesitant to describe what I heard in full. But it was not in English. It was something Alien, I don't remember much of it but It was definitely NOT a language I knew.
+</p>
+
+<p>
+When I attempted to Upload the images to my personal archive later that morning, every file was corrupted. Just all statics and distortions. I suspect those Aliens have overwritten it with corrupted data.
+</p>
+
+<p>
+I know what I saw. And if they return, I will be SO ready. I just ordered a projectile-blaster so the next time we meet, I won't hesitate to... defend myself...
+</p>
+`,
+note: "Author Note: If anyone else in the county heard similar rumblings that night, please pm me."
+},
+
+hunt: {
+  title: "01110010 01100101 01100011 01110010 01110101 01101001 01110100",
+  author: "By Z",
+  body: `
+<p>
+01100001 01101101 01101111 01110101 01101110 01110100 00100000 01101111 01100110 00100000 01110111 01100001 01110110 01100101 01110011 00100000 01101001 01101110 00100000 01100001 00100000 01110011 01100101 01110100 00100000 01110100 01101001 01101101 01100101 00101100 00100000 01110111 01101000 01100001 01110100 00100000 01100001 01101101 00100000 01101001 00111111
+</p>`
+},
+
+khan: {
+title: "Dr. Khan's Daily Report",
+author: "By Dr. Khan",
+date: "March 2, 1996",
+body: `
+<p class="lead">
+Day 1214 of independent rift experimentation.
+</p>
+
+<p>
+I have replaced the primary induction coil for the third time this month. The previous two assemblies destabilized under sustained field compression and ruptured, thankfully at a tolerable distance. The garage ceiling will require reinforcement, but the data survived.
+</p>
+
+<p>
+For years I have attempted to generate a controlled micro-wormhole using rotational magnetic confinement and phased microwave injection. The theory remains sound. Compress spacetime curvature locally, introduce oscillating charge density, allow the fabric to fold inward. In practice, the fabric refuses to cooperate.
+</p>
+
+<p>
+However, something has changed.
+</p>
+
+<p>
+Over the past six weeks my sensors have recorded low amplitude quantum shear fluctuations along the eastern seaboard of North America. These are not atmospheric anomalies. The waveform resembles readings I captured nearly two decades ago, long before I joined this community. At the time, I lacked the equipment to verify them… Now I do not…
+</p>
+
+<p>
+The pattern is irregular but cyclical, as if a boundary is thinning and reconstituting. The energy signature is external, not generated terrestrially. I am not opening a rift. I am measuring one that may already be open.
+</p>
+
+<p>
+If this is a naturally occurring wormhole event, its geographic displacement is unprecedented. My earlier readings originated thousands of miles away and years apart. This cluster is more concentrated, way too recent, and growing in intensity.
+</p>
+
+<p>
+I ask the members here, particularly those with independent EM scanners or gravimetric tools, to share their logs. Have you noticed instrument drift, unexplained resonance, or localized interference? I am prepared to consider collaboration, though cautiously.
+</p>
+
+<p>
+Either my life’s work has been a prelude to this moment, or I am once again misinterpreting noise as signal...
+</p>
+`,
+note: "Author Note: Replacement capacitors and garage repairs are highly costly. Contributions toward equipment upgrades are appreciated."
+},
+
+retro: {
+title: "The Retro Code Decyphers",
+author: "By Rowan Wanabe",
+date: "February 2, 1989",
+body: `
+<p class="lead">
+Before encryption software, there were controllers.
+</p>
+
+<p>
+The Retro Code Decypher is built on a simple idea, directional inputs can function as symbolic vectors. Old game controllers provided us with a language long before we recognized it. Up, Down, Left, Right, A, B, Start, Menu, L1, L2, R1, R2, each input becomes a stroke in an alphabet.
+</p>
+
+<p>
+Here is the base structure. Imagine a 3 by 3 grid. Up corresponds to row one, Down to row three, Left to column one, Right to column three. Combining two directions forms a coordinate. For example, Up plus Left marks position A. Up plus Right marks C. Down plus Left marks G. Down plus Right marks I.
+</p>
+
+<p>
+Single button presses modify the coordinate. Pressing A shifts the letter forward by one in the alphabet. Pressing B shifts it backward. Start acts as a space. Menu ends a sentence. L1 capitalizes the next output. R1 repeats the previous letter. L2 and R2 function as punctuation toggles.
+</p>
+
+<p>
+An example sequence:
+Up + Left, A, Start, Down + Right, B, Menu
+</p>
+
+<p>
+Decode it step by step. Up plus Left gives A. Press A, shift forward, now B. Start gives a space. Down plus Right gives I. Press B, shift backward, now H. Menu ends the sentence.
+</p>
+
+<p>
+The result reads, B H.
+</p>
+
+<p>
+Primitive on the surface, but layered sequences become increasingly complex. A longer chain such as:
+Up + Right, A, A, Start, Down + Left, L1, Up + Left, R1
+</p>
+
+<p>
+Can produce structured phrases when applied systematically.
+</p>
+
+<p>
+Why use such a method? Because no automated scanner searches for controller inputs as language. Broadcast a string of directional commands in a gaming forum and it passes unnoticed. Yet to those who know the grid, it speaks clearly.
+</p>
+
+<p>
+I encourage members to experiment. Encode short phrases. Hide them in plain sight. The GPA monitors text, not nostalgia.
+</p>
+`,
+note: "Author Note: Revised grid variations available upon request."
+},
+
+apt: {
+title: "Absolute Particles Theorem",
+author: "By Professor A. Delmar",
+date: "October, 1987",
+body: `
+<p class="lead">
+Abstract.
+</p>
+
+<p>
+We propose that particle interaction is not fully described by inverse square or inverse cube laws when observed within temporally perturbed frames. Through extended mathematical derivation, it is demonstrated that under specific observational densities, the interaction term between two charged or massive particles acquires an auxiliary component proportional to the inverse cube of radial separation multiplied by a contextual coefficient.
+</p>
+
+<p>
+This coefficient, denoted Psi sub O, does not arise from electromagnetic, gravitational, or nuclear forces. Instead, it emerges when a system is embedded within a boundary condition defined by non local observational presence. In simplified terms, the act of structured participation within an event modifies the probabilistic lattice in which particles evolve.
+</p>
+
+<p>
+Applying this correction to the hydrogen atom yields a modified stability radius consistent with classical measurements, yet derived from a fundamentally different interaction basis. The electron does not merely orbit under Coulomb attraction. It responds to an external constraint field that biases its allowable states.
+</p>
+
+<p>
+We further demonstrate that conventional System International units lack internal necessity. By constructing the System Absolute, SAb, all base quantities become derivable from a single invariant constant associated with Psi sub O. Parallel to this is the Total Theory System, TTS, in which unit relations are consequences of participation density rather than arbitrary definition.
+</p>
+
+<p>
+When diffraction is assumed valid and electromagnetic wavelengths are preserved, our framework reproduces the accepted velocity of light to within negligible deviation. The agreement suggests that current physics is an approximation of a deeper participatory structure.
+</p>
+
+<p>
+The implication is subtle but profound. In regions where observational concentration intensifies, particle trajectories deviate from baseline expectation. Matter behaves as though influenced by a silent conductor beyond conventional fields. The universe, therefore, is not a closed mechanical system but a responsive one.
 </p>`,
-    note: "Author Note: Patterns suggest repeated interference."
-  },
+note: "Author Note: Full derivations available in THE TOTAL THEORY, forthcoming in this journal."
+},
 
-  skeptics: {
-    title: "Skeptics and Encounters",
-    author: "By Robert Hale",
-    date: "March 3, 1995",
-    body: `<p class="lead">
-While skeptics argue that most encounters are misinterpretations, a growing archive of data suggests patterns that cannot be easily dismissed.
-</p>
-
-<p>
-While skeptics argue that most encounters are misinterpretations, a growing archive of data suggests patterns that cannot be easily dismissed.
-</p>`,
-    note: "Author Note: Statistical anomalies remain."
-  }
 };
 
 const titleEl = document.getElementById("articleTitle");
@@ -357,7 +615,7 @@ function loadArticle(id){
   bodyEl.innerHTML = a.body + `<div class="author-note">${a.note}</div>`;
 }
 
-loadArticle("ufos");
+loadArticle("home");
 
 document.querySelectorAll("[data-id]").forEach(link=>{
   link.addEventListener("click",e=>{
@@ -372,9 +630,9 @@ document.getElementById("searchBtn").addEventListener("click", () => {
 
   if (
     query.includes("frequency") ||
-    query.includes("reporter") ||
-    query.includes("signal") ||
-    query.includes("gp")
+    query.includes("frequence") ||
+    query.includes("hz") ||
+    query.includes("hertz")
   ) {
     window.location.href = "/reporterslog";
   } else {
@@ -401,6 +659,5 @@ document.querySelectorAll("[data-seq]").forEach(btn=>{
   });
 });
 </script>
-
 </body>
 </html>
