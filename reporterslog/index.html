@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ANALOG ACCESS</title>
+<title>EYESPY // SIGNAL INTERCEPT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -11,28 +11,45 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: radial-gradient(circle at top, #071923 0%, #020b12 70%);
   font-family: "Courier New", monospace;
-  color: #00ffcc;
+  color: #ff3b3b;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(120,0,0,0.35), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(80,0,0,0.35), transparent 50%),
+    radial-gradient(circle at center, #140000 0%, #050000 70%, #000 100%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,0,0,0.04) 0px,
+    rgba(255,0,0,0.04) 1px,
+    transparent 2px,
+    transparent 4px
+  );
 }
 
 .console-grid {
   min-height: 100vh;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-  justify-items: center;
-  place-items: center;
   display: grid;
   grid-template-columns: repeat(3, auto);
   gap: 60px;
+  align-items: center;
+  justify-items: center;
 }
 
 .device {
   width: 260px;
   height: 360px;
   background: #000;
-  border: 2px solid rgba(0,255,204,0.4);
-  box-shadow: inset 0 0 40px rgba(0,255,204,0.08);
+  border: 2px solid rgba(255,60,60,0.4);
+  box-shadow:
+    inset 0 0 40px rgba(255,0,0,0.15),
+    0 0 25px rgba(120,0,0,0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,8 +60,8 @@ html, body {
   width: 100%;
   height: 100%;
   padding: 12px;
-  border: 2px solid #0a3a3a;
-  background: #020b12;
+  border: 2px solid #3a0000;
+  background: #050000;
   box-sizing: border-box;
 }
 
@@ -52,7 +69,7 @@ html, body {
 #sonarCanvas {
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, #001c1c, #000);
+  background: radial-gradient(circle, #220000, #000);
 }
 
 /* ===== RADIO ===== */
@@ -61,53 +78,70 @@ html, body {
   padding: 16px;
 }
 
-#radioDial {
-  width: 100%;
-  margin-top: 10px;
-  appearance: none;
-  height: 4px;
-  background: rgba(0,255,204,0.2);
-  outline: none;
+.radio-display {
+  font-size: 14px;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
 }
 
-#radioDial::-webkit-slider-thumb {
+.dial-label {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+
+.radio input[type="range"] {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  background: rgba(255,60,60,0.25);
+  outline: none;
+  margin: 6px 0;
+}
+
+.radio input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 14px;
   height: 14px;
-  background: #00ffcc;
+  background: #ff3b3b;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0,255,204,0.8);
+  box-shadow: 0 0 12px rgba(255,0,0,0.9);
 }
 
-.radio-display {
-  font-size: 14px;
-  margin-bottom: 12px;
+.hint-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.hint {
+  opacity: 0.35;
+  transition: all 0.2s ease;
+}
+
+.hint.correct {
+  opacity: 1;
+  color: #ff9a9a;
+  text-shadow: 0 0 6px rgba(255,0,0,0.7);
 }
 
 .freq-bar {
   width: 100%;
   height: 10px;
-  background: #021a1a;
-  border: 1px solid #0a3a3a;
+  background: #1a0000;
+  border: 1px solid #3a0000;
   position: relative;
   margin-bottom: 10px;
 }
 
-.freq-indicator {
-  height: 100%;
-  width: 20%;
-  background: #00ffcc;
-  position: absolute;
-  left: 0;
-}
-  
 .volume-bar {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(0,255,204,0.8),
-    rgba(0,255,204,0.2)
+    rgba(255,60,60,0.9),
+    rgba(255,60,60,0.2)
   );
   width: 60%;
   opacity: 0.35;
@@ -123,35 +157,29 @@ html, body {
 
 .radio-controls button {
   background: black;
-  color: #00ffcc;
-  border: 1px solid #00ffcc;
+  color: #ff3b3b;
+  border: 1px solid #ff3b3b;
   padding: 6px 12px;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(0,255,204,0.15);
-  transition: all 0.15s ease;
-}
-
-.radio-controls button:hover {
-  box-shadow: 0 0 12px rgba(0,255,204,0.4);
 }
 
 .radio-controls button:active {
-  background: #00ffcc;
+  background: #ff3b3b;
   color: black;
-  box-shadow: 0 0 18px rgba(0,255,204,0.8);
 }
 
 /* ===== MONITOR ===== */
 .monitor-screen {
   height: 140px;
   font-size: 13px;
-  border: 2px solid #0a3a3a;
+  border: 2px solid #3a0000;
   padding: 10px;
   background: black;
   overflow: hidden;
   white-space: pre-line;
   text-transform: uppercase;
   letter-spacing: 1px;
+  color: #ff6b6b;
 }
 
 .monitor-buttons {
@@ -162,18 +190,11 @@ html, body {
 
 .monitor-buttons button {
   background: black;
-  color: #00ffcc;
-  border: 1px solid #00ffcc;
+  color: #ff3b3b;
+  border: 1px solid #ff3b3b;
   padding: 8px 12px;
   cursor: pointer;
 }
-
-/* active butt stuff, could revert if it looks UHGLY */
-.monitor-buttons button:active {
-  background: #00ffcc;
-  color: black;
-}
-
 </style>
 </head>
 
@@ -188,18 +209,27 @@ html, body {
     </div>
   </div>
 
-  <!-- RADIO -->
+  <!-- RADIO PUZZLE -->
   <div class="device radio">
+
     <div class="radio-display">
-      FREQ <span id="freqValue">---</span>
+      SIGNAL <span id="freqValue">XXX.ZZZ</span>
     </div>
+
+    <div class="hint-row">
+      <span id="hintX" class="hint">X LOCK</span>
+      <span id="hintY" class="hint">Y LOCK</span>
+    </div>
+
+    <div class="dial-label">COARSE (XXX)</div>
+    <input type="range" id="dialX" min="0" max="999" step="1" value="0">
+
+    <div class="dial-label">FINE (ZZZ)</div>
+    <input type="range" id="dialY" min="0" max="999" step="1" value="0">
 
     <div class="freq-bar">
       <div class="volume-bar" id="volumeBar"></div>
-      <div class="freq-indicator" id="freqIndicator"></div>
     </div>
-
-    <input type="range" id="radioDial" min="0" max="3" step="1" value="0">
 
     <div class="radio-controls">
       <button id="radioMute">MUTE</button>
@@ -242,77 +272,91 @@ let angle = 0;
 let blips = [];
 
 function drawSonar() {
-  ctx.fillStyle = "rgba(0,0,0,0.15)";
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   const cx = canvas.width/2;
   const cy = canvas.height/2;
   const radius = Math.min(cx, cy) - 10;
 
-  ctx.strokeStyle = "#00ffcc";
+  ctx.strokeStyle = "#ff3b3b";
   ctx.beginPath();
   ctx.moveTo(cx, cy);
   ctx.lineTo(cx + Math.cos(angle)*radius, cy + Math.sin(angle)*radius);
   ctx.stroke();
 
-  if (Math.random() < 0.02) {
+  if (Math.random() < 0.025) {
     const d = Math.random()*radius*0.6 + radius*0.2;
     blips.push({x: cx+Math.cos(angle)*d, y: cy+Math.sin(angle)*d, life:1});
   }
 
   blips.forEach(b => {
-    ctx.fillStyle = `rgba(0,255,204,${b.life})`;
+    ctx.fillStyle = `rgba(255,60,60,${b.life})`;
     ctx.beginPath();
     ctx.arc(b.x,b.y,3,0,Math.PI*2);
     ctx.fill();
-    b.life -= 0.01;
+    b.life -= 0.012;
   });
 
   blips = blips.filter(b=>b.life>0);
-  angle += 0.03;
+  angle += 0.035;
   requestAnimationFrame(drawSonar);
 }
 drawSonar();
 
 /* ===== RADIO ===== */
-const radioDial = document.getElementById("radioDial");
+const dialX = document.getElementById("dialX");
+const dialY = document.getElementById("dialY");
 const freqValue = document.getElementById("freqValue");
 const radioAudio = document.getElementById("radioAudio");
-const freqIndicator = document.getElementById("freqIndicator");
-const muteBtn = document.getElementById("radioMute");
+const hintX = document.getElementById("hintX");
+const hintY = document.getElementById("hintY");
 const volumeBar = document.getElementById("volumeBar");
-const maxDial = Number(radioDial.max);
+const muteBtn = document.getElementById("radioMute");
 
 const stations = [
-  { freq: 209.135, src: "frequency1.mp3" },
-  { freq: 401.675, src: "frequency2.mp3" },
-  { freq: 442.550, src: "frequency3.mp3" },
-  { freq: 666.4514, src: "frequency4.mp3" } 
+  { x:209, y:135, src:"frequency1.mp3" },
+  { x:401, y:675, src:"frequency2.mp3" },
+  { x:442, y:550, src:"frequency3.mp3" },
+  { x:666, y:451, src:"frequency4.mp3" },
+  { x:777, y:777, src:"frequency5.mp3" },
+  { x:913, y:332,   src:"frequency6.mp3" }
 ];
-
 
 radioAudio.loop = true;
 radioAudio.volume = 0.6;
-radioDial.dispatchEvent(new Event("input"));
 
-radioDial.addEventListener("input", () => {
-  const station = stations[radioDial.value];
-  freqValue.textContent = station.freq;
-  freqIndicator.style.left = `${(radioDial.value / maxDial) * 80}%`;
-  radioAudio.src = station.src;
-  radioAudio.play().catch(()=>{});
-});
+function updateDisplay() {
+  const x = Number(dialX.value);
+  const y = Number(dialY.value);
+  freqValue.textContent = `${x}.${String(y).padStart(3,"0")}`;
 
-muteBtn.onclick = () => {
-  radioAudio.muted = !radioAudio.muted;
+  let matched = false;
 
-  muteBtn.textContent = radioAudio.muted ? "UNMUTE" : "MUTE";
-  muteBtn.style.background = radioAudio.muted ? "#003333" : "black";
-};
-  
+  stations.forEach(st => {
+    if (x === st.x) hintX.classList.add("correct");
+    if (y === st.y) hintY.classList.add("correct");
+
+    if (x === st.x && y === st.y) {
+      radioAudio.src = st.src;
+      radioAudio.play().catch(()=>{});
+      matched = true;
+    }
+  });
+
+  if (!stations.some(s => s.x === x)) hintX.classList.remove("correct");
+  if (!stations.some(s => s.y === y)) hintY.classList.remove("correct");
+
+  if (!matched) radioAudio.pause();
+}
+
+dialX.addEventListener("input", updateDisplay);
+dialY.addEventListener("input", updateDisplay);
+updateDisplay();
+
+//volume stuff
 function updateVolumeUI() {
   volumeBar.style.width = `${radioAudio.volume * 100}%`;
-  volumeBar.style.opacity = radioAudio.muted ? "0.1" : "0.35";
 }
 updateVolumeUI();
 
@@ -326,18 +370,17 @@ volDown.onclick = () => {
   updateVolumeUI();
 };
 
+muteBtn.onclick = () => {
+  radioAudio.muted = !radioAudio.muted;
+  muteBtn.textContent = radioAudio.muted ? "UNMUTE" : "MUTE";
+};
+
 /* ===== MONITOR ===== */
 const responses = {
-  "34251": "THE SENSE OF BUTTERCUPS IN THE AIR",
-  "42": "THESE TRANSMISSIONS SEEM TO BE FULL OF NONSENSE",
-  "2415": "YOU HAVE BEEN HERE BEFORE",
-  "12345": "WAY TOO OBVIOUS, TRY AGAIN",
-  "54321": "REALLY CREATIVE HUH...",
-  "11111": "YOU REALLY LIKE 1S HUH?",
-  "4514": "DEAD",
-  "44255": "TRY 55244 NEXT",
-  "55244": "GULLIBLE MUCH?",
-  "1531": "REBU1LD WHAT? 0PEN WH4T? N0NE OF THIS M9KES SEN5E"
+  "13314": "Code number 1",
+  "54541": "Code number 2",
+  "11224": "Code number 3",
+  "33421": "Code number 4"
 };
 
 const monitor = document.getElementById("monitorScreen");
@@ -347,7 +390,7 @@ let input = "";
 let locked = false;
 let resetTimer = null;
 
-//could change to 6? maybe
+//could change to 4? maybe
 const MAX_LEN = 5;
 
 function resetMonitor() {
@@ -360,7 +403,7 @@ buttons.forEach(btn => {
   btn.addEventListener("click", () => {
     if (locked) return;
 
-    // if tis already at max length, reset before adding
+    // if already at max length, reset before adding
     if (input.length >= MAX_LEN) {
       input = "";
     }
@@ -378,8 +421,6 @@ buttons.forEach(btn => {
     }
   });
 });
-
 </script>
-
 </body>
 </html>
