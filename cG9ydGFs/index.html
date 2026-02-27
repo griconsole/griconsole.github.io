@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EDGE ARCHIVE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Courier New", monospace;
+  color: #00ffcc;
+  background:
+    linear-gradient(180deg, #071923 0%, #020b12 100%);
+}
+
+/* scanlines */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,204,0.04) 0px,
+    rgba(0,255,204,0.04) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.center-wrap {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* ===== WHEEL ===== */
+.wheel {
+  position: relative;
+  width: min(80vmin, 700px);
+  height: min(80vmin, 700px);
+  border-radius: 50%;
+  border: 2px solid rgba(0,255,204,0.5);
+  box-shadow:
+    inset 0 0 40px rgba(0,255,204,0.15),
+    0 0 30px rgba(0,255,204,0.15);
+  overflow: visible;
+}
+
+/* inner */
+.wheel::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,204,0.25);
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgba(0,255,204,0.06) 0px,
+      rgba(0,255,204,0.06) 1px,
+      transparent 1px,
+      transparent 40px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,255,204,0.06) 0px,
+      rgba(0,255,204,0.06) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+}
+
+.segment {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+}
+
+
+.symbol {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(0,255,204,0.6);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  background: rgba(0,0,0,0.6);
+  cursor: pointer;
+  user-select: none;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+  z-index: 5;
+}
+
+.symbol:hover {
+  box-shadow: 0 0 12px rgba(0,255,204,0.9);
+  background: rgba(0,40,40,0.8);
+}
+
+/* ===== POPUP ===== */
+.popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+}
+
+.popup.active {
+  display: grid;
+}
+
+.popup-panel {
+  width: min(900px, 92vw);
+  height: min(480px, 80vh);
+  background: #020b12;
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 30px rgba(0,255,204,0.25);
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.popup-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.popup-image {
+  border: 1px solid rgba(0,255,204,0.4);
+  background: #000;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: rgba(0,255,204,0.6);
+}
+
+.popup-text {
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: auto;
+}
+
+.popup-footer {
+  border-top: 1px solid rgba(0,255,204,0.3);
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-footer button {
+  background: black;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.popup-footer button:hover {
+  box-shadow: 0 0 10px rgba(0,255,204,0.6);
+}
+</style>
+</head>
+
+<body>
+
+<div class="center-wrap">
+  <div class="wheel" id="wheel"></div>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-panel">
+    <div class="popup-content">
+      <div class="popup-image" id="popupImage">REALM IMAGE</div>
+      <div class="popup-text" id="popupText"></div>
+    </div>
+    <div class="popup-footer">
+      <button id="closePopup">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== REALM DATA PLACEHOLDER ===== */
+const realms = Array.from({ length: 16 }).map((_, i) => ({
+  name: "EDGE REALM " + (i + 1),
+  desc:
+    "This edge-dimension is unstable. Seal integrity is required.\n\n" +
+    "Replace this text with your actual lore, hazards, and visuals.",
+  image: "" // image url 4 later
+}));
+
+const wheel = document.getElementById("wheel");
+const STEP = 360 / 16;
+
+function buildWheel() {
+  wheel.innerHTML = "";
+
+  const size = wheel.clientWidth;
+  const center = 0;
+
+  // radius is circle bigness, angledeg is rotation
+  const radius = size * 0.417;
+
+  for (let i = 0; i < 16; i++) {
+    const angleDeg = -78.75 + (i * STEP);
+    const angleRad = angleDeg * Math.PI / 180;
+
+    const seg = document.createElement("div");
+    seg.className = "segment";
+
+    const sym = document.createElement("div");
+    sym.className = "symbol";
+    sym.textContent = i + 1;
+    // future image:
+    // sym.innerHTML = `<img src="sigils/sigil${i+1}.png" style="width:80%;height:80%;object-fit:contain;">`;
+
+    const x = center + Math.cos(angleRad) * radius;
+    const y = center + Math.sin(angleRad) * radius;
+
+    sym.style.left = x + "px";
+    sym.style.top = y + "px";
+
+    sym.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openRealm(i);
+    });
+
+    seg.appendChild(sym);
+    wheel.appendChild(seg);
+  }
+}
+
+// build once and on resize
+buildWheel();
+window.addEventListener("resize", buildWheel);
+
+/* ===== POPUP ===== */
+const popup = document.getElementById("popup");
+const popupText = document.getElementById("popupText");
+const popupImage = document.getElementById("popupImage");
+
+function openRealm(index) {
+  const r = realms[index];
+
+  popupText.innerHTML =
+    `<strong>${r.name}</strong><br><br>` +
+    r.desc.replace(/\n/g, "<br>");
+
+  if (r.image) {
+    popupImage.innerHTML = `<img src="${r.image}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    popupImage.textContent = "REALM IMAGE";
+  }
+
+  popup.classList.add("active");
+}
+
+document.getElementById("closePopup").onclick = () => {
+  popup.classList.remove("active");
+};
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") popup.classList.remove("active");
+});
+</script>
+
+</body>
+</html>
