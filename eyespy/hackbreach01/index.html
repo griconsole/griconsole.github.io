@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>//SECURITY BREACH//</title>
+<title>EYESPY // BREACH INTERFACE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" sizes="32x32" href="/eyespy/faviconE.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/eyespy/faviconE.png">
 
 <style>
 /* ===== BASE ===== */
@@ -32,39 +30,96 @@ body::after {
     transparent 2px,
     transparent 4px
   );
+  z-index: 2;
+}
+
+/* ===== CRITICAL STATE ===== */
+body.critical::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,0,0,0.08) 0px,
+      rgba(255,0,0,0.08) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  animation: criticalFlicker 0.15s infinite;
+  z-index: 40;
+}
+@keyframes criticalFlicker {
+  0%,100% { opacity: 0.25; }
+  50% { opacity: 0.6; }
+}
+
+/* ===== BINARY RAIN ===== */
+#binaryCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.25;
 }
 
 /* ===== CAUTION BARS ===== */
 .caution {
   position: fixed;
-  left: 0;
-  width: 100%;
-  height: 40px;
+  left: -200px;
+  width: calc(100% + 400px);
+  height: 22px;
   overflow: hidden;
   z-index: 10;
   background: #ffd000;
 }
-
 .caution::before {
   content: "";
   position: absolute;
   inset: 0;
   background: repeating-linear-gradient(
     45deg,
-    rgba(0,0,0,0.85) 0px,
-    rgba(0,0,0,0.85) 16px,
-    transparent 16px,
-    transparent 32px
+    #000 0px,
+    #000 18px,
+    transparent 18px,
+    transparent 36px
   );
-  animation: cautionMove 1.2s linear infinite;
 }
+.caution.top::before { animation: cautionMove 1.2s linear infinite; }
+.caution.bottom::before { animation: cautionMoveReverse 1.2s linear infinite; }
+@keyframes cautionMove { from{transform:translateX(0)} to{transform:translateX(36px)} }
+@keyframes cautionMoveReverse { from{transform:translateX(0)} to{transform:translateX(-36px)} }
+.caution.top { top:0 }
+.caution.bottom { bottom:0 }
 
-.caution.top { top: 0; }
-.caution.bottom { bottom: 0; }
-
-@keyframes cautionMove {
-  from { transform: translateX(0); }
-  to   { transform: translateX(64px); }
+/* ===== WARNING TRIANGLE ===== */
+.warning-icon {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 32px solid #ffd000;
+  z-index: 20;
+  filter: drop-shadow(0 0 6px rgba(255,208,0,0.8));
+  animation: pulseWarn 2s ease-in-out infinite;
+}
+.warning-icon::after {
+  content: "!";
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  font-weight: bold;
+  color: black;
+  font-size: 16px;
+}
+@keyframes pulseWarn {
+  0%,100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
 }
 
 /* ===== CENTER ===== */
@@ -73,274 +128,365 @@ body::after {
   inset: 0;
   display: grid;
   place-items: center;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding: 80px 12px;
+  z-index: 5;
 }
 
 /* ===== PANEL ===== */
 .panel {
-  width: min(520px, 92vw);
+  width: min(420px, 92vw);
   background: #050000;
   border: 2px solid #ff3b3b;
   box-shadow:
     inset 0 0 40px rgba(255,0,0,0.2),
     0 0 30px rgba(120,0,0,0.4);
-  padding: 24px;
+  padding: 16px;
   text-align: center;
 }
 
-.title {
-  font-size: 20px;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
+/* glitch */
+.panel.glitch {
+  animation: panelGlitch 0.35s;
+}
+@keyframes panelGlitch {
+  0% { transform: translate(0); }
+  25% { transform: translate(-3px,2px); }
+  50% { transform: translate(3px,-2px); }
+  75% { transform: translate(-2px,1px); }
+  100% { transform: translate(0); }
 }
 
-.subtitle {
-  font-size: 12px;
-  opacity: 0.6;
-  margin-bottom: 20px;
-}
+.title { font-size:18px; letter-spacing:2px; }
+.subtitle { font-size:11px; opacity:.7; }
+.instructions { font-size:10px; opacity:.6; margin:6px 0 12px; }
 
 /* ===== GRID ===== */
-.grid {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-}
+.grid { display:grid; gap:5px; margin-bottom:12px; }
+.row { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; }
 
 .tile {
-  aspect-ratio: 1 / 1;
-  border: 2px solid rgba(255,60,60,0.4);
+  width: 68px;
+  height: 68px;
+  border: 2px solid rgba(255,60,60,0.35);
   display: grid;
   place-items: center;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   background: #000;
   transition: all 0.18s ease;
 }
+.tile.flip { animation: flipTile .5s ease; }
+@keyframes flipTile {
+  0%{transform:rotateX(0)}
+  50%{transform:rotateX(90deg)}
+  100%{transform:rotateX(0)}
+}
+.tile.correct { background:#ff3b3b; color:#000; }
+.tile.present { background:#ffd000; color:#000; }
+.tile.absent { background:#111; opacity:.35; }
 
-/* states */
-.tile.correct {
-  background: #ff3b3b;
-  color: #000;
-  box-shadow: 0 0 10px rgba(255,0,0,0.9);
+/* ===== TAUNT ===== */
+.taunt {
+  height:16px;
+  font-size:11px;
+  color:#ff6b6b;
+  margin-top:6px;
+  opacity:.85;
 }
 
-.tile.present {
-  background: #ffd000;
-  color: #000;
+/* ===== BREACH ===== */
+.breach-flash {
+  position: fixed;
+  inset: 0;
+  background: red;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+.breach-flash.active { animation: breachFlash .35s ease; }
+@keyframes breachFlash {
+  0%{opacity:0}
+  40%{opacity:.85}
+  100%{opacity:0}
 }
 
-.tile.absent {
-  background: #111;
-  opacity: 0.4;
+.breach-text {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  font-size: 42px;
+  letter-spacing: 6px;
+  color: #ff0000;
+  text-shadow: 0 0 18px red;
+  z-index: 61;
 }
-
-/* ===== KEYBOARD ===== */
-.keyboard {
+.breach-text.active {
   display: grid;
-  gap: 6px;
+  animation: breachShake .4s ease;
+}
+@keyframes breachShake {
+  0%{transform:translate(0)}
+  25%{transform:translate(-8px,4px)}
+  50%{transform:translate(8px,-4px)}
+  75%{transform:translate(-6px,2px)}
+  100%{transform:translate(0)}
 }
 
-.keyrow {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
+/* ===== POPUP ===== */
+.popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 70;
 }
+.popup.active { display:grid; }
 
-.key {
-  padding: 8px 10px;
-  border: 1px solid #ff3b3b;
-  background: black;
-  color: #ff3b3b;
-  cursor: pointer;
-  font-size: 12px;
-  user-select: none;
+.popup-panel {
+  background:#050000;
+  border:2px solid #ff3b3b;
+  padding:22px;
+  text-align:center;
+  width:min(420px,90vw);
 }
-
-.key:hover {
-  box-shadow: 0 0 8px rgba(255,0,0,0.8);
-}
-
-.key.wide {
-  padding: 8px 16px;
-}
-
-/* ===== STATUS ===== */
-.status {
-  height: 18px;
-  font-size: 12px;
-  margin-top: 10px;
-  opacity: 0.8;
+.popup button {
+  margin-top:14px;
+  background:black;
+  color:#ff3b3b;
+  border:1px solid #ff3b3b;
+  padding:6px 16px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="binaryCanvas"></canvas>
 <div class="caution top"></div>
 <div class="caution bottom"></div>
+<div class="warning-icon"></div>
 
 <div class="center-wrap">
-  <div class="panel">
-
+  <div class="panel" id="panel">
     <div class="title">EYESPY BREACH</div>
     <div class="subtitle">BINARY AUTH REQUIRED</div>
+    <div class="instructions">
+      Guess the correct password to regain system access.
+    </div>
 
     <div class="grid" id="grid"></div>
+    <div class="taunt" id="taunt"></div>
+  </div>
+</div>
 
-    <div class="keyboard" id="keyboard"></div>
+<div class="breach-flash" id="breachFlash"></div>
+<div class="breach-text" id="breachText">SYSTEM BREACH DETECTED</div>
 
-    <div class="status" id="status"></div>
-
+<div class="popup" id="successPopup">
+  <div class="popup-panel">
+    <div id="phaseTitle">ACCESS GRANTED</div>
+    <div style="color:#ffd000;margin-top:8px;" id="phaseCode">VERIFICATION: Z-3141</div>
+    <button id="closePopup" href="/">CONTINUE</button>
   </div>
 </div>
 
 <script>
-/* ===== CONFIG ===== */
-const WORD = "sight";
+/* ===== SAVE STATE ===== */
+const SAVE_KEY = "eyespy_breach_state_v4";
+
+/* ===== PHASES ===== */
+const PHASES = [
+  { word: "sight", code: "Z-3141" },
+  { word: "trace", code: "Z-7722" }
+];
+
+let save = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+let phaseIndex = save.phaseIndex || 0;
+
+const WORD = PHASES[phaseIndex].word;
 const MAX_ROWS = 6;
 const WORD_LEN = 5;
 
 /* ===== STATE ===== */
-let row = 0;
-let col = 0;
-let board = Array.from({length: MAX_ROWS}, () => Array(WORD_LEN).fill(""));
+let row = save.row || 0;
+let col = save.col || 0;
+let board = save.board || Array.from({length:MAX_ROWS},()=>Array(WORD_LEN).fill(""));
+let criticalMode = false;
 
+/* ===== DOM ===== */
 const grid = document.getElementById("grid");
-const statusEl = document.getElementById("status");
+const tauntEl = document.getElementById("taunt");
+const panel = document.getElementById("panel");
+const breachFlash = document.getElementById("breachFlash");
+const breachText = document.getElementById("breachText");
+const successPopup = document.getElementById("successPopup");
+const phaseCode = document.getElementById("phaseCode");
+
+/* ===== BINARY RAIN ===== */
+const rain=document.getElementById("binaryCanvas");
+const rctx=rain.getContext("2d");
+function resizeRain(){ rain.width=innerWidth; rain.height=innerHeight; }
+resizeRain(); addEventListener("resize",resizeRain);
+let cols=[];
+function initRain(){
+  const count=Math.floor(rain.width/14);
+  cols.length=count;
+  for(let i=0;i<count;i++) cols[i]=Math.random()*rain.height;
+}
+initRain();
+function drawRain(){
+  rctx.fillStyle="rgba(0,0,0,0.15)";
+  rctx.fillRect(0,0,rain.width,rain.height);
+  rctx.fillStyle="#ff3b3b";
+  rctx.font="12px monospace";
+  cols.forEach((y,i)=>{
+    const t=Math.random()>0.5?"0":"1";
+    rctx.fillText(t,i*14,y);
+    cols[i]=y>rain.height?0:y+12;
+  });
+  requestAnimationFrame(drawRain);
+}
+drawRain();
 
 /* ===== BUILD GRID ===== */
-for (let r = 0; r < MAX_ROWS; r++) {
-  const rowEl = document.createElement("div");
-  rowEl.className = "row";
-
-  for (let c = 0; c < WORD_LEN; c++) {
-    const tile = document.createElement("div");
-    tile.className = "tile";
-    rowEl.appendChild(tile);
+for(let r=0;r<MAX_ROWS;r++){
+  const rowEl=document.createElement("div");
+  rowEl.className="row";
+  for(let c=0;c<WORD_LEN;c++){
+    const t=document.createElement("div");
+    t.className="tile";
+    rowEl.appendChild(t);
   }
-
   grid.appendChild(rowEl);
 }
-
-/* ===== KEYBOARD ===== */
-const KEYS = [
-  "QWERTYUIOP",
-  "ASDFGHJKL",
-  "ENTERZXCVBNMBACK"
-];
-
-const keyboard = document.getElementById("keyboard");
-
-KEYS.forEach(line => {
-  const rowEl = document.createElement("div");
-  rowEl.className = "keyrow";
-
-  if (line === "ENTERZXCVBNMBACK") {
-    ["ENTER","Z","X","C","V","B","N","M","BACK"].forEach(k => {
-      rowEl.appendChild(makeKey(k));
-    });
-  } else {
-    line.split("").forEach(k => rowEl.appendChild(makeKey(k)));
-  }
-
-  keyboard.appendChild(rowEl);
-});
-
-function makeKey(label) {
-  const k = document.createElement("div");
-  k.className = "key";
-  if (label === "ENTER" || label === "BACK") k.classList.add("wide");
-  k.textContent = label;
-  k.onclick = () => handleKey(label);
-  return k;
-}
+updateGrid();
 
 /* ===== INPUT ===== */
-document.addEventListener("keydown", e => {
-  if (/^[a-zA-Z]$/.test(e.key)) handleKey(e.key.toUpperCase());
-  if (e.key === "Enter") handleKey("ENTER");
-  if (e.key === "Backspace") handleKey("BACK");
+document.addEventListener("keydown",e=>{
+  if(successPopup.classList.contains("active")) return;
+  if(row>=MAX_ROWS) return;
+
+  if(/^[a-zA-Z]$/.test(e.key)) handleKey(e.key.toUpperCase());
+  if(e.key==="Enter") handleKey("ENTER");
+  if(e.key==="Backspace") handleKey("BACK");
 });
 
-function handleKey(key) {
-  if (row >= MAX_ROWS) return;
-
-  if (key === "BACK") {
-    if (col > 0) {
-      col--;
-      board[row][col] = "";
-      updateGrid();
-    }
+function handleKey(key){
+  if(key==="BACK"){
+    if(col>0){ col--; board[row][col]=""; updateGrid(); saveState(); }
     return;
   }
-
-  if (key === "ENTER") {
-    if (col === WORD_LEN) submitGuess();
+  if(key==="ENTER"){
+    if(col===WORD_LEN) submitGuess();
     return;
   }
-
-  if (col < WORD_LEN && /^[A-Z]$/.test(key)) {
-    board[row][col] = key;
+  if(col<WORD_LEN){
+    board[row][col]=key;
     col++;
     updateGrid();
+    saveState();
   }
 }
 
-/* ===== UPDATE GRID ===== */
-function updateGrid() {
-  const rows = document.querySelectorAll(".row");
+function scrambleLetter(letter){
+  return letter;
+}
 
-  rows.forEach((rowEl, r) => {
-    const tiles = rowEl.children;
-    for (let c = 0; c < WORD_LEN; c++) {
-      tiles[c].textContent = board[r][c];
+function updateGrid(){
+  const rows=document.querySelectorAll(".row");
+  rows.forEach((rowEl,r)=>{
+    const tiles=rowEl.children;
+    for(let c=0;c<WORD_LEN;c++){
+      tiles[c].textContent=scrambleLetter(board[r][c]);
     }
   });
 }
 
 /* ===== CHECK ===== */
-function submitGuess() {
-  const guess = board[row].join("").toLowerCase();
-  if (guess.length < WORD_LEN) return;
+function submitGuess(){
+  const guess=board[row].join("").toLowerCase();
+  const tiles=grid.children[row].children;
+  let correct=0;
 
-  const tiles = grid.children[row].children;
-  const target = WORD;
+  for(let i=0;i<WORD_LEN;i++){
+    const letter=board[row][i];
 
-  let correctCount = 0;
+    setTimeout(()=>{
+      tiles[i].classList.add("flip");
 
-  for (let i = 0; i < WORD_LEN; i++) {
-    if (guess[i] === target[i]) {
-      tiles[i].classList.add("correct");
-      correctCount++;
-    } else if (target.includes(guess[i])) {
-      tiles[i].classList.add("present");
-    } else {
-      tiles[i].classList.add("absent");
-    }
-  }
+      if(guess[i]===WORD[i]){
+        tiles[i].classList.add("correct");
+        correct++;
+      }else if(WORD.includes(guess[i])){
+        tiles[i].classList.add("present");
+      }else{
+        tiles[i].classList.add("absent");
+      }
 
-  if (correctCount === WORD_LEN) {
-    statusEl.textContent = "ACCESS GRANTED";
-    row = MAX_ROWS;
-    return;
+      if(i===WORD_LEN-1){
+        if(correct===WORD_LEN){
+          phaseWin();
+        }else{
+          panel.classList.add("glitch");
+          setTimeout(()=>panel.classList.remove("glitch"),350);
+        }
+      }
+    },i*220);
   }
 
   row++;
-  col = 0;
+  col=0;
+  saveState();
 
-  if (row === MAX_ROWS) {
-    statusEl.textContent = "ACCESS DENIED // WORD: " + WORD.toUpperCase();
+  if(row===MAX_ROWS-1 && !criticalMode){
+    criticalMode=true;
+    document.body.classList.add("critical");
+    tauntEl.textContent="Z: last chance, intruder";
+  }
+
+  if(row>=MAX_ROWS && correct!==WORD_LEN){
+    setTimeout(triggerBreach,900);
   }
 }
-</script>
 
+/* ===== PHASE WIN ===== */
+function phaseWin(){
+  phaseCode.textContent = "VERIFICATION: " + PHASES[phaseIndex].code;
+  successPopup.classList.add("active");
+  saveState();
+}
+
+document.getElementById("closePopup").onclick=()=>{
+  successPopup.classList.remove("active");
+
+  if(phaseIndex < PHASES.length-1){
+    phaseIndex++;
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
+  }else{
+    localStorage.removeItem(SAVE_KEY);
+  }
+};
+
+/* ===== BREACH ===== */
+function triggerBreach(){
+  breachFlash.classList.add("active");
+  breachText.classList.add("active");
+}
+
+/* ===== SAVE ===== */
+function saveState(){
+  localStorage.setItem(SAVE_KEY, JSON.stringify({
+    phaseIndex,
+    row,
+    col,
+    board
+  }));
+}
+</script>
 </body>
 </html>
