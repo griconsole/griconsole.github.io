@@ -392,105 +392,109 @@
     })();
   </script>
   
-  <script> // THIS IS THE LOG CODE -----------------------------------------------------------
-  (function () {
-    const log = document.getElementById("ambientLog");
-    const body = document.body;
-  
-    const lines = [
-      "SYS CHECK OK",
-      "MEMORY BANKS ONLINE",
-      "UPLINK STABLE- NEVERMIND IT IS UNSTABLE AGAIN",
-      "SIGNAL NOISE: AVERAGE",
-      "AUTH MODULE READY",
-      "LISTENING...",
-      "UUDDLRLRBAS",
-      "CONNECTING...",
-      "LOADING COMPLETION: %99.99...",
-      "ALL YOUR BASE64 ARE BELONG TO US",
-      "BOOTING POLYBIUS...",
-      "EXODIA PIECES LEFT: 1",
-      "CURRENT STATUS: ABSOLUTELY CATASTROPHIC",
-      "ALL SYSTEMS ONLINE",
-      "CHECKING FOR OTHER-WORLDLY AURAS",
-      "ALL SYSTEMS OFFLINE",
-      "SYSTEM_THREAD_EXCEPTION_NOT_HANDLED_M",
-      "OPERATING SYSTEM NOT FOUND",
-      "YOUR CONSOLE RAN INTO A PROBLEM :(",
-      "COPYRIGHT (C) 1946-1996 DELTA INC.",
-      "PRESS ENTER TO DISPLAY CAKE",
-      "ERROR: R3D : H3rR1NG : 101",
-      "PRESS ANY KEY TO CONTINUE _",
-      "01111010 01101000 01110101",
-      "ALL SYSTEMS OFFLINE AND ONLINE AT THE SAME TIME",
-      "ODDIK KCUL ON",
-      "WEIRD IDX: 7%",
-      "WEIRD IDX: 6%",
-      "WEIRD IDX: 9%",
-      "REALITY STABILITY DETECTED - 12352",
-      "HOAX CORE ACTIVATED - 11211",
-      "CURRENT STAGE: FLOW",
-      "CURRENT STAGE: EBB",
-      "NEARBY SIGNAL DETECTED - SECURITY BREACH REPORTED",
-      "IN AN EMERGENCY SITUATION, PLEASE STAY CALM",
-      "A BREACH IN THE CRYO_CHAMBER DETECTED",
-      "A BREACH IN THE CAMERA_SYS DETECTED",
-      "A BREACH IN THE XLR_LRLOPM DETECTED",
-      "CONSOLE UNDER ATTACK : PLEASE REFRAIN FROM DAMAGING THE OUTER SHELL",
-      "TOTAL ABOLITION REQUESTED? Y/N ",
-      "E Y E S E E Y O U",
-      "DRINK SOME WATER, YOU DESERVE IT",
-      "W H A T W I L L O U R H E R O E S D O N O W",
-    ];
-  
-    let activated = false;
-    let typing = false;
-    let queue = [];
-  
-    function typeNext() {
-      if (typing || queue.length === 0) return;
-  
-      typing = true;
-      const text = queue.shift();
-      let i = 0;
-  
-      const interval = setInterval(() => {
-        log.textContent += text[i];
-        i++;
-  
-        if (i >= text.length) {
-          log.textContent += "\n";
-          clearInterval(interval);
-          typing = false;
-  
-          // if you wanna hotfix the amount change the 13s
-          const split = log.textContent.split("\n");
-          if (split.length > 13) {
-            log.textContent = split.slice(-13).join("\n");
-          }
-  
-          typeNext();
+  <script>
+(function () {
+  const log = document.getElementById("ambientLog");
+
+  const lines = [
+    "SYS CHECK OK",
+    "MEMORY BANKS ONLINE",
+    "UPLINK STABLE- NEVERMIND IT IS UNSTABLE AGAIN",
+    "SIGNAL NOISE: AVERAGE",
+    "AUTH MODULE READY",
+    "LISTENING...",
+    "UUDDLRLRBAS",
+    "CONNECTING...",
+    "LOADING COMPLETION: %99.99...",
+    "ALL YOUR BASE64 ARE BELONG TO US",
+    "BOOTING POLYBIUS...",
+    "EXODIA PIECES LEFT: 1",
+    "CURRENT STATUS: ABSOLUTELY CATASTROPHIC",
+    "ALL SYSTEMS ONLINE",
+    "CHECKING FOR OTHER-WORLDLY AURAS",
+    "ALL SYSTEMS OFFLINE",
+    "SYSTEM_THREAD_EXCEPTION_NOT_HANDLED_M",
+    "OPERATING SYSTEM NOT FOUND",
+    "YOUR CONSOLE RAN INTO A PROBLEM :(",
+    "COPYRIGHT (C) 1946-1996 DELTA INC.",
+    "PRESS ENTER TO DISPLAY CAKE",
+    "ERROR: R3D : H3rR1NG : 101",
+    "PRESS ANY KEY TO CONTINUE _",
+    "01111010 01101000 01110101",
+    "ALL SYSTEMS OFFLINE AND ONLINE AT THE SAME TIME",
+    "ODDIK KCUL ON",
+    "WEIRD IDX: 7%",
+    "WEIRD IDX: 6%",
+    "WEIRD IDX: 9%",
+    "REALITY STABILITY DETECTED - 12352",
+    "HOAX CORE ACTIVATED - 11211",
+    "CURRENT STAGE: FLOW",
+    "CURRENT STAGE: EBB",
+    "NEARBY SIGNAL DETECTED - SECURITY BREACH REPORTED",
+    "IN AN EMERGENCY SITUATION, PLEASE STAY CALM",
+    "A BREACH IN THE CRYO_CHAMBER DETECTED",
+    "A BREACH IN THE CAMERA_SYS DETECTED",
+    "A BREACH IN THE XLR_LRLOPM DETECTED",
+    "TOTAL ABOLITION REQUESTED? Y/N ",
+    "E Y E S E E Y O U",
+    "DRINK SOME WATER, YOU DESERVE IT",
+    "W H A T W I L L O U R H E R O E S D O N O W",
+  ];
+
+  let activated = false;
+  let typing = false;
+  let queue = [];
+  let visibleLogs = [];
+
+  function typeNext() {
+    if (typing || queue.length === 0) return;
+
+    typing = true;
+    const text = queue.shift();
+    let i = 0;
+
+    const interval = setInterval(() => {
+      log.textContent += text[i];
+      i++;
+
+      if (i >= text.length) {
+        log.textContent += "\n";
+        clearInterval(interval);
+        typing = false;
+
+        visibleLogs.push(text);
+        if (visibleLogs.length > 13) visibleLogs.shift();
+
+        const split = log.textContent.split("\n");
+        if (split.length > 13) {
+          log.textContent = split.slice(-13).join("\n");
         }
-      }, 28);
-    }
-  
-    function enqueueRandomLine() {
-      const line = lines[Math.floor(Math.random() * lines.length)];
-      queue.push(line);
-      typeNext();
-    }
-  
-    document.addEventListener("click", () => {
-      if (activated) return;
-      activated = true;
-  
-      setTimeout(() => {
-        enqueueRandomLine();
-        setInterval(enqueueRandomLine, 15000);
-      }, 15000);
-    }, { once: true });
-  
-  })();
-  </script>
+
+        typeNext();
+      }
+    }, 28);
+  }
+
+  function enqueueRandomLine() {
+    const available = lines.filter(line => !visibleLogs.includes(line));
+    if (available.length === 0) return;
+
+    const line = available[Math.floor(Math.random() * available.length)];
+    queue.push(line);
+    typeNext();
+  }
+
+  document.addEventListener("click", () => {
+    if (activated) return;
+    activated = true;
+
+    setTimeout(() => {
+      enqueueRandomLine();
+      setInterval(enqueueRandomLine, 10000);
+    }, 10000);
+  }, { once: true });
+
+})();
+</script>
 </body>
 </html>
