@@ -14,25 +14,35 @@ html, body {
   overflow: hidden;
   font-family: "Courier New", monospace;
   color: #00ffcc;
-  background:
-    linear-gradient(180deg, #071923 0%, #020b12 100%);
+  background: radial-gradient(circle at center, #03141c, #000);
 }
 
-/* scanlines */
+/* ===== BACKGROUND MOTION ===== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  background:
+    radial-gradient(circle, rgba(0,255,204,0.08) 1px, transparent 1px);
+  background-size: 6px 6px;
+  animation: moireMove 12s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moireMove {
+  from { transform: translate(0,0); }
+  to { transform: translate(120px, 80px); }
+}
+
 body::after {
   content: "";
   position: fixed;
   inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,255,204,0.15), transparent 300px);
   pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0,255,204,0.04) 0px,
-    rgba(0,255,204,0.04) 1px,
-    transparent 2px,
-    transparent 4px
-  );
 }
 
+/* ===== CENTER ===== */
 .center-wrap {
   position: fixed;
   inset: 0;
@@ -48,42 +58,9 @@ body::after {
   border-radius: 50%;
   border: 2px solid rgba(0,255,204,0.5);
   box-shadow:
-    inset 0 0 40px rgba(0,255,204,0.15),
-    0 0 30px rgba(0,255,204,0.15);
-  overflow: visible;
+    inset 0 0 40px rgba(0,255,204,0.2),
+    0 0 30px rgba(0,255,204,0.2);
 }
-
-/* inner */
-.wheel::before {
-  content: "";
-  position: absolute;
-  inset: 18%;
-  border-radius: 50%;
-  border: 1px solid rgba(0,255,204,0.25);
-  background:
-    repeating-linear-gradient(
-      to right,
-      rgba(0,255,204,0.06) 0px,
-      rgba(0,255,204,0.06) 1px,
-      transparent 1px,
-      transparent 40px
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      rgba(0,255,204,0.06) 0px,
-      rgba(0,255,204,0.06) 1px,
-      transparent 1px,
-      transparent 40px
-    );
-}
-
-.segment {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform-origin: center;
-}
-
 
 .symbol {
   position: absolute;
@@ -106,69 +83,86 @@ body::after {
   background: rgba(0,40,40,0.8);
 }
 
+.symbol.sealed {
+  border-color: red;
+  color: red;
+  opacity: 0.6;
+}
+
 /* ===== POPUP ===== */
 .popup {
   position: fixed;
   inset: 0;
   display: none;
   place-items: center;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.7);
 }
 
 .popup.active {
   display: grid;
+  animation: fadeIn 0.25s ease;
 }
 
 .popup-panel {
   width: min(900px, 92vw);
-  height: min(480px, 80vh);
-  background: #020b12;
+  height: min(500px, 80vh);
+  background: #000;
   border: 2px solid #00ffcc;
-  box-shadow: 0 0 30px rgba(0,255,204,0.25);
-  display: grid;
-  grid-template-rows: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  animation: glitchIn 0.25s ease;
 }
 
 .popup-content {
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  gap: 16px;
-  padding: 16px;
+  gap: 10px;
+  padding: 12px;
 }
 
 .popup-image {
-  border: 1px solid rgba(0,255,204,0.4);
-  background: #000;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  color: rgba(0,255,204,0.6);
+  border: 1px solid #00ffcc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup-text {
-  font-size: 13px;
-  line-height: 1.5;
   overflow: auto;
+  font-size: 13px;
 }
 
 .popup-footer {
-  border-top: 1px solid rgba(0,255,204,0.3);
-  padding: 10px;
+  border-top: 1px solid #00ffcc;
+  padding: 8px;
   display: flex;
+  gap: 10px;
   justify-content: flex-end;
 }
 
 .popup-footer button {
   background: black;
-  color: #00ffcc;
   border: 1px solid #00ffcc;
-  padding: 6px 14px;
+  color: #00ffcc;
+  padding: 5px 12px;
   cursor: pointer;
 }
 
 .popup-footer button:hover {
-  box-shadow: 0 0 10px rgba(0,255,204,0.6);
+  box-shadow: 0 0 10px #00ffcc;
+}
+
+/* animations */
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes glitchIn {
+  0% { transform: scale(0.95) translateX(-10px); opacity:0 }
+  50% { transform: scale(1.02) translateX(5px); opacity:1 }
+  100% { transform: scale(1) translateX(0) }
 }
 </style>
 </head>
@@ -186,63 +180,66 @@ body::after {
       <div class="popup-text" id="popupText"></div>
     </div>
     <div class="popup-footer">
-      <button id="closePopup">CLOSE</button>
+      <button onclick="setTab('info')">INFO</button>
+      <button onclick="setTab('habitat')">HABITAT</button>
+      <button onclick="setTab('dangers')">DANGERS</button>
+      <button onclick="closePopup()">CLOSE</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ===== REALM DATA PLACEHOLDER ===== */
+/* ===== CURSOR LIGHT ===== */
+document.addEventListener("mousemove", e=>{
+  document.body.style.setProperty("--mx", e.clientX+"px");
+  document.body.style.setProperty("--my", e.clientY+"px");
+});
+
+/* ===== DATA ===== */
 const realms = Array.from({ length: 16 }).map((_, i) => ({
   name: "EDGE REALM " + (i + 1),
-  desc:
-    "This edge-dimension is unstable. Seal integrity is required.\n\n" +
-    ".",
-  image: "" // image url 4 later
+  sealed: false,
+  info: "just a biiiig tit.",
+  habitat: "land full o big o tits.",
+  dangers: "tits everywhere.",
+  image: ""
 }));
 
+let currentRealm = null;
+
+/* ===== BUILD WHEEL ===== */
 const wheel = document.getElementById("wheel");
-const STEP = 360 / 16;
 
 function buildWheel() {
   wheel.innerHTML = "";
 
   const size = wheel.clientWidth;
-  const center = 0;
-
-  // radius is circle bigness, angledeg is rotation
-  const radius = size * 0.417;
+  const center = size / 2;
+  const radius = size * 0.4;
 
   for (let i = 0; i < 16; i++) {
-    const angleDeg = -78.75 + (i * STEP);
-    const angleRad = angleDeg * Math.PI / 180;
+    const angle = 0.194 + (i / 16) * Math.PI * 2 - Math.PI/2;
+    
+    //const angle = (i * 22.5) * Math.PI / 180;
 
-    const seg = document.createElement("div");
-    seg.className = "segment";
+    const x = center + Math.cos(angle) * radius;
+    const y = center + Math.sin(angle) * radius;
 
     const sym = document.createElement("div");
     sym.className = "symbol";
     sym.textContent = i + 1;
-    // future image:
-    // sym.innerHTML = `<img src="sigils/sigil${i+1}.png" style="width:80%;height:80%;object-fit:contain;">`;
 
-    const x = center + Math.cos(angleRad) * radius;
-    const y = center + Math.sin(angleRad) * radius;
+    if (realms[i].sealed) sym.classList.add("sealed");
 
     sym.style.left = x + "px";
     sym.style.top = y + "px";
 
-    sym.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openRealm(i);
-    });
+    sym.onclick = () => openRealm(i);
 
-    seg.appendChild(sym);
-    wheel.appendChild(seg);
+    wheel.appendChild(sym);
   }
 }
 
-// build once and on resize
 buildWheel();
 window.addEventListener("resize", buildWheel);
 
@@ -251,28 +248,27 @@ const popup = document.getElementById("popup");
 const popupText = document.getElementById("popupText");
 const popupImage = document.getElementById("popupImage");
 
-function openRealm(index) {
-  const r = realms[index];
-
-  popupText.innerHTML =
-    `<strong>${r.name}</strong><br><br>` +
-    r.desc.replace(/\n/g, "<br>");
-
-  if (r.image) {
-    popupImage.innerHTML = `<img src="${r.image}" style="width:100%;height:100%;object-fit:cover;">`;
-  } else {
-    popupImage.textContent = "REALM IMAGE";
-  }
-
+function openRealm(i){
+  currentRealm = realms[i];
+  setTab("info");
   popup.classList.add("active");
 }
 
-document.getElementById("closePopup").onclick = () => {
+function setTab(type){
+  if(!currentRealm) return;
+
+  popupText.innerHTML =
+    "<b>" + currentRealm.name + "</b><br><br>" +
+    currentRealm[type];
+
+  if(currentRealm.sealed){
+    popupText.innerHTML += "<br><br><span style='color:red'>RIFT SEALED</span>";
+  }
+}
+
+function closePopup(){
   popup.classList.remove("active");
-};
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") popup.classList.remove("active");
-});
+}
 </script>
 
 </body>
