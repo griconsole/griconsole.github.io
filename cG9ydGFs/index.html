@@ -42,7 +42,7 @@ body::after {
   pointer-events: none;
 }
 
-/* ===== CENTER ===== */
+/* ===== CENTRE ===== */
 .center-wrap {
   position: fixed;
   inset: 0;
@@ -84,9 +84,30 @@ body::after {
 }
 
 .symbol.sealed {
-  border-color: red;
-  color: red;
+  border-color: white;
+  color: white;
   opacity: 0.6;
+  animation: sealedGlitch 0.9s infinite;
+  filter: grayscale(1) brightness(1.2);
+}
+
+.symbol img {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 0 4px rgba(0,255,204,0.6));
+}
+
+.symbol:hover img {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 12px rgba(0,255,204,1));
+}
+
+@keyframes sealedGlitch {
+  0% { transform: translate(-50%, -50%) skew(0deg); opacity: 0.4; }
+  20% { transform: translate(-51%, -49%) skew(1deg); }
+  40% { transform: translate(-49%, -51%) skew(0deg); }
+  60% { transform: translate(-51%, -49%) skew(0deg); }
+  80% { transform: translate(-49%, -51%) skew(-1deg); }
+  100% { transform: translate(-50%, -50%) skew(0deg); opacity: 0.9; }
 }
 
 /* ===== POPUP ===== */
@@ -153,6 +174,12 @@ body::after {
   box-shadow: 0 0 10px #00ffcc;
 }
 
+.popup-footer button.active {
+  background: #00ffcc;
+  color: black;
+  box-shadow: 0 0 10px #00ffcc;
+}
+
 /* animations */
 @keyframes fadeIn {
   from { opacity: 0 }
@@ -196,18 +223,155 @@ document.addEventListener("mousemove", e=>{
 });
 
 /* ===== DATA ===== */
-const realms = Array.from({ length: 16 }).map((_, i) => ({
-  name: "EDGE REALM " + (i + 1),
+const realms = [
+{
+  name: "SLEIGHT",
   sealed: false,
-  info: "just a biiiig tit.",
-  habitat: "land full o big o tits.",
-  dangers: "tits everywhere.",
-  image: ""
-}));
+  info: "A world where two rival agent factions wage a intelligence war. Every inhabitant possesses a unique ability; Dangerous, and often reality-bending.",
+  habitat: "Urban environments resembling modern Earth cities, normal civilians, and surveillance everywhere.",
+  dangers: "Highly trained agents with unique powers, manipulation, and constant infiltration.",
+  image: "realms/sleight.png",
+  symbol: "symbols/sleight.png"
+},
+{
+  name: "FLOAT",
+  sealed: false,
+  info: "A pan-dimensional organism system composed of multiple 'realms' acting as organs. Each realm represents a function: digestion, time regulation, immunity, and more, feeding on the multiverse itself.",
+  habitat: "Shifting biological dimensions, each with unique physical laws tied to its 'organ' function.",
+  dangers: "Reality digestion, immune responses attacking intruders, time distortion, and systemic collapse reactions.",
+  image: "realms/float.png",
+  symbol: "symbols/float.png"
+},
+{
+  name: "VINTERLAND",
+  sealed: true,
+  info: "A frozen realm under eternal snowfall and a permanent full moon. St. Nicholas gifts cursed offerings that transform recipients into monstrous servants.",
+  habitat: "Dark snowy forests, frozen villages, and paths made by the inhabitants.",
+  dangers: "Transformation curses, monstrous entities, and lunar influence. Entry into this realm is highly suggested to be made with several sources of heat.",
+  image: "realms/vinter.png",
+  symbol: "symbols/vinter.png"
+},
+{
+  name: "IMP.CO",
+  sealed: false,
+  info: "A corporate hellscape where demons, devils, and mythological evils operate under strict bureaucratic systems. Torture and paperwork go hand-in-hand.",
+  habitat: "Infinite office complexes, HR departments, cubicles, and infernal corporate structures.",
+  dangers: "Endless contracts, hierarchical torment, demonic management, and eternal employment.",
+  image: "realms/impco.png",
+  symbol: "symbols/impco.png"
+},
+{
+  name: "STELLWEST",
+  sealed: false,
+  info: "A mechanical wild west where humans have long perished. Robots roam the scorching deserts, armed to the teeth and bound by old-world dueling codes.",
+  habitat: "Deserts, metal towns, rusted saloons, and railways under a blazing sun.",
+  dangers: "Armed constructs, overheating environments, and relentless duels.",
+  image: "realms/stellwest.png",
+  symbol: "symbols/stellwest.png"
+},
+{
+  name: "CORCEA",
+  sealed: false,
+  info: "A divine realm governed by three entities: Aldwyn (fire and renewal), Bodwyn (ice and death), and Corcea itself, the living land. Worship defines existence here.",
+  habitat: "Volcanic lands, frozen tundras, and living terrain that responds to devotion.",
+  dangers: "Divine wrath, environmental extremes, and unpredictable living ground.",
+  image: "realms/corcea.png",
+  symbol: "symbols/corcea.png"
+},
+{
+  name: "TWINSINTIME",
+  sealed: false,
+  info: "Two twins were separated across time after interacting with a chronomantic artifact. Their existence echoes through fractured timelines.",
+  habitat: "Temporal rifts, overlapping timelines, and unstable chronological zones.",
+  dangers: "Time paradoxes, erasure, duplication, and temporal isolation.",
+  image: "realms/tit.png",
+  symbol: "symbols/tit.png"
+},
+{
+  name: "UTOPIOSPHERE",
+  sealed: false,
+  info: "A divine creation formed by a peaceful goddess. A spiraling disc world where gravity fluctuates and islands drift with oceanic tides.",
+  habitat: "Floating islands, spiral continents, and oceanic voids influenced by gravity shifts.",
+  dangers: "Gravitational anomalies, falling landmasses, and unknown divine interventions.",
+  image: "realms/utopio.png",
+  symbol: "symbols/utopio.png"
+},
+{
+  name: "PROPHECY",
+  sealed: false,
+  info: "A world where magic is drawn into existence. Runes, symbols, and shapes act as programming language for reality.",
+  habitat: "Fantasy landscapes filled with rune circles, magical academies, and artistic battlegrounds.",
+  dangers: "Weaponized magic drawings, unstable spells, and rune-based warfare.",
+  image: "realms/prop.png",
+  symbol: "symbols/prop.png"
+},
+{
+  name: "HEXCORE",
+  sealed: false,
+  info: "A geometric dimension ???.",
+  habitat: "???.",
+  dangers: "???.",
+  image: "realms/hex.png",
+  symbol: "symbols/hex.png"
+},
+{
+  name: "SWEETVOID",
+  sealed: false,
+  info: "A deceptively cheerful candy-themed world ???.",
+  habitat: "???.",
+  dangers: "???.",
+  image: "realms/sweet.png",
+  symbol: "symbols/sweet.png"
+},
+{
+  name: "IDEAS",
+  sealed: false,
+  info: "Oh? You want to know more about us... come right in, we'd love to welcome you to a tea party.",
+  habitat: "Just the best there is, wondeful air, an aromic environment... tons of flowers... are you allergic? Oh then, no flowers!",
+  dangers: "None! Why would there be any...",
+  image: "realms/idea.png",
+  symbol: "symbols/idea.png"
+},
+{
+  name: "FREAKADEMY",
+  sealed: false,
+  info: "A mythological academy housing creatures from every culture. Students train to unlock their Bloodline Abilities.",
+  habitat: "Ancient Greek-inspired campuses filled with supernatural beings.",
+  dangers: "Uncontrolled powers, rivalries, and mythological conflicts. Otherwise the students and teachers seem to be peaceful towards humanoids",
+  image: "realms/freak.png",
+  symbol: "symbols/freak.png"
+},
+{
+  name: "BLOODEYE",
+  sealed: false,
+  info: "A crimson wasteland ruled by the Queen of Crimson, progenitor of all Shifters. Everything exists to serve her.",
+  habitat: "Dead forests, red oceans, ash-filled skies.",
+  dangers: "Shapeshifters, resource depletion, and the Queen herself.",
+  image: "realms/eye.png",
+  symbol: "symbols/eye.png"
+},
+{
+  name: "DEEPDARK",
+  sealed: false,
+  info: "An oceanic abyss stretching into space. The deeper you go, the less reality behaves correctly.",
+  habitat: "Endless ocean layers, bioluminescent depths, and orbital waters.",
+  dangers: "Massive sea entities, pressure anomalies, and the Manowar.",
+  image: "realms/ddark.png",
+  symbol: "symbols/ddark.png"
+},
+{
+  name: "CHRONOCLIFFS",
+  sealed: false,
+  info: "A reality warped by a multiversal reset. Familiar rules remain, but details have shifted, centered around a mysterious Clock Tower.",
+  habitat: "Forests, cliffs, and anomaly-heavy zones around the tower.",
+  dangers: "Reality inconsistencies, anomaly events, and experimental wormhole tech.",
+  image: "realms/chrono.png",
+  symbol: "symbols/chrono.png"
+}
+];
 
 let currentRealm = null;
 
-/* ===== BUILD WHEEL ===== */
 const wheel = document.getElementById("wheel");
 
 function buildWheel() {
@@ -219,15 +383,22 @@ function buildWheel() {
 
   for (let i = 0; i < 16; i++) {
     const angle = 0.194 + (i / 16) * Math.PI * 2 - Math.PI/2;
-    
-    //const angle = (i * 22.5) * Math.PI / 180;
 
     const x = center + Math.cos(angle) * radius;
     const y = center + Math.sin(angle) * radius;
 
     const sym = document.createElement("div");
     sym.className = "symbol";
-    sym.textContent = i + 1;
+
+    /* ===== IMAGE symbol ===== */
+    const img = document.createElement("img");
+    img.src = realms[i].symbol;
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "contain";
+    img.draggable = false;
+
+    sym.appendChild(img);
 
     if (realms[i].sealed) sym.classList.add("sealed");
 
@@ -250,6 +421,17 @@ const popupImage = document.getElementById("popupImage");
 
 function openRealm(i){
   currentRealm = realms[i];
+
+  /* ===== IMAGE big one ===== */
+  popupImage.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = currentRealm.image;
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "cover";
+
+  popupImage.appendChild(img);
+
   setTab("info");
   popup.classList.add("active");
 }
@@ -257,13 +439,27 @@ function openRealm(i){
 function setTab(type){
   if(!currentRealm) return;
 
+  let label = "";
+
+  if(type === "info") label = "INFO";
+  if(type === "habitat") label = "HABITAT";
+  if(type === "dangers") label = "DANGERS";
+
   popupText.innerHTML =
-    "<b>" + currentRealm.name + "</b><br><br>" +
+    "<b>" + currentRealm.name + "</b><br>" +
+    "<span style='color:#00ffcc'>" + label + ":</span><br><br>" +
     currentRealm[type];
 
   if(currentRealm.sealed){
-    popupText.innerHTML += "<br><br><span style='color:red'>RIFT SEALED</span>";
+    popupText.innerHTML += "<br><br><span style='color:white'>- RIFT SEALED -</span>";
   }
+  
+  document.querySelectorAll(".popup-footer button").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+
+  const index = {info:0, habitat:1, dangers:2}[type];
+  document.querySelectorAll(".popup-footer button")[index].classList.add("active");
 }
 
 function closePopup(){
