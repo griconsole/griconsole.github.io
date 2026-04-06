@@ -60,6 +60,14 @@ body::after {
   box-shadow:
     inset 0 0 40px rgba(0,255,204,0.2),
     0 0 30px rgba(0,255,204,0.2);
+  animation: breathe 6s ease-in-out infinite;
+  overflow: visible;
+}
+
+@keyframes breathe {
+  0%   { transform: scale(1); filter: brightness(1); }
+  50%  { transform: scale(1.015); filter: brightness(1.2); }
+  100% { transform: scale(1); filter: brightness(1); }
 }
 
 .symbol {
@@ -180,6 +188,76 @@ body::after {
   box-shadow: 0 0 10px #00ffcc;
 }
 
+/* ===== OUTER SYSTEM ===== */
+.wheel-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* outer circle */
+.wheel-overlay::before {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(0,255,204,0.25);
+  box-shadow: 0 0 40px rgba(0,255,204,0.1);
+  animation: ringPulse 6s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%,100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.03); }
+}
+
+/* tubes n pubes*/
+.tube {
+  position: absolute;
+  width: 2px;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0,255,204,0.4), transparent);
+  left: 50%;
+  top: 50%;
+  transform-origin: bottom center;
+  opacity: 0.6;
+}
+
+.hud-panel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 220px;
+  font-family: monospace;
+  font-size: 13px;
+  color: rgba(0,255,204,0.8);
+  pointer-events: none;
+  line-height: 1.4;
+}
+
+.hud-panel.left { left: 20px; }
+.hud-panel.right { right: 20px; text-align: right; }
+
+.hud-line {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.hud-line.glitch {
+  color: #ff3b3b;
+  opacity: 1;
+  text-shadow: 0 0 6px red;
+}
+
+.hud-title {
+  margin-top: 10px;
+  color: rgba(0,255,204,0.5);
+}
+
 /* animations */
 @keyframes fadeIn {
   from { opacity: 0 }
@@ -197,7 +275,9 @@ body::after {
 <body>
 
 <div class="center-wrap">
+  <div id="hud-right" class="hud-panel right"></div>
   <div class="wheel" id="wheel"></div>
+  <div id="hud-left" class="hud-panel left"></div>
 </div>
 
 <div class="popup" id="popup">
@@ -381,8 +461,9 @@ function buildWheel() {
   const center = size / 2;
   const radius = size * 0.4;
 
+  /* ===== SYMBOLS ===== */
   for (let i = 0; i < 16; i++) {
-    const angle = 0.194 + (i / 16) * Math.PI * 2 - Math.PI/2;
+    const angle = 0.194 + (i / 16) * Math.PI * 2 - Math.PI / 2;
 
     const x = center + Math.cos(angle) * radius;
     const y = center + Math.sin(angle) * radius;
@@ -390,7 +471,6 @@ function buildWheel() {
     const sym = document.createElement("div");
     sym.className = "symbol";
 
-    /* ===== IMAGE symbol ===== */
     const img = document.createElement("img");
     img.src = realms[i].symbol;
     img.style.width = "100%";
@@ -406,13 +486,143 @@ function buildWheel() {
     sym.style.top = y + "px";
 
     sym.onclick = () => openRealm(i);
+    
+    sym.onmouseenter = () => {
+       stats.WEIRD += 0.12;
+       stats.FLUX += 0.05;
+       anomaly = "LOCAL DISTORTION";
+    };
 
     wheel.appendChild(sym);
   }
+
+  /* ===== OVERLAY (OUTER RING) ===== */
+  const overlay = document.createElement("div");
+  overlay.className = "wheel-overlay";
+  wheel.appendChild(overlay);
+
+  /* ===== TUBES ===== */
+  for (let i = 0; i < 8; i++) {
+    const t = document.createElement("div");
+    t.className = "tube";
+
+    const angle = (i / 8) * 360;
+    t.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+
+    wheel.appendChild(t);
+  }
 }
 
+/* ===== INIT ===== */
 buildWheel();
+
+/* ===== EVENTS ===== */
 window.addEventListener("resize", buildWheel);
+
+document.addEventListener("fullscreenchange", () => {
+  setTimeout(buildWheel, 50);
+});
+
+const leftPanel = document.getElementById("hud-left");
+const rightPanel = document.getElementById("hud-right");
+
+/* ===== BASE DATA ===== */
+let stats = {
+  GY: 1.3,
+  FLUX: 101,
+  WEIRD: 15,
+  NEURAL: 47,
+  INTEGRITY: 85,
+  NOISE: 1,
+  TIDE: "LOW"
+};
+
+let coords = {
+  X: 502.1636,
+  Y: -631.7432,
+  Z: 78.1369,
+  P: "63.83.13.96.32"
+};
+
+let anomaly = "SIGNAL FLUX";
+
+/* ===== RENDER ===== */
+function renderHUD() {
+  leftPanel.innerHTML = `
+    <div class="hud-line">GY: ${stats.GY.toFixed(2)}</div>
+    <div class="hud-line">FLUX: ${stats.FLUX.toFixed(0)}%</div>
+    <div class="hud-line">WEIRD IDX: ${stats.WEIRD.toFixed(0)}%</div>
+    <div class="hud-line">NEURAL BIAS: ${stats.NEURAL}</div>
+    <div class="hud-line">REALITY INTEGRITY: ${stats.INTEGRITY.toFixed(0)}%</div>
+    <div class="hud-line">NOISE FLOOR: ${stats.NOISE} LVL</div>
+    <div class="hud-line">ODD TIDE: ${stats.TIDE}</div>
+  `;
+
+  rightPanel.innerHTML = `
+    <div class="hud-title">WEIRD LEVEL: GHX-Z½</div>
+    <div class="hud-line">X: ${coords.X.toFixed(7)}</div>
+    <div class="hud-line">Y: ${coords.Y.toFixed(7)}</div>
+    <div class="hud-line">Z: ${coords.Z.toFixed(7)}</div>
+    <div class="hud-line">P: ${coords.P}</div>
+
+    <div class="hud-title">ANOMALY:</div>
+    <div class="hud-line">${anomaly}</div>
+  `;
+}
+
+/* ===== LIVE DRIFT ===== */
+function tickHUD() {
+  stats.GY += (Math.random() - 0.5) * 0.02;
+  stats.FLUX += (Math.random() - 0.5) * 2;
+  stats.WEIRD += (Math.random() - 0.5) * 1.5;
+  stats.NEURAL += Math.floor((Math.random() - 0.5) * 2);
+  stats.INTEGRITY += (Math.random() - 0.5) * 0.5;
+
+  coords.X += (Math.random() - 0.5) * 0.01;
+  coords.Y += (Math.random() - 0.5) * 0.01;
+  coords.Z += (Math.random() - 0.5) * 0.01;
+
+  /* clamp some values */
+  stats.INTEGRITY = Math.max(0, Math.min(100, stats.INTEGRITY));
+  stats.FLUX = Math.max(0, stats.FLUX);
+
+  renderHUD();
+}
+
+/* ===== GLITCH EVENTS ===== */
+function glitchHUD() {
+  const lines = document.querySelectorAll(".hud-line");
+  if (!lines.length) return;
+
+  const target = lines[Math.floor(Math.random() * lines.length)];
+  target.classList.add("glitch");
+
+  setTimeout(() => {
+    target.classList.remove("glitch");
+  }, 200);
+}
+
+/* ===== ANOMALY ESCALATION ===== */
+function escalateAnomaly() {
+  const anomalies = [
+    "SIGNAL FLUX",
+    "PHASE BLEED",
+    "TEMPORAL DUPLICATION",
+    "NULL PRESENCE",
+    "RECURSIVE OBSERVER",
+    "∞ FEEDBACK LOOP"
+  ];
+
+  anomaly = anomalies[Math.floor(Math.random() * anomalies.length)];
+}
+
+/* ===== LOOP ===== */
+setInterval(tickHUD, 300);
+setInterval(glitchHUD, 800);
+setInterval(escalateAnomaly, 4000);
+
+/* ===== INIT ===== */
+renderHUD();
 
 /* ===== POPUP ===== */
 const popup = document.getElementById("popup");
