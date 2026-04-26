@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+<title>Weird-of-Fortune</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #00ffcc;
+    --primary-dim: rgba(0,255,204,0.18);
+    --primary-soft: rgba(0,255,204,0.08);
+    --dark: #010807;
+    --panel: rgba(0,18,14,0.92);
+    --text: #cffff5;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: "Courier New", monospace;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(0,255,204,0.018) 0px,
+            rgba(0,255,204,0.018) 1px,
+            transparent 1px,
+            transparent 12px
+        ),
+        #000201;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at center, rgba(0,255,204,0.02), transparent 75%);
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.006),
+        rgba(255,255,255,0.006) 1px,
+        transparent 1px,
+        transparent 5px
+    );
+    opacity: 0.35;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.wrapper {
+    width: min(1100px, 90vw);
+    padding: 1.25rem;
+    position: relative;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+
+.header h1 {
+    font-family: "Courier New", monospace;
+    font-size: clamp(1rem, 2.5vw, 2.2rem);
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--primary);
+    text-shadow:
+        0 0 4px rgba(0,255,204,0.55),
+        0 0 10px rgba(0,255,204,0.18);
+}
+
+.machine-shell {
+    border: 1px solid var(--primary);
+    background: var(--panel);
+    box-shadow:
+        inset 0 0 10px rgba(0,255,204,0.08),
+        0 0 14px rgba(0,255,204,0.06);
+    border-radius: 0;
+    padding: 1.3rem;
+    position: relative;
+}
+
+.machine-shell::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid var(--primary-dim);
+    pointer-events: none;
+}
+
+.machine {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.slot {
+    min-height: 170px;
+    border: 1px solid rgba(0,255,204,0.35);
+    border-radius: 0;
+    background: rgba(0,8,6,0.97);
+    box-shadow:
+        inset 0 0 8px rgba(0,255,204,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.slot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom, transparent 0%, rgba(0,255,204,0.02) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+.slot.active {
+    border-color: var(--primary);
+    box-shadow:
+        inset 0 0 14px rgba(0,255,204,0.12),
+        0 0 10px rgba(0,255,204,0.12);
+}
+
+.slot.locked {
+    border-color: var(--primary);
+    box-shadow:
+        inset 0 0 8px rgba(0,255,204,0.08);
+}
+
+.slot-word {
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.35;
+    font-weight: 700;
+    padding: 0.8rem;
+    text-transform: uppercase;
+    color: var(--primary);
+    text-shadow: 0 0 3px rgba(0,255,204,0.28);
+}
+
+.locked-indicator {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    font-size: 0.58rem;
+    opacity: 0;
+    color: var(--primary);
+    letter-spacing: 0.12em;
+}
+
+.slot.locked .locked-indicator {
+    opacity: 1;
+}
+
+.controls {
+    margin-top: 1.4rem;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    font-family: "Courier New", monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1px solid var(--primary);
+    border-radius: 0;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    color: var(--primary);
+    background: rgba(0,8,6,0.96);
+    box-shadow:
+        inset 0 0 6px rgba(0,255,204,0.05),
+        0 0 8px rgba(0,255,204,0.05);
+    transition: 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+    background: rgba(0,255,204,0.04);
+    box-shadow:
+        inset 0 0 8px rgba(0,255,204,0.08),
+        0 0 10px rgba(0,255,204,0.12);
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.output {
+    margin-top: 1rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(0,255,204,0.28);
+    border-radius: 0;
+    background: rgba(0,8,6,0.95);
+    text-align: center;
+    line-height: 1.45;
+    min-height: 70px;
+    font-size: 0.85rem;
+    color: var(--primary);
+    text-shadow: 0 0 3px rgba(0,255,204,0.22);
+}
+
+@media (max-width: 1100px) {
+    .machine {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .machine {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="header">
+        <h1>Weird-of-Fortune</h1>
+    </div>
+
+    <div class="machine-shell">
+        <div class="machine">
+            <div class="slot" id="slot0">
+                <div class="slot-word" id="word0">—</div>
+                <div class="locked-indicator">LOCKED</div>
+            </div>
+
+            <div class="slot" id="slot1">
+                <div class="slot-word" id="word1">—</div>
+                <div class="locked-indicator">LOCKED</div>
+            </div>
+
+            <div class="slot" id="slot2">
+                <div class="slot-word" id="word2">—</div>
+                <div class="locked-indicator">LOCKED</div>
+            </div>
+
+            <div class="slot" id="slot3">
+                <div class="slot-word" id="word3">—</div>
+                <div class="locked-indicator">LOCKED</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="chaosBtn">Spin That Wheel!</button>
+        </div>
+        
+        <div class="output" id="finalOutput">
+            So weird huh...
+        </div>
+    </div>
+</div>
+
+<script>
+const a1 = [
+    "An object appears near one of the pcs",
+    "An unskippable ad is getting rolled",
+    "Flowers and confetti start raining",
+    "A jazz battle erupts",
+    "The ceiling collapses as a celestial body looms over",
+    "A random danceoff begins",
+    "Everyone hears boss music",
+    "All lights out, a spotlight shines on a random enemy",
+    "The map flips around",
+    "Reality bends as a helper from a different realm appears",
+    "A celestial referee blows the whistle, giving a red card to a random enemy",
+    "Time stops for a few seconds",
+    "Surprise glitter bomb",
+    "The floor becomes bouncy",
+    "All creatures affected are now deathly allergic to tickles",
+    "During each creatures movement, they have to backflip",
+    "The floor is lava in 1 turn",
+    "A random weapon gains a good buff",
+    "A random magic item gets a debuff",
+    "A villain monologue hijacks the room, they leave after realizing that this is not the correct room",
+    "Everybody takes 5",
+    "A random background music starts playing",
+    "All sharp weapons are balloons",
+    "All wearables are sticky",
+    "Your grandma comes into combat",
+    "Ask a players favorite food, it joins the battle with them",
+    "Everything is suddenly VERY dramatic",
+    "Two random creatures must duel to the death in a rock paper scissors game, best of 3",
+    "An invisible audience begins applauding, booing and reacting",
+    "Roll a d20, whenever you roll that number again you go to banishment jail",
+    "Pick 3 people, they get 20 points",
+    "Pick 3 people, they lose 15 points",
+    "Pick 3 people, they get a kiss on the cheek",
+    "Pick 3 people, they multiply their points by 2"
+];
+
+const a2 = [
+    "and this effect, if possible, originates from",
+    "and also the only thing that can damage anything this turn is",
+    "also turning the nearest object into",
+    "after that this effect is triggered again by",
+    "and then a nearby thing is magnetically attracted to",
+    "furthermore someone just peed their pants because of",
+    "and now everybody is super gay and horny for",
+    "and the oldest person swaps age with",
+    "also whenever an action is taken, that action must target",
+    "after that your grandma appears in and given cookies to",
+    "and now the ground looks like",
+    "also all players must draw 4 or attack",
+    "then the unit with the highest points takes that much damage and heals the same amount to",
+    "also also also uhhh in the distance appears a",
+    "also now every points is multiplied by -1 because of",
+    "furthermore a drag queen gives a makeover to",
+    "after that a person swaps positions with",
+    "and all weapons turn into",
+    "also now somebody is holding",
+    "and then three enemies turn into"
+];
+
+const a3 = [
+    "glitter-armored raccoon",
+    "dildos",
+    "a very formal and wise pigeon",
+    "the enemy stand user",
+    "a cursed fast-food franchise",
+    "something japanese",
+    "aggressively friendly goblins",
+    "high-fashion wizards",
+    "kpop chefs travelers",
+    "spongebob",
+    "uncle grandpa",
+    "a very depressed dragon",
+    "the Department of Go-Fuck-Yourself's CEO",
+    "a robotic ballerina",
+    "condiments",
+    "a super intelligent animal",
+    "a hunky and sweaty wrestler",
+    "your clone",
+    "a plushy",
+    "the most non-binary barista ever",
+    "your grandma",
+    "omniman or homelander... can't really decide...",
+    "the... *sigh*... upperclass",
+    "Sabrina Carpenter",
+    "someone's imaginary friend",
+    "a retired tuna salesman",
+    "someone extremely dapper and fancy shmancy",
+    "an 80s actor",
+    "a historical figure",
+    "one of my OCs (lol)",
+    "a cat",
+    "this one guy... uh what's his name again",
+    "Urza, Lord High Artificer",
+    "exotic butters",
+    "Sonic the Hedgehog",
+    "your favorite number one rated salesman",
+    "your granma's friend Bertha",
+    "some plant thing",
+    "a demon",
+    "a blonde",
+    "Willy Wonka but not actually just like the same character trope yknow",
+    "a cookie",
+    "a chess piece",
+    "a suspiciously buff librarian",
+    "three geese in a trench coat",
+    "an emotionally unstable toaster",
+    "a medieval influencer",
+    "the spirit of a discontinued soda brand"
+];
+
+const a4 = [
+    "with alzheimer's",
+    "that is made entirely of gold",
+    "that wants to cuddle the shit out of you",
+    "only for the duration of a blink",
+    "and they're secretly a brunette",
+    "with the most high-tech weapons ever",
+    "with an altercation",
+    "with a mutation",
+    "with all 7 human souls",
+    "that jumpscares the first player character nearby",
+    "walking... menacingly...",
+    "and they keep singing and prancing! what a jolly fellow!",
+    "that now helps the player's team",
+    "and their skin turns purple",
+    "with an extremely, comically big white top hat, they're now the owner of the Dimmsdale Dimmadome!",
+    "they also turn into an alternate version of themselves mid-fight",
+    "with condiment stains everywhere",
+    "covered in green goopy slime",
+    "with a very deep voice",
+    "that turns evil midway! Plottwist!",
+    "made with love <3",
+    "is currently listening to a song with their earplugs on, literally an IDGAF queen",
+    "and they're gay of course",
+    "and they want the shiniest thing in the room",
+    "and they want REVENGE, served cold preferably",
+    "that immediately gets on their knees and apologizes to the nearest person",
+    "that is only here to collect your taxes :/",
+    "while carrying a briefcase full of bees",
+    "and they smell of cinnamon",
+    "with one big... dildo",
+    "they look nice at first but then eat the closest enemy to them",
+    "with a high density of wild magic flowing through them"
+];
+
+const banks = [a1, a2, a3, a4];
+const button = document.getElementById("chaosBtn");
+const output = document.getElementById("finalOutput");
+
+function randomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+async function spinSlots() {
+    button.disabled = true;
+    output.textContent = "Yet it keeps getting weirder...";
+
+    const chosen = [];
+
+    for (let i = 0; i < 4; i++) {
+        const slot = document.getElementById("slot" + i);
+        slot.classList.remove("locked");
+        slot.classList.add("active");
+    }
+
+    for (let i = 0; i < 4; i++) {
+        const wordEl = document.getElementById("word" + i);
+        const slotEl = document.getElementById("slot" + i);
+
+        await new Promise(resolve => {
+            const interval = setInterval(() => {
+                wordEl.textContent = randomItem(banks[i]);
+            }, 75);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                const finalChoice = randomItem(banks[i]);
+                chosen.push(finalChoice);
+                wordEl.textContent = finalChoice;
+
+                slotEl.classList.remove("active");
+                slotEl.classList.add("locked");
+                resolve();
+            }, 1600 + i * 900);
+        });
+    }
+
+    output.innerHTML = "<strong>WEIRD GENERATED:</strong><br><br>" + chosen.join(" ");
+    button.disabled = false;
+}
+
+button.addEventListener("click", spinSlots);
+</script>
+
+</body>
+</html>
