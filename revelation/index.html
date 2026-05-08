@@ -76,6 +76,7 @@ body::after{
     border-radius: 50%;
     border: 1px solid rgba(200,200,255,0.15);
     animation: spin 12s linear infinite reverse;
+    transform-origin:center center;
 }
 
 .node{
@@ -85,6 +86,8 @@ body::after{
     background:white;
     border-radius:50%;
     opacity:0.6;
+
+    transform:translate(-50%, -50%);
 }
 
 .center{
@@ -175,21 +178,42 @@ document.addEventListener("mousemove", e=>{
     cursor.style.top = e.clientY + "px";
 });
 
-for(let i=0;i<16;i++){
-    const n=document.createElement("div");
-    n.className="node";
+const nodec = 16;
+const nodes = [];
 
-    const angle=(i/16)*Math.PI*2;
-    const r=180;
+for(let i = 0; i < nodec; i++) {
 
-    const x=210+Math.cos(angle)*r;
-    const y=210+Math.sin(angle)*r;
-
-    n.style.left=x+"px";
-    n.style.top=y+"px";
+    const n = document.createElement("div");
+    n.className = "node";
 
     ring.appendChild(n);
+    nodes.push(n);
 }
+
+function positionNodes() {
+
+    const size = ring.offsetWidth;
+
+    const center = size / 2;
+    const radius = center - 4;
+
+    nodes.forEach((node, i) => {
+
+        const angle = (i / nodec) * Math.PI * 2;
+
+        const x = center + Math.cos(angle) * radius;
+        const y = center + Math.sin(angle) * radius;
+
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
+    });
+}
+
+positionNodes();
+
+window.addEventListener("resize", () => {
+    requestAnimationFrame(positionNodes);
+});
 
 setInterval(()=>{
     document.body.style.filter = "hue-rotate("+(Math.random()*6-3)+"deg)";
