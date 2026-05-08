@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03141</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    cursor:none;
+} 
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#03040a;
+    color:#d8e8ff;
+    font-family:'IBM Plex Mono',
+    monospace;
+} 
+
+canvas{
+    position:fixed;
+    inset:0;
+} 
+
+#cursor{
+    position:fixed;
+    width:14px;
+    height:14px;
+    border:1px solid rgba(216,232,255,.7);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;z-index:9999;
+} 
+    
+#ui{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
+    pointer-events:none;
+    padding:2rem;
+}
+
+#terminal{
+    width:min(70vw,820px);
+    height:min(65vh,520px);
+    border:1px solid rgba(180,210,255,.15);
+    background:rgba(6,10,20,.5);
+    backdrop-filter:blur(8px);
+    box-shadow:0 0 60px rgba(100,150,255,.08);
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+}
+
+#log{
+    flex:1;
+    overflow:hidden;
+    font-size:.9rem;
+    line-height:1.6;
+    white-space:pre-wrap;
+    opacity:.95;
+} 
+
+#line{
+    height:2px;
+    background:
+    linear-gradient(90deg, transparent, rgba(180,210,255,.6), transparent);
+    margin:8px 0;
+} 
+
+#prompt{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    font-size:.85rem;
+    opacity:.7;
+}
+    
+.key{
+    display:inline-block;
+    padding:4px 8px;
+    border:1px solid rgba(180,210,255,.2);
+    pointer-events:auto;
+    cursor:pointer;
+} 
+
+.key:hover{
+    transform:translateY(-2px);
+    background:rgba(180,210,255,.08);
+    border-color:rgba(180,210,255,.4);
+    box-shadow:0 0 18px rgba(180,210,255,.12);
+}
+
+.key:active{
+    transform:translateY(0);
+}
+
+.fade{
+    animation:fade 2s forwards;
+}
+
+@keyframes fade{
+    to{opacity:0; filter:blur(8px);}
+}
+
+.glitch{
+    animation:glitch 120ms infinite;
+}
+
+@keyframes glitch{
+    0%   { transform:translateX(0); }
+    25%  { transform:translateX(1px); }
+    50%  { transform:translateX(-1px); }
+    75%  { transform:translateX(2px); }
+    100% { transform:translateX(0); }
+}
+
+@media (max-width:768px){
+    #terminal{
+        width:92vw;
+        height:78vh;
+        padding:18px;
+    }
+
+    #log{
+        font-size:.84rem;
+    }
+
+    .key{
+        min-width:100px;
+        padding:7px 12px;
+        font-size:.8rem;
+    }
+}
+</style>
+
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="cursor"></div>
+<div id="ui">
+  <div id="terminal">
+    <div id="log"></div>
+    <div id="line"></div>
+    <div id="prompt"></div>
+  </div>
+</div>
+
+<script>
+/* ------------------- */
+const c = document.getElementById('stars');
+const ctx = c.getContext('2d');
+
+let w, h, stars = [];
+
+function resize() {
+    w = c.width = innerWidth;
+    h = c.height = innerHeight;
+}
+addEventListener('resize', resize);
+resize();
+
+for (let i = 0; i < 220; i++) {
+    stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: Math.random() * 2 + 0.3
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (const s of stars) {
+        ctx.globalAlpha = s.z / 2;
+        ctx.fillStyle = '#cfe4ff';
+        ctx.fillRect(s.x, s.y, s.z, s.z);
+
+        s.y += s.z * 0.25;
+
+        if (s.y > h) {
+            s.y = 0;
+            s.x = Math.random() * w;
+        }
+    }
+
+    requestAnimationFrame(draw);
+}
+draw();
+
+/* ------------------- */
+const cursor = document.getElementById('cursor');
+
+document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+});
+/* ------------------- */
+const log = document.getElementById('log');
+const prompt = document.getElementById('prompt');
+const terminal = document.getElementById('terminal');
+/* ------------------- */
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function clearPrompt() {
+    prompt.innerHTML = "";
+}
+
+function setButtons(aText, aAction, bText, bAction) {
+    prompt.innerHTML = "";
+
+    const btnA = document.createElement("span");
+    btnA.className = "key";
+    btnA.textContent = aText;
+    btnA.onclick = aAction;
+
+    const btnB = document.createElement("span");
+    btnB.className = "key";
+    btnB.textContent = bText;
+    btnB.onclick = bAction;
+
+    prompt.appendChild(btnA);
+    prompt.appendChild(btnB);
+}
+
+function typeLine(text, speed = 26) {
+    return new Promise(resolve => {
+        const line = document.createElement("div");
+        line.textContent = "";
+        log.appendChild(line);
+
+        let i = 0;
+
+        const interval = setInterval(() => {
+            line.textContent += text[i];
+            i++;
+
+            log.scrollTop = log.scrollHeight;
+
+            if (i >= text.length) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, speed);
+    });
+}
+
+/* ------------------- */
+async function finalSequence(lines) {
+    clearPrompt();
+
+    for (const line of lines) {
+        await typeLine(line);
+        await sleep(500);
+    }
+
+    terminal.classList.add("glitch");
+
+    await sleep(2500);
+
+    document.body.classList.add("fade");
+
+    setTimeout(() => {
+        window.location.href = "/revelation";
+    }, 2200);
+}
+
+/* ------------------- */
+const states = {
+    S_: async () => {
+        await typeLine("> User Death detected, Memory_Save in progress...");
+        setButtons("[ALLOW]", () => go("S_0"), "[DENY]", () => go("S_1"));
+    },
+
+    S_0: async () => {
+        clearPrompt();
+        await typeLine("> User 02's memories have been cached.");
+        await typeLine("> Cached memories have been uploaded into Vessel02.");
+        await typeLine("> Upload to Console Log?");
+        setButtons("[-Y-]", () => go("S_00"), "[-N-]", () => go("S_01"));
+    },
+    
+    S_1: async () => {
+        clearPrompt();
+        await typeLine("> User 02's memories have been archived.");
+        await typeLine("> Memory_Log has an empty slot and requires data.");
+        await typeLine("> Fabricate Memory_Data?");
+        setButtons("[-Y-]", () => go("S_10"), "[-N-]", () => go("S_11"));
+    },
+
+    S_00: async () => {
+        clearPrompt();
+        await typeLine("> User 02's last memories have been inscribed...");
+        await typeLine("> Upload successful.");
+        setButtons("[OPEN CONSOLE]", () => go("S_000"), "[SAVE AND EXIT]", () => go("S_EXIT"));
+    },
+
+    S_01: async () => {
+        clearPrompt();
+        await typeLine("> User's memories have been discarded.");
+        await typeLine("> Backup data has been detected, restore memories?");
+        setButtons("[RESTORE]", () => go("S_010"), "[IGNORE]", () => go("S_011"));
+    },
+
+    S_10: async () => {
+        clearPrompt();
+        await typeLine("> Fabrication of User 02's memories in progress...");
+        await typeLine("> Replace current data with fabricated data?");
+        setButtons("[PROCEED]", () => go("S_100"), "[SAVE AND EXIT]", () => go("S_EXIT"));
+    },
+
+    S_11: async () => {
+        clearPrompt();
+        await typeLine("> No operation selected.");
+        await typeLine("> Awaiting ANY input... :/");
+        setButtons("[RUN GAME.EXE]", () => go("S_110"), "[SELF DESTRUCT]", () => go("S_NO"));
+    },
+
+    S_100: async () => {
+        clearPrompt();
+        await typeLine("> ERROR: Memory insertion failed.");
+        await typeLine("> Activity logs copied to unauthorized external source.");
+        await typeLine("> Activate contingency protocol: PLAN V?");
+        setButtons("[Proceed]", () => go("S_BAD"), "[CANCEL]", () => go("S_FAILBAD"));
+    },
+
+    S_000: async () => {
+        clearPrompt();
+        await typeLine("> Console connection lost.");
+        await typeLine("> Response timeout exceeded.");
+        setButtons("[RETRY]", () => go("S_000"), "[CANCEL]", () => go("S_EXIT"));
+    },
+    
+    S_010: async () => {
+        clearPrompt();
+        await typeLine("> Backup integrity check failed.");
+        await typeLine("> Source mismatch detected.");
+        await typeLine("> Vessel02 no longer recognizes User 02.");
+        setButtons("[EXIT]", () => go("S_EXIT"), "[CANCEL]", () => go("S_EXIT"));
+    },
+    
+    S_011: async () => {
+        clearPrompt();
+        await typeLine("> Backup signal ignored.");
+        await typeLine("> New identity accepted.");
+        setButtons("[SURRENDER]", () => go("S_TRUE"), "[CANCEL]", () => go("S_EXIT"));
+    },
+    
+    S_110: async () => {
+        clearPrompt();
+        await typeLine("> Opening StarDustShooters.exe...");
+        await typeLine("> WARNING: executable flagged as hostile.");
+        setButtons("[OPEN GAME]", () => go("S_EXIT"), "[ABORT]", () => go("S_EXIT"));
+    },
+
+    S_EXIT: async () => {
+        await finalSequence([
+            "> User exit registered.",
+            "> Session archived.",
+            "> Redirecting..."
+        ]);
+    },
+
+    S_TRUE: async () => {
+        await finalSequence([
+            "> Continuity surrendered.",
+            "> User 02 is no longer recoverable.",
+            "> Redirecting..."
+        ]);
+    },
+    
+    S_BAD: async () => {
+        await finalSequence([
+            "> Plan V activated.",
+            "> Vessel synchronization bypassed.",
+            "...Not today, Doctor..."
+        ]);
+    },
+    
+    S_FAILBAD: async () => {
+        await finalSequence([
+            "> Contingency aborted.",
+            "> Trace activity erased.",
+            "...Good choice, Doctor..."
+        ]);
+    },
+    
+    S_NO: async () => {
+        await finalSequence([
+            "> Self-destruct request acknowledged.",
+            "> why...?",
+            "> Terminating connection..."
+        ]);
+    }
+};
+
+/* ------------------- */
+async function go(stateName) {
+    await states[stateName]();
+}
+go("S_");
+
+</script>
+</body>
+</html>
