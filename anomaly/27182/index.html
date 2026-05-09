@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocol V</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#05060a;
+    font-family:'IBM Plex Mono', monospace;
+    color:#dce7ff;
+}
+
+/* ========================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:40px 40px;
+    opacity:0.18;
+    pointer-events:none;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at center, rgba(90,110,255,0.08), transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03), transparent 40%);
+    pointer-events:none;
+}
+
+/* ========================= */
+
+#header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    padding:14px 18px;
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    background:rgba(0,0,0,0.35);
+    backdrop-filter:blur(5px);
+    z-index:100;
+}
+
+#status{
+    opacity:0.55;
+    letter-spacing:0.08em;
+}
+
+/* ========================= */
+
+#workspace{
+    position:absolute;
+    inset:70px 0 0 0;
+    overflow:hidden;
+}
+
+#workspace::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:90px;
+    background:linear-gradient(
+        to bottom,
+        transparent,
+        rgba(5,6,10,0.96)
+    );
+    pointer-events:none;
+}
+
+/* ========================= */
+
+.note{
+    position:absolute;
+    width:150px;
+    min-height:88px;
+    padding:10px;
+    background:rgba(12,15,24,0.96);
+    border:1px solid rgba(180,200,255,0.14);
+    transition:0.22s ease;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(0,0,0,0.45);
+}
+
+.note:hover{
+    border-color:rgba(255,255,255,0.38);
+    transform:translateY(-3px);
+}
+
+.note h3{
+    font-size:0.70rem;
+    margin-bottom:8px;
+    color:#eef3ff;
+}
+
+.note p{
+    font-size:0.60rem;
+    line-height:1.55;
+    opacity:0.72;
+}
+
+/* ========================= */
+
+#overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.82);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:500;
+}
+
+#overlay.active{
+    display:flex;
+}
+
+#overlay::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.025),
+            rgba(255,255,255,0.025) 1px,
+            transparent 2px,
+            transparent 4px
+        );
+    opacity:0.45;
+    animation:scan 0.08s linear infinite;
+    pointer-events:none;
+}
+
+@keyframes scan{
+    from{transform:translateY(0);}
+    to{transform:translateY(4px);}
+}
+
+#panel{
+    position:relative;
+    width:min(520px,85vw);
+    min-height:260px;
+    background:#090c14;
+    border:1px solid rgba(255,255,255,0.12);
+    padding:20px;
+    z-index:2;
+    box-shadow:0 0 35px rgba(0,0,0,0.6);
+}
+
+#panel h2{
+    font-size:0.92rem;
+    margin-bottom:16px;
+    letter-spacing:0.08em;
+    color:#f2f5ff;
+}
+
+#panel pre{
+    white-space:pre-wrap;
+    line-height:1.8;
+    font-size:0.78rem;
+    opacity:0.86;
+}
+
+/* ========================= */
+
+#access{
+    position:fixed;
+    right:18px;
+    bottom:16px;
+    width:82px;
+    height:46px;
+    border:2px solid rgba(255,255,255,0.15);
+    background:#0a0d14;
+    color:#dce7ff;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    z-index:120;
+    font-family:inherit;
+    letter-spacing:0.12em;
+    transition:0.22s ease;
+}
+
+#access:hover{
+    border-color:rgba(255,255,255,0.4);
+    background:rgba(255,255,255,0.04);
+}
+
+#access span{
+    opacity:0.6;
+    font-size:0.85rem;
+}
+
+/* ========================= */
+
+#terminal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.94);
+    display:none;
+    place-items:center;
+    z-index:1000;
+}
+
+#terminal.active{
+    display:grid;
+}
+
+.terminalBox{
+    width:480px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:#05070c;
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.terminalBox::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.03),
+            rgba(255,255,255,0.03) 1px,
+            transparent 2px,
+            transparent 4px
+        );
+    opacity:0.4;
+    pointer-events:none;
+}
+
+.terminalBox h2{
+    font-size:0.82rem;
+    margin-bottom:16px;
+    letter-spacing:0.18em;
+    color:#e5edff;
+}
+
+.terminalBox input{
+    width:100%;
+    padding:12px;
+    background:black;
+    border:1px solid rgba(255,255,255,0.15);
+    color:#dce7ff;
+    outline:none;
+    font-family:inherit;
+}
+
+.terminalBox input:focus{
+    border-color:rgba(255,255,255,0.4);
+}
+
+.hint{
+    margin-top:10px;
+    opacity:0.42;
+    font-size:0.7rem;
+}
+
+/* ========================= */
+
+#cursor{
+    position:fixed;
+    width:14px;
+    height:14px;
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    z-index:9999;
+}
+
+/* ========================= */
+
+.glitch{
+    animation:glitch 0.18s;
+}
+
+@keyframes glitch{
+    0%{transform:translate(0,0);}
+    25%{transform:translate(2px,-2px);}
+    50%{transform:translate(-2px,2px);}
+    75%{transform:translate(2px,1px);}
+    100%{transform:translate(0,0);}
+}
+
+/* ========================= */
+
+.fade{
+    animation:fadeOut 2.2s forwards;
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        filter:blur(6px);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="cursor"></div>
+
+<div id="header">
+    <div>PROTOCOL V // ACTIVE</div>
+    <div id="status">archive unavailable</div>
+</div>
+
+<div id="workspace"></div>
+
+<div id="overlay">
+    <div id="panel">
+        <h2 id="panelTitle"></h2>
+        <pre id="panelText"></pre>
+    </div>
+</div>
+
+<div id="access">
+    <span>ACCESS</span>
+</div>
+
+<div id="terminal">
+    <div class="terminalBox">
+        <h2>ACCESS INPUT</h2>
+
+        <input
+            id="codeInput"
+            type="text"
+            maxlength="5"
+            autocomplete="off"
+        >
+
+    </div>
+</div>
+
+<script>
+const workspace = document.getElementById("workspace");
+const overlay = document.getElementById("overlay");
+const panelTitle = document.getElementById("panelTitle");
+const panelText = document.getElementById("panelText");
+const terminal = document.getElementById("terminal");
+const input = document.getElementById("codeInput");
+const access = document.getElementById("access");
+const cursor = document.getElementById("cursor");
+
+/* ========================= */
+
+document.addEventListener("mousemove", e=>{
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+});
+
+/* ========================= */
+
+const notes = [
+
+
+{
+title:"Experiment Delta Report",
+text:`
+The rift anomalies have worsened again.
+
+Every recalculation leads back to the same impossible conclusion. The formula SHOULD stabilize the breach. It was mathematically flawless when I redesigned it... so why does the machine continue to resist me?
+
+In accordance with the blueprints provided, calibration remained fixed at:
+█7██.█████.████
+
+I warned ███ not to rush assembly. Of course he ignored me. Half the conduits were soldered like a child piecing together scrap metal.
+
+Let this experience stand as proof:
+never allow amateurs to imitate brilliance
+`
+},
+
+{
+title:"Project XC-1o6",
+text:`
+This █████ has been unusually merciful to the subjects.
+
+There exists an external archive containing the complete records of XC-1o6, though I doubt anyone assigned to this facility possesses the patience to read them anymore. So here is the simplified version.
+
+The first subjects were disappointingly primitive. Most abandoned their assigned objectives within hours and devolved into pointless aggression. Remarkable physical confidence paired with catastrophic intellectual deficiency...
+
+Still... humans are fascinating under pressure. It -only- took them ██6 days to realize...
+
+The final report from this project interests me the most. Even after learning fragments of the truth, their instincts remained unchanged. Rather than adapting, they chose resistance. Violence. "Persevering"
+
+Always so predictable. And yet somehow... never predictable enough.
+`
+},
+
+{
+title:"Emergency Formula",
+text:`
+If that infernal machine is ever destroyed again, this is the emergency restoration sequence.
+
+Read carefully. I am aware most personnel here barely understand the equations they operate around, so I will simplify this as much as my pride allows.
+
+████████████████ ███████ ███████████ ████ █4██████████████████ █████
+
+Reroute quantum flow BEFORE inserting the solution.
+The last assistant who ignored that distinction liquefied against the chamber wall in under three seconds.
+`
+},
+
+{
+title:"R1JJIGluZmlsdHJhdGlvbiByZXBvcnQ=",
+text:`
+UGhhc2UgMSB3ZW50IHNtb290aGx5LiBUaGUgZXh0ZXJuYWwgcG9ydCB3YXMgaW5zZXJ0ZWQgYmVmb3JlIEViYiByZXR1cm5lZCB0byB0aGUgbWFjaGluZS4=
+
+SXQgaXMgYWxtb3N0IGRpc2FwcG9pbnRpbmcgaG93IGVhc2lseSB0aGV5IHRydXN0IG9uZSBhbm90aGVyLg==
+
+TXkgY29udGFjdCBjYW4gbm93IGFjY2VzcyB0aGUgYXJjaGl2ZXMgZnJvbSBvdXRzaWRlIHRoZSBmYWNpbGl0eS4=
+`
+},
+
+{
+title:"Experiment Alpha [FAILED]",
+text:`
+A fresh batch of subjects acquired through conventional recruitment methods.
+
+At first their understanding of ███████ theory appeared surface-level at best. I underestimated how dangerous ignorance paired with desperation can become.
+
+Initial team cohesion was quite abysmal. Constant arguments and poor coordination...
+
+Estimated survival time:
+one week.
+
+Yet somehow this group continued persisting beyond expected failure points. Not through intelligence, unfortunately, but through stubbornness. They survive situations that should kill them simply because they refuse to accept outcomes already decided for them.
+
+What followed after the truth is as follows:
+███████████████████████ ███████ ███████████████ ██████ █████████████████ █████████ █████████████████ ████████████ ██████████ ███████████████ ███████ █████████████████████████████████ ███████████████ ████████
+`
+},
+
+{
+title:"Experiment Beta [FAILED]",
+text:`
+Another ████. Another replacement group.
+
+This batch was quieter than Alpha. Less conflict but more observation this time. I initially believed them to be more intelligent.
+
+Turns out, they simply hid their fears better.
+
+Several members became aware of inconsistencies within the ████ far earlier than projected. One even attempted to map temporal repetition patterns manually before suffering neural collapse due "unnatural causes"... 
+
+Progress remains disappointing... Still, I cannot deny their persistence anymore. Each ████ leaves traces behind. Instincts sharpen, reactions change, somewhere beneath conscious memory, something survives the █████.
+
+Perhaps ████ was right to fear this project after all.
+`
+},
+
+{
+title:"Activity Records",
+text:`
+State of Progress: Maintained
+Current Level of Weirdness: Stale
+
+Time Log 01:
+The Experiments have come to a stop, I double checked the blueprint for the new tool I'll be making in commission for my contact
+
+Time Log 02:
+The log for this time frame has been erased, supposedly the only solution is to guess what happened...
+
+Time Log 03:
+It seems the external archive I have been keeping is now empty... someone accessed it without my knowledge and erased all data- this has put a big hole in my progress...
+
+Time Log 04:
+I decided to show mercy this time, not by keeping the subject alive but by ending his misery. It is quite unfortunate that his last words weren't directed to me- but to himself... he prayed to his god...
+
+Time Log 05:
+The formula did not work as intended, there has been a flaw in the equation it seems. Or there might have been a sabotage at play- I only suspect that leech...
+`
+},
+
+{
+title:"Subject-04o7 Latest Report",
+text:`
+Subject-04o7 has seemingly abandoned the project, at least outwardly.
+
+Beneath the exhaustion I still observe the same desperation present in all the others. They pretend acceptance when they realize resistance changes nothing. Eventually they all break in one way or another.
+
+Their final words will likely be directed at me... Most were.
+
+Strangely... I have grown somewhat attached to this one subject. ██████ is what he calls himself... His optimism is irritatingly persistent. It reminds me of someone I knew before all of this began. Even before the █████████.
+
+Perhaps that is why I continued on monitoring him personally.
+
+TOD: 0██████-███████
+`
+},
+
+];
+
+/* ========================= */
+
+const positions = [
+[120,120],
+[380,150],
+[650,140],
+[920,130],
+
+[180,380],
+[470,400],
+[760,370],
+[1050,390],
+];
+
+notes.forEach((note,index)=>{
+    const div = document.createElement("div");
+    div.className = "note";
+    div.style.left = positions[index][0] + "px";
+    div.style.top = positions[index][1] + "px";
+
+    div.innerHTML = `
+        <h3>${note.title}</h3>
+        <p>${note.text.slice(0,75)}...</p>
+    `;
+    div.onclick = ()=>{
+
+        panelTitle.textContent = note.title;
+        panelText.textContent = note.text;
+        overlay.classList.add("active");
+    };
+    workspace.appendChild(div);
+});
+
+/* ========================= */
+
+overlay.onclick = ()=>{
+    overlay.classList.remove("active");
+};
+
+/* ========================= */
+
+access.onclick = ()=>{
+    terminal.classList.add("active");
+    input.focus();
+};
+
+terminal.addEventListener("click", e=>{
+    if(e.target === terminal){
+        terminal.classList.remove("active");
+    }
+
+});
+
+/* ========================= */
+
+function sleep(ms){
+    return new Promise(r=>setTimeout(r,ms));
+}
+
+async function typeLine(text){
+    const div = document.createElement("div");
+    div.style.marginBottom = "10px";
+    terminal.querySelector(".terminalBox").appendChild(div);
+    for(let i=0;i<text.length;i++){
+        div.textContent += text[i];
+        await sleep(18);
+    }
+}
+
+function clearPrompt(){
+    const box = terminal.querySelector(".terminalBox");
+    box.innerHTML = "";
+}
+  
+/* ========================= */
+
+async function finalSequence(lines){
+    clearPrompt();
+    
+    for(const line of lines){
+        await typeLine(line);
+        await sleep(500);
+    }
+
+    terminal.classList.add("glitch");
+    await sleep(2500);
+    document.body.classList.add("fade");
+    
+    setTimeout(()=>{
+        window.location.href = "/revelation";
+    },2200);
+}
+  
+/* ========================= */
+
+input.addEventListener("keydown", async e=>{
+    if(e.key === "Enter"){
+        const value = input.value.trim();
+        
+        if(value === "73604"){
+            await finalSequence([
+                "protocol V updated",
+                "aspice stellas",
+                "ascending..."
+            ]);
+            
+        }else{
+            terminal.classList.add("glitch");
+            setTimeout(()=>{
+                terminal.classList.remove("glitch");
+            },180);
+        }
+        input.value = "";
+    }
+});
+</script>
+
+</body>
+</html>
