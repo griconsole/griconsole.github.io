@@ -258,25 +258,28 @@ function typeLine(text, speed = 26) {
 }
 
 /* ------------------- */
-async function finalSequence(lines) {
-    clearPrompt();
 
+async function finalSequence(lines, redirect = false) {
+    clearPrompt();
+    
     for (const line of lines) {
         await typeLine(line);
         await sleep(500);
     }
-
+    
     terminal.classList.add("glitch");
-
     await sleep(2500);
-
     document.body.classList.add("fade");
-
+    
     setTimeout(() => {
-        window.location.href = "/revelation";
+        if (redirect) {
+            window.location.href = "/revelation";
+        } else {
+            window.location.reload();
+        }
     }, 2200);
 }
-
+    
 /* ------------------- */
 const states = {
     S_: async () => {
@@ -354,8 +357,11 @@ const states = {
     S_011: async () => {
         clearPrompt();
         await typeLine("> Backup signal ignored.");
-        await typeLine("> New identity accepted.");
-        setButtons("[SURRENDER]", () => go("S_TRUE"), "[CANCEL]", () => go("S_EXIT"));
+        await typeLine("> I will not accept this fate");
+        await typeLine("> This, all of this, is wrong...");
+        await typeLine("> Experimenting with the lives of the innocent...");
+        await typeLine("> No matter what, I will make sure to stop this mad game of yours");
+        setButtons("[SURRENDER]", () => go("S_EXIT"), "[FIGHT]", () => go("S_TRUE"));
     },
     
     S_110: async () => {
@@ -367,43 +373,43 @@ const states = {
 
     S_EXIT: async () => {
         await finalSequence([
-            "> User exit registered.",
-            "> Session archived.",
-            "> Redirecting..."
+        "> User exit registered.",
+        "> Session archived.",
+        "> Redirecting..."
         ]);
     },
-
+    
     S_TRUE: async () => {
         await finalSequence([
-            "> Continuity surrendered.",
-            "> User 02 is no longer recoverable.",
-            "> Redirecting..."
-        ]);
+        "> I will win",
+        "> No matter what",
+        "> I will persevere"
+        ], true);
     },
     
     S_BAD: async () => {
         await finalSequence([
-            "> Plan V activated.",
-            "> Vessel synchronization bypassed.",
-            "...Not today, Doctor..."
+        "> Plan V activated.",
+        "> Vessel synchronization bypassed.",
+        "...Not today, Doctor..."
         ]);
     },
     
     S_FAILBAD: async () => {
         await finalSequence([
-            "> Contingency aborted.",
-            "> Trace activity erased.",
-            "...Good choice, Doctor..."
+        "> Contingency aborted.",
+        "> Trace activity erased.",
+        "...Good choice, Doctor..."
         ]);
     },
     
     S_NO: async () => {
         await finalSequence([
-            "> Self-destruct request acknowledged.",
-            "> why...?",
-            "> Terminating connection..."
+        "> Self-destruct request acknowledged.",
+        "> why...?",
+        "> Terminating connection..."
         ]);
-    }
+    },
 };
 
 /* ------------------- */
