@@ -150,15 +150,15 @@ body::after{
 
 <!-- TEXT LAYERS -->
 <div class="cluster red" style="top:10%;left:6%;">
-Loop Instance: 76214
+LI: 27182
 [Retained Memory Detected]
 Loading PV.exe...
 </div>
 
 <div class="cluster blue" style="top:18%;right:6%;">
-Loop Instance: 03141
+LI: 03141
 Importing key(..../---/.--./.)
-Retrieving [perseverance_value]
+Retrieving [perseverance_value(513)]
 </div>
 
 <div class="cluster gray" style="bottom:14%;left:8%;">
@@ -166,9 +166,10 @@ your perseverance knows no bounds...
 </div>
 
 <div class="cluster red" style="bottom:22%;right:10%;">
-ERROR_601 Access Locked
+ERROR_401 Access Locked
 [PV.exe failed to load]
-Termination Initiated... [Erasing CommandLogs]
+Termination Initiated... 
+[Erasing CommandLogs]
 </div>
 
 <div id="centerText">
@@ -179,7 +180,7 @@ WHY WONT YOU GIVE UP ALREADY?
     <div class="panel">
         <h2>//ENTER STRING:</h2>
         <input id="code" type="text" maxlength="5" autocomplete="off">
-        <div class="hint">valid cycle number required</div>
+        <div class="hint">exolvuntur no. solum</div>
     </div>
 </div>
 
@@ -225,8 +226,8 @@ input.addEventListener("keydown", e=>{
     if(e.key === "Enter"){
         const val = input.value.trim();
 
-        if(val === "76214"){
-            window.location.href = "/anomaly/76214";
+        if(val === "27182"){
+            window.location.href = "/anomaly/27182";
         }
 
         if(val === "03141"){
