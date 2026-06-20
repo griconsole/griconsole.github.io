@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YOUTHINKYOUHAVEACCESS?</title>
+<style>
+:root{--accent:#00ffcc;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    cursor:none;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:'IBM Plex Mono', monospace;
+}
+
+.frame{
+    position:fixed;
+    inset:40px;
+    border:1px solid rgba(0,255,204,0.08);
+    pointer-events:none;
+}
+
+.frame::before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid rgba(0,255,204,0.03);
+}
+
+#cursor{
+    position:fixed;
+    width:10px;
+    height:10px;
+    border:1px solid var(--accent);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    z-index:9999;
+    box-shadow:0 0 8px rgba(0,255,204,0.6);
+}
+
+#eyeContainer{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:470px;
+    height:190px;
+    transform:translate(-50%,-50%);
+}
+
+#eye{
+    position:absolute;
+    inset:0;
+    border:7px solid var(--accent);
+    clip-path:polygon(
+        0% 50%,
+        12% 12%,
+        50% 0%,
+        88% 12%,
+        100% 50%,
+        88% 88%,
+        50% 100%,
+        12% 88%
+    );
+    box-shadow:
+        0 0 15px rgba(0,255,204,0.15),
+        inset 0 0 15px rgba(0,255,204,0.04);
+}
+
+#iris{
+    position:absolute;
+    left:50%;
+    top:50%;
+    
+    width:60px;
+    height:60px;
+    
+    border:2px solid var(--accent);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:
+        0 0 10px rgba(0,255,204,0.2);
+}
+
+#pupil{
+    width:12px;
+    height:12px;
+    background:var(--accent);
+    border-radius: 999px;
+    box-shadow:
+        0 0 12px rgba(0,255,204,0.8);
+}
+
+.scan{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+    repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,255,204,0.015) 4px
+    );
+    opacity:0.3;
+}
+
+.label{
+    position:fixed;
+    bottom:60px;
+    right:60px;
+    color:rgba(0,255,204,0.15);
+    font-size:.7rem;
+    letter-spacing:.3em;
+    user-select:none;
+}
+</style>
+</head>
+<body>
+<div class="frame"></div>
+<div class="scan"></div>
+<div id="cursor"></div>
+<div id="eyeContainer">
+    <div id="eye"></div>
+    <div id="iris">
+        <div id="pupil"></div>
+    </div>
+</div>
+<div class="label">
+    OBSERVING INFILTRATOR
+</div>
+
+<script>
+const cursor = document.getElementById("cursor");
+document.addEventListener("mousemove", e => {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+});
+
+const iris = document.getElementById("iris");
+const eyeContainer = document.getElementById("eyeContainer");
+
+document.addEventListener("mousemove", e => {
+    const rect = eyeContainer.getBoundingClientRect();
+  
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const dx = e.clientX - centerX;
+    const dy = e.clientY - centerY;
+
+    const angle = Math.atan2(dy, dx);
+    const maxMovement = 65;
+    const distance = Math.min(
+        maxMovement,
+        Math.hypot(dx,dy) / 8
+    );
+    const moveX = Math.cos(angle) * distance;
+    const moveY = Math.sin(angle) * distance;
+
+    iris.style.transform =
+    `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+});
+</script>
+
+</body>
+</html>
