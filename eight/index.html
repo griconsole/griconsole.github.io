@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>8</title>
+
+<style>
+
+body {
+  margin: 0;
+  background: black;
+  color: #00ffcc;
+  font-family: "Courier New", monospace;
+  transition: filter 0.6s ease, opacity 0.6s ease;
+}
+
+body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(0,255,204,0.07) 0px,
+          rgba(0,255,204,0.07) 3px,
+          transparent 4px,
+          transparent 8px
+        );
+      pointer-events: none;
+      animation: scan 8s linear infinite;
+      z-index: 5;
+    }
+
+@keyframes scan {
+  from { background-position: 0 0; }
+  to   { background-position: 0 100%; }
+}
+
+body.inactive {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+body.inactive::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: all;
+}
+
+.lore-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.lore-content {
+  max-width: 700px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.code {
+  color: #ff4444;
+  letter-spacing: 2px;
+}
+
+.terminate {
+  align-self: flex-start;
+  color: #ff4444;
+  border: 1px solid #ff4444;
+  padding: 10px 26px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.lore-image {
+  width: 100%;
+  max-width: 520px;
+  display: block;
+  margin: 25px auto;
+
+  border: 2px solid rgba(252, 0, 0, 0.6);
+  box-shadow:
+    0 0 15px rgba(255, 0, 0, 0.35),
+    inset 0 0 20px rgba(255, 0, 0, 0.15);
+
+  filter: contrast(1.1) brightness(0.95) saturate(0.8);
+  background: black;
+  position: relative;
+}
+
+.lore-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(252, 48, 3,0.02) 0px,
+      rgba(252, 48, 3,0.02) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* WEIRD SHIT BELOW */
+
+.char{
+    position:relative;
+    display:inline-block;
+    transition:.5s;
+}
+
+.char.blackout::after{
+    content:"";
+    position:absolute;
+    left:-1px;
+    right:-1px;
+    top:52%;
+    height:1.15em;
+    transform:translateY(-50%) scaleX(0);
+    background:#050505;
+    transform-origin:left;
+    animation:cover .35s forwards;
+}
+
+.keep{
+    color:inherit;
+    text-shadow:none;
+}
+
+.keep.blackout::after{
+    display:none;
+}
+
+@keyframes cover{
+    to{
+        transform:
+        translateY(-50%)
+        scaleX(1);
+    }
+}
+
+</style>
+</head>
+<body>
+<div class="lore-page">
+<h1>EIGHT: 8</h1>
+<h2>[Author: █████ █████████]</h2>
+<p class="code">8888 88 88</p>
+<div id="text"></div>
+<a class="terminate" href="/">TERMIN8</a>
+</div>
+
+<script>
+
+const paragraphs=[
+
+"8.",
+
+"Is infinity.",
+
+"Eight turned sideways becomes infinity.",
+
+"Eight equals infinity.",
+
+"Time is eight.",
+
+"Eight... why eight?",
+
+"What happened to the strange clocks?",
+
+"Why is the number eight everywhere now?",
+
+"Something happened.",
+
+"I dont understand.",
+
+"I had a collection in my basement.",
+
+"I think they were meant to tell time.",
+
+"Except now its an empty shelf.",
+
+"Where my collection was.",
+
+"The dust has blank spots, some circular.",
+
+"Almost like it all vanished at once.",
+
+"Yet I cant remember.",
+
+"Every time I look...",
+
+"I see that number.",
+
+"8."
+
+];
+
+const keepLetters=[
+    39,115,119,133,
+    151,165,186,
+    245,279,292,
+    311,342,361,411,416,432,469
+];
+
+const container=document.getElementById("text");
+
+let globalIndex=0;
+
+paragraphs.forEach(text=>{
+    const p=document.createElement("p");
+    [...text].forEach(letter=>{
+        const span=document.createElement("span");
+        span.className="char";
+        span.innerHTML = (letter===" ")
+            ? "&nbsp;"
+            : letter;
+        if(keepLetters.includes(globalIndex)){
+            span.classList.add("keep");
+        }
+        globalIndex++;
+        p.appendChild(span);
+    });
+    container.appendChild(p);
+});
+
+/* ===================================== */
+
+let eights=0;
+document.addEventListener("keydown",e=>{
+    if(e.key!=="8") return;
+    eights++;
+    if(eights!==8) return;
+    document.querySelectorAll(".char").forEach((char,index)=>{
+        setTimeout(()=>{
+            char.classList.add("blackout");
+        },index*6);
+    });
+});
+
+</script>
+</body>
+</html>
