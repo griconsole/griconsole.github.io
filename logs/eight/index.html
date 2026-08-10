@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>8</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.png">
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div class="lore-page">
+<h1>EIGHT: 8</h1>
+<h2>[Author: █████ █████████]</h2>
+<p class="code">8888 88 88</p>
+<div id="text"></div>
+<a class="terminate" href="/">TERMIN8</a>
+</div>
+
+<script>
+
+const paragraphs=[
+
+"8.",
+
+"Is infinity.",
+
+"Eight turned sideways becomes infinity.",
+
+"Eight equals infinity.",
+
+"Time is eight.",
+
+"Eight... why eight?",
+
+"What happened to the strange clocks?",
+
+"Why is the number eight everywhere now?",
+
+"Something happened.",
+
+"I dont understand.",
+
+"I had a collection in my basement.",
+
+"I think they were meant to tell time.",
+
+"Except now its an empty shelf.",
+
+"Where my collection was.",
+
+"The dust has blank spots, some circular.",
+
+"Almost like it all vanished at once.",
+
+"Yet I cant remember.",
+
+"Every time I look...",
+
+"I see that number.",
+
+"8."
+
+];
+
+const keepLetters=[
+    39,115,119,133,
+    151,165,186,
+    245,279,292,
+    311,342,361,411,416,432,469
+];
+
+const container=document.getElementById("text");
+
+let globalIndex=0;
+
+paragraphs.forEach(text=>{
+    const p=document.createElement("p");
+    [...text].forEach(letter=>{
+        const span=document.createElement("span");
+        span.className="char";
+        span.innerHTML = (letter===" ")
+            ? "&nbsp;"
+            : letter;
+        if(keepLetters.includes(globalIndex)){
+            span.classList.add("keep");
+        }
+        globalIndex++;
+        p.appendChild(span);
+    });
+    container.appendChild(p);
+});
+
+/* ===================================== */
+
+let eights=0;
+document.addEventListener("keydown",e=>{
+    if(e.key!=="8") return;
+    eights++;
+    if(eights!==8) return;
+    document.querySelectorAll(".char").forEach((char,index)=>{
+        setTimeout(()=>{
+            char.classList.add("blackout");
+        },index*6);
+    });
+});
+
+</script>
+</body>
+</html>
