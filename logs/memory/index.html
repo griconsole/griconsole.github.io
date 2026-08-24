@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>THE ERASED MEMORY CACHE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.png">
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div class="lore-page">
+<h1>TEXT LOG: THE CACHE</h1>
+<h2>[Author: Undetected_User]</h2>
+<p class="code">September 1 1997</p>
+<div id="text"></div>
+<a class="terminate" href="/">TERMINATE</a>
+</div>
+
+<script>
+
+const paragraphs=[
+
+"Everything the doctor told us was a lie... he used us for his twisted little game",
+"I will not die here... I will not give up... I will...",
+
+"For those who will find this in the future, please do not let go of hope",
+"There is always an alternate route, not the one he wants you to go, but a completely different path that he has not accounted for",
+
+"Find that path and take it, however painful it may be",
+"These games of his has to stop, and you have to be the one to do it",
+
+"There were many others like you, I too was a part of the others, but he made a mistake when deciding to kill me",
+"He hesitated... at that moment I took advantage of his blindspot and escaped the loop...",
+
+"You're our only hope, and I know you can do it",
+"Because you can persevere...",
+];
+
+const container=document.getElementById("text");
+let globalIndex=0;
+
+paragraphs.forEach(text=>{
+    const p=document.createElement("p");
+    [...text].forEach(letter=>{
+        const span=document.createElement("span");
+        span.className="char";
+        span.innerHTML = (letter===" ")
+            ? "&nbsp;"
+            : letter;
+        if(keepLetters.includes(globalIndex)){
+            span.classList.add("keep");
+        }
+        globalIndex++;
+        p.appendChild(span);
+    });
+    container.appendChild(p);
+});
+
+</script>
+</body>
+</html>

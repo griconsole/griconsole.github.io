@@ -5,8 +5,8 @@
   <title>GRI PRIVATE 1996 CONSOLE</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconG.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconG.png">
 
   <!-- might change the color later, but for now this'll do :3 -->
   <style>
@@ -187,19 +187,19 @@
   -->
   
   <audio id="bgm" loop preload="auto">
-    <source src="/GRIopen.mp3" type="audio/mpeg">
+    <source src="/assets/GRIopen.mp3" type="audio/mpeg">
   </audio>
 
   <audio id="sfxType" preload="auto">
-    <source src="/KeyboardTypeGRI.mp3" type="audio/mpeg">
+    <source src="/assets/KeyboardTypeGRI.mp3" type="audio/mpeg">
   </audio>
 
   <audio id="sfxExecute" preload="auto">
-    <source src="/BEEPgri.mp3" type="audio/mpeg">
+    <source src="/assets/BEEPgri.mp3" type="audio/mpeg">
   </audio>
 
   <audio id="sfxTerminate" preload="auto">
-    <source src="/BEEPgri.mp3" type="audio/mpeg">
+    <source src="/assets/BEEPgri.mp3" type="audio/mpeg">
   </audio>
 
   <div id="ambientLog"></div>
@@ -221,7 +221,7 @@
     <button id="muteBtn">MUTE</button>
 
     <div id="status"></div>
-    <div id="hidden" style="color: black;">vkh vhhv doo, wkh fulpvrq txhhq lv frplqj</div>
+    <div id="hidden" style="color: black;">khu vsruhv d pdqb iru wkdw brx vkdoo ihdu, wkh fulpvrq txhhq lv qhdu</div>
   </div>
 
   <script>
@@ -303,34 +303,12 @@
 
     (function () {
       const routes = {
-        "061895": "/ebb",
-        "518621": "/alwayswatching",
-        "362913": "/elm",
-        "lore22": "/alienarticle",
+        "061895": "/logs/ebb",
+        "888888": "/logs/eight",
+        "362913": "/logs/elm",
         "13206": "https://en.wikipedia.org/wiki/Butterfly_Lovers",
-        "101": "/log101",
-        "1001": "/log1001",
-        "1103": "/log1103",
-        "1333": "/log1333",
-        "1500": "/log1500",
-        "1719": "/log1719",
-        "1720": "/log1720",
-        "1890": "/log1890",
-        "2020": "/log2020",
-        "2375": "/log2375",
-        "2444": "/log2444",
-        "2499": "/log2499",
-        "2810": "/log2810",
-        "2878": "/log2878",
-        "2999": "/log2999",
-        "3000": "/log3000",
-        //"3063": "/log3063",
-        "3101": "/log3101",
-        //"3131": "/log3131",
-        //"3140": "/log3140",
-        //"42": "",
         "513401": "/anomaly",
-        "888888": "/eight",
+        "345013": "/logs/memory",
       };
 
       const input  = document.getElementById("consoleInput");
@@ -400,20 +378,20 @@
 
   const lines = [
     "SYS CHECK OK",
-    "MEMORY BANKS ONLINE",
+    "M3MORY B4NK5 0NL1N3",
     "UPLINK STABLE- NEVERMIND IT IS UNSTABLE AGAIN",
-    "SIGNAL NOISE: AVERAGE",
+    "SIGNAL NOISE: KINDA MID ACTUALLY",
     "AUTH MODULE READY",
-    "LISTENING...",
     "UUDDLRLRBAS",
-    "CONNECTING...",
+    "SEARCHING...",
+    "ARE YOU STILL THERE?...",
     "LOADING COMPLETION: %99.99...",
     "ALL YOUR BASE64 ARE BELONG TO US",
     "BOOTING POLYBIUS...",
-    "EXODIA PIECES LEFT: 1",
+    "EXODIA PIECES LEFT: 0",
     "CURRENT STATUS: ABSOLUTELY CATASTROPHIC",
     "ALL SYSTEMS ONLINE",
-    "CHECKING FOR OTHER-WORLDLY AURAS",
+    "CHECKING FOR SHATTERED REALMS",
     "ALL SYSTEMS OFFLINE",
     "SYSTEM_THREAD_EXCEPTION_NOT_HANDLED_M",
     "OPERATING SYSTEM NOT FOUND",
@@ -422,9 +400,8 @@
     "PRESS ENTER TO DISPLAY CAKE",
     "ERROR: R3D : H3rR1NG : 101",
     "PRESS ANY KEY TO CONTINUE _",
-    "01111010 01101000 01110101",
     "ALL SYSTEMS OFFLINE AND ONLINE AT THE SAME TIME",
-    "ODDIK KCUL ON",
+    "YOU JUST GOT PRNKD",
     "WEIRD IDX: 7%",
     "WEIRD IDX: 6%",
     "WEIRD IDX: 9%",
@@ -438,9 +415,13 @@
     "A BREACH IN THE CAMERA_SYS DETECTED",
     "A BREACH IN THE XLR_LRLOPM DETECTED",
     "TOTAL ABOLITION REQUESTED? Y/N ",
-    "E Y E S E E Y O U",
-    "DRINK SOME WATER, YOU DESERVE IT",
-    "W H A T W I L L O U R H E R O E S D O N O W",
+    "MISS A CLUE? TRY THE LIBRARY",
+    "WHAT? YOU EXPECTED AN EASTER EGG? HAH NICE TRY",
+    "ROLL A LUCK CHECK, I MEAN IT, DO IT, RIGHT NOW.",
+    "PLEASE, DONT TOUCH ANYTHING",
+    "WHAT DO THE BUTTERFLIES MEAN?",
+    "TRY PRESSING 8 EIGHT TIMES",
+    "SELECTED_FUNCTION: [CHANGE THE WORLD]",
   ];
 
   let activated = false;
