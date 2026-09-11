@@ -1,272 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>LOREs22</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" sizes="32x32" href="/alienarticle/favicon22.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/alienarticle/favicon22.png">
+  <meta charset="UTF-8">
+  <title>AlienArticle - Independent Anomalous Research</title>
 
-<style>
-body.archive {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  background: #f4f1ea;
-  color: #111;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/alienarticle/favicon22.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/alienarticle/favicon22.png">
 
-/* HEADER */
-.logo {
-  font-weight: bold;
-  font-size: 20px;
-}
+  <link rel="stylesheet" href="/alienarticle/style.css">
 
-.loc-header {
-  background: #fff;
-  border-bottom: 2px solid #ccc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-}
-
-.logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-img {
-  width: 40px;
-  height: 40px;
-  background: #ddd;
-  border: 1px solid #aaa;
-}
-
-.logo-text {
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.search input {
-  padding: 6px;
-  border: 1px solid #aaa;
-}
-
-.search button {
-  padding: 6px 10px;
-  border: 1px solid #aaa;
-  background: #fff;
-  cursor: pointer;
-}
-
-/* GRID */
-.page-grid {
-  display: grid;
-  grid-template-columns: 220px 1fr 240px;
-  gap: 20px;
-  padding: 20px;
-}
-
-/* SIDEBAR */
-.sidebar h3 {
-  font-size: 15px;
-  border-bottom: 1px solid #aaa;
-  margin-top: 0;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.sidebar li {
-  margin: 6px 0;
-}
-
-.sidebar a {
-  text-decoration: none;
-  color: #003366;
-  position: relative;
-}
-
-.sidebar {
-  font-size: 14px;
-}
-
-/* MORSE HOVER */
-.sidebar a::after {
-  content: attr(data-morse);
-  display: block;
-  font-size: 10px;
-  letter-spacing: 2px;
-  opacity: 0;
-  color: #666;
-  transition: opacity 0.3s;
-  height: 12px;
-}
-
-.sidebar a:hover::after {
-  opacity: 0.6;
-}
-
-.morse::after {
-  content: attr(data-morse);
-  display: block;
-  font-size: 10px;
-  letter-spacing: 2px;
-  opacity: 0;
-  color: #666;
-  transition: opacity 0.3s ease;
-}
-
-.morse:hover::after {
-  opacity: 1;
-}
-/* CONTENT */
-.content h1 {
-  font-size: 28px;
-  margin-top: 0;
-}
-
-.content h2 {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-}
-
-.meta {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.author-note {
-  font-style: italic;
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid #ccc;
-  color: #444;
-}
-
-.lead {
-  font-weight: bold;
-}
-
-/* RIGHT BAR */
-.rightbar img {
-  width: 100%;
-  border: 1px solid #999;
-  margin-top: 10px;
-  transition: filter 0.3s ease;
-}
-
-.caption {
-  font-size: 12px;
-  text-align: center;
-  color: #555;
-}
-
-.rightbar img:hover {
-  filter: contrast(120%) brightness(110%);
-}
-
-.caption {
-  font-size: 12px;
-  text-align: center;
-  color: #555;
-}
-
-/* FOOTER */
-.footer {
-  border-top: 2px solid #ccc;
-  padding: 10px;
-  text-align: center;
-  background: #fff;
-}
-
-.footer a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #003366;
-  cursor: pointer;
-}
-
-/* PUZZLE MESSAGE THINGY */
-#puzzleOutput {
-  display: none;
-  margin-top: 20px;
-  padding: 15px;
-  background: #111;
-  color: #00ffcc;
-  font-family: "Courier New", monospace;
-}
-
-/* HIDDEN CIPHER... BILL CIPHER?... NO NO */
-.hidden-cipher {
-  color: transparent;
-  user-select: text;
-}
-.hidden-cipher::selection {
-  color: #000;
-  background: #ddd;
-}
-
-.nav-link {
-  display: block;
-  margin-bottom: 12px;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: 0.2s;
-}
-
-.nav-link:hover {
-  opacity: 1;
-  text-shadow: 0 0 8px #00ffcc;
-}
-
-.morse-hover::after {
-  content: attr(data-morse);
-  display: block;
-  opacity: 0;
-  font-size: 10px;
-  margin-top: 4px;
-  letter-spacing: 2px;
-  transition: opacity 0.3s;
-}
-
-.morse-hover:hover::after {
-  opacity: 0.8;
-}
-</style>
 </head>
 
 <body class="archive">
 
 <header class="loc-header">
-  <div class="logo-wrap">
-    <img class="logo-img" src="/alienarticle/logolore.png" alt="Logo">
-    <div class="logo-text">LIBRARY OF RECORD ETs 22</div>
+  <div class="logo-wrap" onclick="showHome()" title="Return to AlienArticle main page">
+    <img class="logo-img" src="/alienarticle/logolore.png" alt="AA">
+    <div>
+      <div class="logo-text">AlienArticle</div>
+      <div class="logo-subtitle">Independent Anomalous Research Since 1966</div>
+    </div>
   </div>
-  <div style="display:flex; align-items:center; gap:10px;">
   <div class="search">
-    <input type="text" id="searchInput" placeholder="Search Archive">
-    <button id="searchBtn">Search</button>
+    <input id="searchInput" type="text" placeholder="Search archive...">
+    <button onclick="searchArchive()">Search</button>
   </div>
-</div>
 </header>
+
+<nav class="top-nav">
+  <a onclick="showHome()" id="nav-home">HOME</a>
+  <a onclick="showArticle('archive')" id="nav-archive">COMMUNITY ARTICLES</a>
+  <a onclick="showDonations()" id="nav-donations">DONATIONS</a>
+  <a onclick="showArticle('about')" id="nav-about">ABOUT</a>
+</nav>
 
 <div class="page-grid">
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <h3>Collections</h3>
+    <h3>Archive</h3>
     <ul>
-      <li><a class="nav-link morse-hover" data-id="C-a">Alien Sightings</a></li>
-      <li><a class="nav-link morse-hover" data-id="C-c">GPA Coverups</a></li>
       <li><a class="nav-link morse-hover" data-morse=".---- --... .---- ----.">GPA Suppressed Files</a></li>
       <li><a class="nav-link morse-hover" data-id="C-e">The Kane Files</a></li>
       <li><a class="nav-link morse-hover" data-morse=".---- --... ..--- -----">Witness Reports</a></li>
-      <li><a class="nav-link morse-hover" data-id="funds">Community Fundings Link</a></li>
       <li><a class="nav-link morse-hover" data-morse=".---- ---.. ----. -----">Dr. Alan's Reports</a></li>
     </ul>
 
