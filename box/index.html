@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOX</title>
+
+<style>
+:root {
+    --cyan: #00ffcc;
+    --cyan-dim: #24504b;
+    --inactive: #152426;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #050b0d;
+    background-image:
+        linear-gradient(rgba(0,255,204,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,204,0.035) 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.13) 4px
+    );
+}
+
+.puzzle-wrapper {
+    width: min(1000px, calc(100vw - 36px));
+    overflow-x: auto;
+    padding: 12px 0;
+}
+
+.puzzle {
+    display: grid;
+    grid-template-columns: repeat(19, minmax(28px, 1fr));
+    gap: 7px;
+    min-width: 700px;
+}
+
+.column {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px;
+    height: 110px;
+}
+
+.choice {
+    border: 1px solid var(--cyan-dim);
+    background: var(--inactive);
+    cursor: pointer;
+    padding: 0;
+    min-width: 0;
+}
+
+.choice:hover {
+    border-color: var(--cyan);
+    background: #10302e;
+}
+
+.choice.selected {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0,255,204,0.35);
+}
+</style>
+</head>
+
+<body>
+
+<div class="puzzle-wrapper">
+    <div class="puzzle" id="puzzle"></div>
+</div>
+
+<script>
+const DESTINATION = "/eyespy";
+
+const TARGET_PATTERN = [
+    "bottom", "top", "bottom", "top", "top",
+    "bottom", "bottom", "bottom", "top", "bottom",
+    "bottom", "top", "top", "top", "bottom",
+    "top", "top", "top", "top"
+];
+
+const selections = Array(19).fill(null);
+const puzzle = document.getElementById("puzzle");
+
+TARGET_PATTERN.forEach((_, index) => {
+    const column = document.createElement("div");
+    column.className = "column";
+
+    ["top", "bottom"].forEach(position => {
+        const square = document.createElement("button");
+        square.className = "choice";
+        square.type = "button";
+        square.setAttribute("aria-label", `Position ${index + 1} ${position}`);
+
+        square.addEventListener("click", () => {
+            selections[index] = position;
+
+            [...column.children].forEach((button, i) => {
+                button.classList.toggle(
+                    "selected",
+                    (i === 0 ? "top" : "bottom") === position
+                );
+            });
+
+            checkPattern();
+        });
+
+        column.appendChild(square);
+    });
+
+    puzzle.appendChild(column);
+});
+
+function checkPattern() {
+    const complete = selections.every(value => value !== null);
+    if (!complete) return;
+
+    const correct = selections.every(
+        (value, index) => value === TARGET_PATTERN[index]
+    );
+
+    if (correct) {
+        window.location.href = DESTINATION;
+    }
+}
+</script>
+
+</body>
+</html>
