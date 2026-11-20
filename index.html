@@ -303,15 +303,15 @@
 
     (function () {
       const routes = {
-        "061895": "/logs/ebb",
-        "888888": "/logs/eight",
-        "362913": "/logs/elm",
+        "061895": "/logs/ebb/",
+        "888888": "/logs/eight/",
+        "362913": "/logs/elm/",
         "13206": "https://en.wikipedia.org/wiki/Butterfly_Lovers",
-        "513401": "/anomaly",
+        "513401": "/anomaly/",
         "11013": "/fate",
-        "experiment5102": "/logs/exp5012",
-        "bestintv": "/forbestbroadcast/recruits",
-        "1nfintyc0re": "/story/act1",
+        "experiment5012": "/logs/exp5012/",
+        "bestintv": "/forbestbroadcast/recruits/",
+        "1nfintyc0re": "/story/act1/",
         //"345013": "/logs/memory",
       };
 
@@ -319,8 +319,15 @@
       const status = document.getElementById("status");
       const btn    = document.getElementById("executeBtn");
 
+      input.autocapitalize = "off";
+      input.spellcheck = false;
+
+      function normalizeKey(value) {
+        return String(value || "").normalize("NFKC").trim().toLowerCase();
+      }
+
       function execute() {
-        const key = input.value.trim().toLowerCase();
+        const key = normalizeKey(input.value);
         status.style.color = "#00ffcc";
 
         if (routes[key]) {

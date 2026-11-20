@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>Act1-Page-Story-Archive</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconGRIPage.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconGRIPage.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconGRI.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconGRI.png">
 
 <style>
 :root {
@@ -18,7 +18,11 @@
 
 * { box-sizing: border-box; }
 
-html, body { min-height: 100%; }
+html, body { width: 100%; min-height: 100%; }
+
+@media (min-width: 761px) {
+  html, body { height: 100%; overflow: hidden; }
+}
 
 html {
   scrollbar-width: thin;
@@ -94,21 +98,27 @@ body::after {
 
 main {
   width: min(100%, 1320px);
+  height: 100svh;
   margin: 0 auto;
-  padding: clamp(16px, 2.5vw, 32px);
+  padding: clamp(12px, 2vw, 24px);
 }
 
 .page-grid {
   display: grid;
+  width: 100%;
+  height: 100%;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(10px, 1.5vw, 20px);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px);
 }
 
 .page-slot {
   position: relative;
   display: grid;
   place-items: center;
-  width: 100%;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
   aspect-ratio: 210 / 297;
   overflow: hidden;
   padding: 0;
@@ -208,10 +218,10 @@ main {
 
 .viewer img {
   display: block;
-  max-width: 90vw;
-  max-height: 90vh;
-  width: auto;
-  height: auto;
+  width: 94vw;
+  height: 94vh;
+  max-width: 94vw;
+  max-height: 94vh;
   object-fit: contain;
   box-shadow: 0 0 38px rgba(0, 255, 204, .13);
   cursor: default;
@@ -222,19 +232,20 @@ main {
 .viewer.open img { transform: scale(1); }
 
 @media (max-width: 760px) {
-  main { padding: 16px 12px 68px; }
-
+  html, body { height: auto; overflow-x: hidden; overflow-y: auto; }
+  main { height: auto; min-height: 100svh; padding: 16px 12px 68px; }
   .page-grid {
+    height: auto;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
     gap: 12px;
   }
-
+  .page-slot { width: 100%; height: auto; aspect-ratio: 210 / 297; }
   .eta { font-size: 12px; }
 }
 
 @media (max-width: 420px) {
   .page-grid { grid-template-columns: 1fr; }
-
   main { width: min(100%, 360px); }
 }
 </style>
@@ -251,12 +262,12 @@ main {
 
 <button class="music-mute" id="musicMuteButton" type="button">MUTE</button>
 
-<audio id="backgroundAudio" src="assets/lab-loop.mp3" loop preload="auto"></audio>
+<audio id="backgroundAudio" src="/assets/lab-loop.mp3" loop preload="auto"></audio>
 
 <script>
 const pages = [
-  { src: "assets/pages/testpage1.png", eta: "ETA: 25.11.26" },
-  { src: "assets/pages/testpage2.png", eta: "ETA: 30.11.26" },
+  { src: "/assets/pages/testpage1.png", eta: "ETA: 25.11.26" },
+  { src: "/assets/pages/testpage2.png", eta: "ETA: 30.11.26" },
   { src: "", eta: "ETA: 5.12.26" },
   { src: "", eta: "ETA: 10.12.26" },
   { src: "", eta: "ETA: 11.12.26" },

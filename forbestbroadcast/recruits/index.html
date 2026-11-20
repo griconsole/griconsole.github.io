@@ -34,6 +34,8 @@
 
 html {
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #e5b942 #28130f;
 }
 
 body {
@@ -43,6 +45,32 @@ body {
     color: var(--cream);
     font-family: var(--font);
     overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: #28130f;
+  border-left: 1px solid #651f32;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #f4d36b, #c18b28);
+  border: 2px solid #28130f;
+  border-radius: 0;
+  box-shadow: inset 0 0 4px rgba(255, 240, 180, .25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffe58a;
+  box-shadow: 0 0 9px rgba(229, 185, 66, .65);
+}
+
+::-webkit-scrollbar-corner {
+  background: #28130f;
 }
 
 button, input {
@@ -1911,7 +1939,7 @@ footer {
 }
 
 .hero-sticker {
-    background: transparent url('assets/box-horizontal-fill.png') center / 100% 100% no-repeat;
+    background: transparent url('/assets/box-horizontal-fill.png') center / 100% 100% no-repeat;
     color: #69252b;
     padding: 13px 21px;
     min-width: 190px;
@@ -1926,7 +1954,7 @@ footer {
     width: fit-content;
     min-width: 145px;
     padding: 7px 13px;
-    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+    background: url('/assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
     color: var(--gold-light);
 }
 
@@ -1935,7 +1963,7 @@ footer {
     width: fit-content;
     min-width: 142px;
     padding: 7px 12px;
-    background: url('assets/box-horizontal-fill.png') center / 100% 100% no-repeat;
+    background: url('/assets/box-horizontal-fill.png') center / 100% 100% no-repeat;
     color: #6a282d;
     font-weight: 900;
 }
@@ -1943,19 +1971,19 @@ footer {
 .section-sub {
     display: inline-block;
     padding: 7px 14px;
-    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+    background: url('/assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
 }
 
 .detail-meta span {
     padding: 8px 12px;
-    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+    background: url('/assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
 }
 
 .episode-no {
     display: inline-block;
     width: fit-content;
     padding: 5px 10px;
-    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+    background: url('/assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
 }
 
 .poster-art {
@@ -2267,7 +2295,7 @@ footer {
 
 <nav class="navbar">
   <a class="logo" href="#" id="logoHome" aria-label="BestTV home">
-    <img class="brand-logo" src="assets/besttv-logo-full.png" alt="BEST TV">
+    <img class="brand-logo" src="/assets/besttv-logo-full.png" alt="BEST TV">
   </a>
 
   <div class="nav-links">
@@ -2285,13 +2313,13 @@ footer {
   </div>
 
   <button class="delivery-button" id="deliveryButton" title="A delivery for you!">
-    <img src="assets/best-delivery.png" alt="Best delivery for you">
+    <img src="/assets/best-delivery.png" alt="Best delivery for you">
   </button>
 </nav>
 
 <section class="hero" id="hero">
   <div class="hero-content">
-    <div class="eyebrow hero-eyebrow">A BESTTV FEATURE PRESENTATION <img class="on-air-art" src="assets/on-air-sign.png" alt="ON AIR"></div>
+    <div class="eyebrow hero-eyebrow">A BESTTV FEATURE PRESENTATION <img class="on-air-art" src="/assets/on-air-sign.png" alt="ON AIR"></div>
     <h1>COSMIC MACHINE<br>ADVENTURES</h1>
     <p class="hero-copy">
       Eight iterations! Countless loops! And one exceptionally handsome host!!!
@@ -2310,9 +2338,9 @@ footer {
     </div>
   </div>
 
-  <img class="hero-frame-fill" src="assets/box-portrait-fill.png" alt="" aria-hidden="true">
-  <img class="hero-frame-outline" src="assets/box-portrait-outline.png" alt="" aria-hidden="true">
-  <img class="hero-host" src="assets/mr-forbest.png" alt="Mr. Forbest, BestTV host">
+  <img class="hero-frame-fill" src="/assets/box-portrait-fill.png" alt="" aria-hidden="true">
+  <img class="hero-frame-outline" src="/assets/box-portrait-outline.png" alt="" aria-hidden="true">
+  <img class="hero-host" src="/assets/mr-forbest.png" alt="Mr. Forbest, BestTV host">
   <div class="hero-sticker">YOUR FAVORITE SHOW! PROBABLY!</div>
 </section>
 
@@ -2351,7 +2379,7 @@ footer {
 </main>
 
 <footer>
-  <img class="footer-logo-art" src="assets/besttv-logo-wordmark.png" alt="BEST TV">
+  <img class="footer-logo-art" src="/assets/besttv-logo-wordmark.png" alt="BEST TV">
   <span>INDEPENDENT OMNIVERSAL BROADCASTING SINCE ???</span>
   <span>© MR. FORBEST. ALL REALITIES RESERVED.</span>
 </footer>
@@ -2598,13 +2626,13 @@ const SEASONS = [
 ];
 
 const SEASON_DESCRIPTIONS = {
-"1": "CAST FILE // Add the recruits from the first recorded loop here. Use this panel for the original ensemble and a short introduction to their opening broadcast.", 
-"2": "CAST FILE // Add this iteration's recruit names here. This panel is reserved for the second group's cast, recurring guests, and its particular brand of trouble.", 
-"3": "CAST FILE // Enter the third loop's cast here. Add a spoiler-free note about the people viewers will follow through this season's archive.", 
-"4": "CAST FILE // Add the fourth group's recruits and supporting cast here. This season gets its own description, separate from every other loop.", 
-"5": "CAST FILE // List the fifth iteration's cast here, then add a quick programme note about what makes their broadcasts distinct.", 
-"6": "CAST FILE // Add the sixth group's cast here. Use this space for its standout personalities, guests, and a brief introduction to the season.", 
-"7": "CAST FILE // Enter the last archived loop's cast here. Give viewers a short cast introduction before they explore this completed transmission.", 
+"1": "CAST FILE // Add the recruits from the first recorded loop here. Use this panel for the original ensemble and a short introduction to their opening broadcast.",
+"2": "CAST FILE // Add this iteration's recruit names here. This panel is reserved for the second group's cast, recurring guests, and its particular brand of trouble.",
+"3": "CAST FILE // Enter the third loop's cast here. Add a spoiler-free note about the people viewers will follow through this season's archive.",
+"4": "CAST FILE // Add the fourth group's recruits and supporting cast here. This season gets its own description, separate from every other loop.",
+"5": "CAST FILE // List the fifth iteration's cast here, then add a quick programme note about what makes their broadcasts distinct.",
+"6": "CAST FILE // Add the sixth group's cast here. Use this space for its standout personalities, guests, and a brief introduction to the season.",
+"7": "CAST FILE // Enter the last archived loop's cast here. Give viewers a short cast introduction before they explore this completed transmission.",
 "8": "CAST FILE // Add the current campaign party and its supporting cast here. This is the live iteration, with new episodes still to come."};
 
 const SEASON_COLORS = {
@@ -2617,46 +2645,377 @@ const POSTER_SYMBOLS = [
   { glyph: "✦" }, { glyph: "◈" }, { glyph: "☼" }, { glyph: "✧" },
   { glyph: "⌁" }, { glyph: "♢" }, { glyph: "✷" }, { glyph: "◉" },
   { glyph: "⚑" }, { glyph: "✴" }, { glyph: "⌘" }, { glyph: "◇" },
-  { asset: "assets/poster-icons/gri-emblem.png" },
-  { asset: "assets/poster-icons/television.png" },
-  { asset: "assets/poster-icons/infinity.png" },
-  { asset: "assets/poster-icons/flying-saucer.png" },
-  { asset: "assets/poster-icons/coffee-cup.png" },
-  { asset: "assets/poster-icons/portal-ring.png" },
-  { asset: "assets/poster-icons/rift.png" },
-  { asset: "assets/poster-icons/cowboy-hat.png" },
-  { asset: "assets/poster-icons/computer-terminal.png" },
-  { asset: "assets/poster-icons/flamingo.png" },
-  { asset: "assets/poster-icons/figure.png" },
-  { asset: "assets/poster-icons/bowtie.png" },
-  { asset: "assets/poster-icons/atom-book.png" },
-  { asset: "assets/poster-icons/magnifying-glass.png" },
-  { asset: "assets/poster-icons/clock.png" }
+  { asset: "/assets/poster-icons/gri-emblem.png" },
+  { asset: "/assets/poster-icons/television.png" },
+  { asset: "/assets/poster-icons/infinity.png" },
+  { asset: "/assets/poster-icons/flying-saucer.png" },
+  { asset: "/assets/poster-icons/coffee-cup.png" },
+  { asset: "/assets/poster-icons/portal-ring.png" },
+  { asset: "/assets/poster-icons/rift.png" },
+  { asset: "/assets/poster-icons/cowboy-hat.png" },
+  { asset: "/assets/poster-icons/computer-terminal.png" },
+  { asset: "/assets/poster-icons/flamingo.png" },
+  { asset: "/assets/poster-icons/figure.png" },
+  { asset: "/assets/poster-icons/bowtie.png" },
+  { asset: "/assets/poster-icons/atom-book.png" },
+  { asset: "/assets/poster-icons/magnifying-glass.png" },
+  { asset: "/assets/poster-icons/clock.png" }
 ];
-const COMMENTERS = ["ChannelSurfer84","static_in_my_brain","BestieTV","TapeDeckEnjoyer","DefinitelyNotAClone","TheRealAudience"];
+const COMMENTERS = [
+  "QueenALTR1",
+  "LemonaidMermaid",
+  "Horknee4CardGames",
+  "IShip60yearolds",
+  "SourPatchDude",
+  "PurplePanthress",
+  "Mike",
+  "LokiTheGroundMaster",
+  "crazybitchlinda",
+  "teabagfan",
+  "maxium11",
+  "lore5",
+  "santasnumber1elf",
+  "skrfytnfxmza",
+  "redharryng",
+  "whysoserious",
+  "starboy0",
+  "cunningspirate",
+  "nintaioni",
+  "copperrr",
+  "partydiva9000",
+  "souseless",
+  "majorspoilergiver",
+  "demonofharness",
+  "snakebitch_",
+  "yeehawrodeo",
+  "matthewpatrick_gt",
+  "zibzibizub",
+  "dj_krazybussy",
+  "scottishbunny",
+  "number1broccolifan",
+  "Seer1",
+  "Anonymous_J",
+  "lookatmyprofile",
+  "chrysalis",
+  "sohighrn",
+  "cls.exe",
+  "reginald",
+  "funnybones",
+  "luck_be_a_cuck",
+  "SirIsaacNewton",
+  "sealonmymind",
+  "rectanglensquares",
+  "lookback",
+  "conspiracy_theorist_jacky",
+  "lukewarmtea",
+  "vivana_V",
+  "shion9",
+  "глупаясобака",
+  "sorprendente",
+  "viajeroeneltiempo",
+  "mostfamousactoreveractually",
+  "conmanpan",
+  "justa_flam",
+  "over9001",
+  "winton",
+  "JeremyBearimy",
+  "verytrendy",
+  "death13",
+  "delta_viewer",
+  "rabies.ronnie",
+  "king",
+  "totherythm",
+  "iown20firearms",
+  "lumi.rawr",
+  "prinsesse_nayya",
+  "divail.theowllady",
+  "dragraceseason8winner",
+  "Ineverknew",
+  "Ididntknow",
+  "honeywheresmymetacommentary",
+  "macaroon.parrot",
+  "always.bet.on.falsehydra",
+  "nat20haniel",
+  "oz_thewoz",
+  "nintendo-bootlicker",
+  "dntcome2schooltmrw",
+  "mrflimflam",
+  "rgbalien",
+  "bratsummer",
+  "gallonOfGay",
+  "sirius8",
+  "PlutoEnthusiast",
+  "CMAsuperfan",
+  "CMAisMyLife",
+  "CMAtheBEST",
+  "sasalele"
+];
 const SAMPLE_COMMENTS = [
-  "Mr. Forbest called this one a masterpiece. I fear he may be right.",
-  "I blinked and somehow missed an entire subplot. Watching again.",
-  "The production value is incredible. The safety standards are not.",
-  "Five stars. One star deducted because my television started laughing.",
-  "Can we get a director's commentary? Preferably one that explains anything.",
-  "This is why I never skip the opening credits.",
-  "I showed this to my therapist. They asked me to stop.",
-  "A delightful use of my limited remaining sense of normality."
-];
-const BLURBS = [
-  "Mr. Forbest personally recommends this broadcast. The studio has declined to explain the glittering noise in the final reel.",
-  "A recovered favourite from the archive. Please enjoy the programme, and kindly disregard any contradictory advertisements.",
-  "The title card survived, the applause survived, and the production notes did not. A BestTV classic!",
-  "Forbest describes this episode as 'essential viewing'. The legal department has asked him to stop using that phrase.",
-  "A curious little transmission from an earlier loop. Best watched with snacks and a healthy respect for the impossible.",
-  "The audience demanded an encore. The broadcast system interpreted that request rather literally."
+  "What a waste of my time...",
+  "I blinked and somehow missed the entire plot, watching again rn",
+  "production is incredible! how do they even come up with this stuff?",
+  "Literally peak television",
+  "Series name?",
+  "Oh so that's what the foreshadowing was for... kinda cliche tho",
+  "I showed this to my therapist and now she needs to go to a therapist as well",
+  "ah yes, what a delightful use of my limited remaining sense of sanity",
+  "Kinda expected more tbh",
+  "Wait why is he kinda hot tho",
+  "The director needs to be called out for his forceful methods of broadcasting! This is outrageous",
+  "can I buy this site for 20krillion kromers?",
+  "the shareholders are crying watching this piece of garbage lolll",
+  "never in my life did I think I'd be watching something like this hello???",
+  "omg the ending? are we gonna talk about that at all???",
+  "the comment section is dead internet theory at its best",
+  "forbest paid me to comment, he never said I had to watch or rate good tho lol",
+  "nah this guy is throwing, someone kick him off the team rn",
+  "Ah! What a delightful episode! This made my day, week, month, year, decade and lifetime! Thank you so much Mr. ForBest!!!",
+  "The commenter above or below me is gay",
+  "last episode was better...",
+  "so, what's the deal with the antagonist anyway?",
+  "bro thats such a rough cliffhanger what!!!?!",
+  "oh, so the writers just hate us then",
+  "extreme meme potential",
+  "can someone explain the lore to me, im too lazy to binge watch all the episodes",
+  "oh that's not...",
+  "smash",
+  "wait, she's kinda hot tho, what's her socials",
+  "Ugh I wish I could be in their place, I wanna fight aliens too!",
+  "oh I thought they would die this episode...",
+  "can someone explain the lore to me, im too lazy to binge watch all the episodes",
+  "anyone watching this in 4048?",
+  "My favourite part has to be him saying “I find aliens delightful” but he’s saying it so emotionlessly",
+  "Whoa this season's cast really hasn't aged well but I still live for it.",
+  "I miss this era of BestTV so much.. ",
+  "This one has always been my favorite season of CMA",
+  "Why are all the aliens highkey hot?",
+  "I'm in love with the team dynamic this season!!!",
+  "Needed to rewatch it’s an itch only Forbest has scratched",
+  "I'm in love with the team dynamic this season!!!",
+  "Rewatching again and realized how problematic he was...",
+  "this did not age well lmaoooo",
+  "Everything she says just makes me burst into laughter",
+  "is it me or did the soundtrack change?"
 ];
 
-/* Add custom episode comments here. stars: 1-5 or null. */
 const CUSTOM_COMMENTS = [
-  // { season: 8, episode: 35, author: "Mr. Forbest", comment: "Simply television at its finest!", stars: 5 },
-  // { season: 2, episode: 4, author: "Anonymous Viewer", comment: "I am not pressing that button again.", stars: null }
+  {
+    "season": 1,
+    "episode": 1,
+    "author": "read-dead-manny",
+    "comment": "Major spoilers: I never realized the team was very similar with season 6's team dynamic... looking back all of them are heavy on the quantum and hardlight theme, its almost a breath of fresh air",
+    "stars": 5
+  },
+  {
+    "season": 2,
+    "episode": 20,
+    "author": "verybadPersun",
+    "comment": "Oh, so all that buildup was for nothing? It's just going to do the same thing last season did with the evil guy twist? This is getting boring by now, the writers need to get better at their job",
+    "stars": 1
+  },
+  {
+    "season": 3,
+    "episode": 7,
+    "author": "smartsmella",
+    "comment": "wow, killing one of the group members this early was not on my bingo card... I'll miss Laura tho, she was the best one among them, now they're totally gonna struggle with the rest of the realms",
+    "stars": 3
+  },
+  {
+    "season": 4,
+    "episode": 19,
+    "author": "sunshineNlollipops",
+    "comment": "my favorite character survived!!!! I'm so happy right nowww",
+    "stars": 4
+  },
+  {
+    "season": 5,
+    "episode": 3,
+    "author": "jasonMamoa",
+    "comment": "not related to the show, but have any of you noticed a strange feeling you get while watching anything from this site? It's almost like something is watching back...",
+    "stars": 5
+  },
+  {
+    "season": 6,
+    "episode": 17,
+    "author": "nana-san",
+    "comment": "Sooo they're just going to leave us off at this cliffhanger now? Last time they did this all the recruits died and the next episodes were just all dark, is the same thing going to happen this time too???",
+    "stars": 2
+  },
+  {
+    "season": 7,
+    "episode": 20,
+    "author": "godofLaughs",
+    "comment": "WOAHHH, honestly, the best season yet! I'm so surprised with the twist of Damien actually getting through and having a clash with Vale??? That was jawdropping!",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 1,
+    "author": "emmaJemmy",
+    "comment": "Oooh, I like the cast so far! Wish they had a girl in the cast tho... only season without any, so sad",
+    "stars": 3
+  },
+  {
+    "season": 8,
+    "episode": 2,
+    "author": "forwurst",
+    "comment": "are we going to address the elephant in the room? Who is Jane?",
+    "stars": 4
+  },
+  {
+    "season": 8,
+    "episode": 3,
+    "author": "mermanlovesmen",
+    "comment": "more like a Deep Die lol",
+    "stars": 2
+  },
+  {
+    "season": 8,
+    "episode": 6,
+    "author": "imsogreenn",
+    "comment": "This is just a whole episode dedicated to Atticus? The mystery itself was boring too- the producers are doing something weird with this season, i dont like it!",
+    "stars": 1
+  },
+  {
+    "season": 8,
+    "episode": 7,
+    "author": "pidderdines",
+    "comment": "OhmyGOD!!! ITS TYE!!! He's BACKK!!!! Last we saw him was in season 4!!! This is so insane!!!!!",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 12,
+    "author": "jawbreaker",
+    "comment": "wait isn't that Ignis's voice actor as the lawyer? So glad he's back!",
+    "stars": 4
+  },
+  {
+    "season": 8,
+    "episode": 13,
+    "author": "axolotlguyy",
+    "comment": "oh so this is this seasons twist? kinda dig the little guys, I wish I had one as a pet!",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 15,
+    "author": "kokichifan",
+    "comment": "Best mystery since last seasons death game!!! Kinda like the sci-fi twist on this one as well!",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 17,
+    "author": "maiurujel",
+    "comment": "Wait this was the finale? I thought we were getting 20 episodes only?",
+    "stars": 2
+  },
+  {
+    "season": 8,
+    "episode": 18,
+    "author": "grannymuriel",
+    "comment": "my grandson loved that cartoon when he was a kid, so sad they had to cancel the last episode",
+    "stars": 3
+  },
+  {
+    "season": 8,
+    "episode": 19,
+    "author": "MatPat.gt",
+    "comment": "I might have a theory",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 21,
+    "author": "bingerblaster",
+    "comment": "Forbest made an apperance?? After 8 seasons this guy finally interacts with the recruits!!! Oh the potential!!!!!",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 22,
+    "author": "emilyMUA",
+    "comment": "OMG!!! Arent these guys references to the season 2 and 5 cast!? The attention to detail is *chefs kiss*",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 23,
+    "author": "bond07",
+    "comment": "these two are highly suspicious, bet they're going to backstab the team like in season 3's Juan and Polly duo",
+    "stars": 3
+  },
+  {
+    "season": 8,
+    "episode": 25,
+    "author": "jobbathegut",
+    "comment": "Was that a jojo reference?",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 27,
+    "author": "highnooncass",
+    "comment": "So we're blatantly copying franchises now? How original",
+    "stars": 2
+  },
+  {
+    "season": 8,
+    "episode": 28,
+    "author": "aliceW",
+    "comment": "Oh it's the same place from season 1! what a throwback lol",
+    "stars": 4
+  },
+  {
+    "season": 8,
+    "episode": 29,
+    "author": "NikitaWoolie",
+    "comment": "Oh hey is that my realm? Hell yea!! didn't know they were here, wouldve visited the scene",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 30,
+    "author": "toiletman",
+    "comment": "leak that groupchat, right now!",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 31,
+    "author": "moth",
+    "comment": "hes so larpizarp",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 32,
+    "author": "crvr.druid",
+    "comment": "can yall kick that turtle once more for me?",
+    "stars": 5
+  },
+  {
+    "season": 8,
+    "episode": 33,
+    "author": "kitkat",
+    "comment": "nice!",
+    "stars": 4
+  },
+  {
+    "season": 8,
+    "episode": 34,
+    "author": "beta",
+    "comment": "yeah, seems about right",
+    "stars": 3
+  },
+  {
+    "season": 8,
+    "episode": 35,
+    "author": "szg15242",
+    "comment": "what's an infinity core?",
+    "stars": 1
+  }
 ];
 
 const storage = {
@@ -2671,10 +3030,9 @@ const storage = {
 
 const PLAY_CRASH_LIMIT = 8;
 let watchlist = storage.read("besttv-watchlist", []);
-let comments = storage.read("besttv-comments", {});
-let ratings = storage.read("besttv-ratings", {});
-let playCounts = storage.read("besttv-play-counts", {});
-let sampleReviewCache = storage.read("besttv-sample-reviews", {});
+let comments = {};
+let ratings = {};
+let playCounts = {};
 let soundContext = null;
 
 const mainContent = document.getElementById("mainContent");
@@ -2702,8 +3060,11 @@ function ratingFor(ep) {
 }
 function summaryFor(ep) {
   if (!ep.available) return ep.summary || "This broadcast has not aired yet.";
-  if (ep.season.id === 8) return "A recording from the current group of recruits. Programme notes are awaiting Mr. Forbest's approval.";
-  return BLURBS[(ep.number + ep.season.id * 3) % BLURBS.length];
+  if (ep.season.id === 8) return "[A recording from the current group of recruits- Programme notes are awaiting Mr. Forbest's approval]";
+  const blurbs = typeof BLURBS !== "undefined" && Array.isArray(BLURBS) ? BLURBS : [];
+  if (ep.summary) return ep.summary;
+  if (blurbs.length) return blurbs[(ep.number + ep.season.id * 3) % blurbs.length];
+  return "This archived broadcast is available for viewing. Detailed programme notes have not been added yet.";
 }
 function notify(message, duration = 2100) {
   toast.textContent = message;
@@ -2735,8 +3096,8 @@ function episodeCard(ep) {
     <button class="episode-card ${locked ? "locked" : ""}" data-episode="${ep.id}">
       ${locked ? '<span class="locked-mark">COMING SOON</span>' : ""}
       <div class="poster-art" style="--poster-a:${colors[0]};--poster-b:${colors[1]}">
-        <img class="poster-stock" src="assets/box-portrait-fill.png" alt="" aria-hidden="true">
-        <img class="poster-frame-art" src="assets/box-portrait-outline.png" alt="" aria-hidden="true">
+        <img class="poster-stock" src="/assets/box-portrait-fill.png" alt="" aria-hidden="true">
+        <img class="poster-frame-art" src="/assets/box-portrait-outline.png" alt="" aria-hidden="true">
         <span class="poster-season">S${String(ep.season.id).padStart(2,"0")}</span>
         <span class="poster-symbol">
           ${(() => {
@@ -2751,7 +3112,7 @@ function episodeCard(ep) {
       <div class="episode-info">
         <div class="episode-no">EPISODE ${String(ep.number).padStart(2,"0")}</div>
         <h4>${esc(ep.title)}</h4>
-        <div class="mini-rating">${locked ? "NOT YET AIRED" : `★ ${ratingFor(ep)}/10`}</div>
+        <div class="mini-rating">${locked ? "NOT YET AIRED" : `★ ${ratingFor(ep)/2}/5`}</div>
       </div>
     </button>`;
 }
@@ -2765,7 +3126,7 @@ function renderSeasonCards() {
     return `
       <button class="season-card" data-open-season="${season.id}" data-number="${String(season.id).padStart(2,"0")}" style="--season-color:${color}">
         <div class="season-kicker">BESTTV ORIGINAL // S${String(season.id).padStart(2,"0")}</div>
-        ${season.id === 8 ? '<img class="season-on-air" src="assets/on-air-sign.png" alt="ON AIR">' : ""}
+        ${season.id === 8 ? '<img class="season-on-air" src="/assets/on-air-sign.png" alt="ON AIR">' : ""}
         <h3>${esc(season.name)}</h3>
         <p>${esc(season.tagline)}</p>
         <div class="season-count">${available} / ${season.episodes.length} BROADCASTS</div>
@@ -2816,9 +3177,9 @@ function showSeasons() {
   }).join("");
   mainContent.innerHTML = `
     <div class="seasons-page-intro">
-      <div class="eyebrow">THE COMPLETE LOOP ARCHIVE</div>
+      <div class="eyebrow">THE COMPLETE ARCHIVE</div>
       <h1>SEASONS OF BESTTV</h1>
-      <p>Eight transmissions, in chronological order. Hover for each season's cast notes, then select a season to browse its episodes.</p>
+      <p>Eight transmissions that might or might not be in chronological order! Hover and select a season to browse its episodes</p>
     </div>
     <div class="season-strip-wrap"><div class="season-strip">${blocks}</div></div>
     <div class="season-strip-help">← DRAG OR SHIFT + SCROLL TO EXPLORE THE ARCHIVE →</div>`;
@@ -2834,10 +3195,10 @@ function showSeason(id) {
     <section class="season-page-banner" style="background:linear-gradient(115deg,${colors[0]},${colors[1]})">
       <div class="eyebrow">BESTTV ORIGINAL // SEASON ${String(id).padStart(2,"0")}</div>
       <h1>${esc(season.name)}</h1>
-      <p>${esc(season.tagline)} · ${available} of ${season.episodes.length} broadcasts available.</p>
+      <p>${esc(season.tagline)} · ${available} of ${season.episodes.length} broadcasts available</p>
     </section>
     <div class="page-title-row">
-      <div><h2>EPISODE GUIDE</h2><p>Browse the season's complete broadcast list.</p></div>
+      <div><h2>EPISODE GUIDE</h2><p>Browse the season's complete broadcast list!</p></div>
       <button class="back-button" data-go-seasons>← ALL SEASONS</button>
     </div>
     <div class="episode-grid">${season.episodes.map(ep => episodeCard({...ep, season})).join("")}</div>`;
@@ -2848,7 +3209,7 @@ function showAllEpisodes() {
   const results = allEpisodes().filter(ep => ep.available);
   mainContent.innerHTML = `
     <div class="page-title-row">
-      <div><div class="eyebrow">THE COMPLETE BESTTV LIBRARY</div><h1>ALL BROADCASTS</h1><p>${results.length} available recordings across the loop archive.</p></div>
+      <div><div class="eyebrow">THE COMPLETE BESTTV LIBRARY</div><h1>ALL BROADCASTS</h1><p>${results.length} available recordings across the archive</p></div>
       <button class="back-button" data-go-home>← HOME</button>
     </div>
     <div class="results-grid">${results.map(episodeCard).join("")}</div>`;
@@ -2859,10 +3220,10 @@ function showSaved() {
   const saved = watchlist.map(findEpisode).filter(Boolean).filter(ep => ep.available);
   mainContent.innerHTML = `
     <div class="page-title-row">
-      <div><div class="eyebrow">PERSONAL COLLECTION</div><h1>MY TAPE STACK</h1><p>${saved.length} broadcasts saved for later.</p></div>
+      <div><div class="eyebrow">PERSONAL COLLECTION</div><h1>MY TAPES</h1><p>${saved.length} broadcasts saved for later viewings!</p></div>
       <button class="back-button" data-go-home>← HOME</button>
     </div>
-    ${saved.length ? `<div class="results-grid">${saved.map(episodeCard).join("")}</div>` : `<p style="color:var(--muted)">Your tape stack is empty. Open a broadcast and add it to your collection.</p>`}`;
+    ${saved.length ? `<div class="results-grid">${saved.map(episodeCard).join("")}</div>` : `<p style="color:var(--muted)">Your tape collection is empty. Open a broadcast and add it to your tapes for easier access!</p>`}`;
   window.scrollTo({top:0, behavior:"smooth"});
 }
 function showSearchResults() {
@@ -2874,28 +3235,42 @@ function showSearchResults() {
   );
   mainContent.innerHTML = `
     <div class="page-title-row">
-      <div><div class="eyebrow">BESTTV SEARCH DESK</div><h1>YOU ASKED, WE FOUND.</h1><p>${results.length} matching broadcasts.</p></div>
+      <div><div class="eyebrow">BESTTV SEARCH DESK</div><h1>YOU ASKED, WE FOUND: [</h1><p>${results.length}] MATCHING BROADCASTS!</p></div>
       <button class="back-button" data-go-home>← HOME</button>
     </div>
-    ${results.length ? `<div class="results-grid">${results.map(episodeCard).join("")}</div>` : `<p style="color:var(--muted)">Nothing found. Try a different search.</p>`}`;
+    ${results.length ? `<div class="results-grid">${results.map(episodeCard).join("")}</div>` : `<p style="color:var(--muted)">Literally nothing matched your search... Try something else please</p>`}`;
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
 /* player rating and the stupid episode comment data,, */
-function getEpisodeComments(ep) {
-  if (!sampleReviewCache[ep.id]) {
-    const seed = (ep.number + ep.season.id) % SAMPLE_COMMENTS.length;
-    sampleReviewCache[ep.id] = [0,1,2].map(i => ({
-      name: COMMENTERS[(seed+i) % COMMENTERS.length],
-      text: SAMPLE_COMMENTS[(seed+i*2) % SAMPLE_COMMENTS.length],
-      stars: Math.floor(Math.random()*5)+1
-    }));
-    storage.write("besttv-sample-reviews", sampleReviewCache);
+function shuffledCopy(items) {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
   }
+  return result;
+}
+
+function getEpisodeComments(ep) {
   const custom = CUSTOM_COMMENTS.filter(item =>
     Number(item.season) === ep.season.id && Number(item.episode) === ep.number
-  ).map(item => ({name:item.author, text:item.comment, stars:item.stars == null || item.stars === "" ? null : Number(item.stars)}));
-  return [...sampleReviewCache[ep.id], ...custom, ...(comments[ep.id] || [])];
+  ).map(item => ({
+    name: item.author,
+    text: item.comment,
+    stars: item.stars == null || item.stars === "" ? null : Number(item.stars)
+  }));
+
+  const randomCount = Math.max(0, 4 - custom.length);
+  const randomNames = shuffledCopy(COMMENTERS);
+  const randomTexts = shuffledCopy(SAMPLE_COMMENTS);
+  const randomReviews = Array.from({ length: randomCount }, (_, index) => ({
+    name: randomNames[index % randomNames.length],
+    text: randomTexts[index % randomTexts.length],
+    stars: Math.floor(Math.random() * 5) + 1
+  }));
+
+  return [...custom, ...randomReviews, ...(comments[ep.id] || [])];
 }
 function renderComment(comment) {
   const rated = comment.stars !== null && comment.stars !== undefined && comment.stars !== "" &&
@@ -2909,16 +3284,16 @@ function renderComment(comment) {
 
 const SFX = {
   play: [
-    "assets/sfx/play-01.mp3",
-    "assets/sfx/play-02.mp3",
-    "assets/sfx/play-03.mp3",
-    "assets/sfx/play-04.mp3",
-    "assets/sfx/play-05.mp3"
+    "/assets/sfx/play-01.mp3",
+    "/assets/sfx/play-02.mp3",
+    "/assets/sfx/play-03.mp3",
+    "/assets/sfx/play-04.mp3",
+    "/assets/sfx/play-05.mp3"
   ],
-  cake: "assets/sfx/cake-explosion.mp3",
-  rating1: "assets/sfx/rating-gasp-1star.mp3",
-  rating23: "assets/sfx/rating-awwsad-2or3star.mp3",
-  ratingClap: "assets/sfx/rating-clap-5star.mp3"
+  cake: "/assets/sfx/cake-explosion.mp3",
+  rating1: "/assets/sfx/rating-gasp-1star.mp3",
+  rating23: "/assets/sfx/rating-awwsad-2or3star.mp3",
+  ratingClap: "/assets/sfx/rating-clap-5star.mp3"
 };
 
 const audioTemplates = new Map();
@@ -3044,7 +3419,7 @@ function openEpisode(id) {
       <button class="detail-close" id="closeDetail">×</button>
       <div class="detail-top" style="${themeStyle}">
         <div class="eyebrow">BESTTV // FUTURE PROGRAMMING</div><h2>${esc(ep.title)}</h2>
-        <p>Mr. Forbest has not broadcast this episode yet. Please enjoy this tasteful holding pattern while the studio prepares the next installment.</p>
+        <p>Mr. Forbest has not broadcast this episode yet. Please enjoy this tastefully handwritten message while the studio prepares the next broadcast!</p>
         <div class="detail-meta"><span>SEASON 08</span><span>EPISODE ${ep.number}</span><span>NOT YET AIRED</span></div>
       </div><div class="detail-content"><h3>PLEASE STAY TUNED!</h3><p>There are ${60-ep.number} episodes scheduled after the current recording.</p></div>
     </div>`;
@@ -3061,7 +3436,7 @@ function openEpisode(id) {
     <article class="detail-window">
       <button class="detail-close" id="closeDetail" aria-label="Close">×</button>
       <div class="detail-top" style="${themeStyle}">
-        <div class="eyebrow detail-eyebrow">BESTTV ORIGINAL // LOOP ${ep.season.id} ${ep.season.id===8?'<img class="on-air-art on-air-detail" src="assets/on-air-sign.png" alt="ON AIR">':'<img class="archive-badge-art" src="assets/archive-badge.png" alt="Archived">'}</div>
+        <div class="eyebrow detail-eyebrow">BESTTV ORIGINAL // LOOP ${ep.season.id} ${ep.season.id===8?'<img class="on-air-art on-air-detail" src="/assets/on-air-sign.png" alt="ON AIR">':'<img class="archive-badge-art" src="/assets/archive-badge.png" alt="Archived">'}</div>
         <h2>${esc(ep.title)}</h2><p>${esc(summaryFor(ep))}</p>
         <div class="detail-meta"><span>SEASON ${String(ep.season.id).padStart(2,"0")}</span><span>EPISODE ${String(ep.number).padStart(2,"0")}</span><span>${ep.season.id===8?"CURRENT LOOP":"COMPLETED LOOP"}</span></div>
         <div class="detail-play-row">
@@ -3071,7 +3446,7 @@ function openEpisode(id) {
       <div class="detail-content">
         <div class="detail-section">
           <h3>VIEWER SCORE</h3>
-          <div class="score-line"><span class="big-score">★ ${ratingFor(ep)}/10</span><span>Audience estimate</span><span>·</span><span>${(124+ep.number*37+ep.season.id*91).toLocaleString()} viewer ratings</span></div>
+          <div class="score-line"><span class="big-score">★ ${ratingFor(ep)/2}/5</span><span>Audience estimate</span><span>·</span><span>${(124+ep.number*37+ep.season.id*91).toLocaleString()} viewer ratings</span></div>
           <div class="rate-buttons" aria-label="Your rating">
             ${[1,2,3,4,5].map(n=>`<button type="button" data-rate="${n}" class="${currentRating>=n?"selected":""}" aria-label="${n} out of 5 stars">★</button>`).join("")}
           </div>
@@ -3087,7 +3462,7 @@ function openEpisode(id) {
           </form>
           <div class="rating-reminder" id="ratingReminder">RATE THE EPISODE FIRST!</div>
         </div>
-        <div class="detail-section"><button class="watchlist-button" id="watchlistButton">${saved?"✓ IN YOUR TAPE STACK":"+ ADD TO MY TAPE STACK"}</button></div>
+        <div class="detail-section"><button class="watchlist-button" id="watchlistButton">${saved?"✓ IN YOUR TAPES":"+ ADD TO MY TAPES"}</button></div>
       </div>
     </article>`;
   modalRoot.classList.add("visible");
@@ -3124,14 +3499,14 @@ function openEpisode(id) {
     if(!text){notify("WRITE A COMMENT FIRST!");document.getElementById("commentInput").focus();return;}
     const list=comments[id]||[];
     list.push({name:author,text,stars:Number(ratings[id])});
-    comments[id]=list; storage.write("besttv-comments",comments);
+    comments[id]=list;
     openEpisode(id); notify("COMMENT SENT TO THE STUDIO!");
   });
 
   document.getElementById("watchlistButton").addEventListener("click",()=>{
     if(watchlist.includes(id)){
-      watchlist=watchlist.filter(item=>item!==id);notify("REMOVED FROM YOUR TAPE STACK");
-    }else{watchlist.push(id);burstConfetti();notify("DELIVERED TO YOUR TAPE STACK!");}
+      watchlist=watchlist.filter(item=>item!==id);notify("REMOVED FROM YOUR TAPES");
+    }else{watchlist.push(id);burstConfetti();notify("DELIVERED TO YOUR TAPES!");}
     storage.write("besttv-watchlist",watchlist);updateSavedCount();openEpisode(id);
   });
 }
@@ -3142,13 +3517,19 @@ function playCakeExplosion(){
 }
 function openDelivery(){
   const notes=[
-    "A little something from Mr. Forbest. He says not to open it near the space-time continuum. Again.",
-    "Congratulations! You have received one (1) complimentary television experience. Terms and conditions are somewhere in the walls.",
-    "Forbest personally packed this delivery. The fingerprints are mostly his.",
-    "Your order: entertainment. Your bonus item: a suspiciously cheerful host."
+    "A little something from Mr. Forbest himself! He says not to open it near a rift across realms... Again...",
+    "Congratulations! You have received one (1) complimentary television experience! Terms and conditions are somewhere in the walls...",
+    "Forbest personally packed this delivery just for you. The fingerprints are mostly his.",
+    "Your order: entertainment - Your bonus item: a very sexy tv show host!",
+    "Hmm smells like FUN in here! Nope that's just a month old pack of sardines in that box...",
+    "Oh you wanted a twist ey? Come on season 8 lets get sickening!!!",
+    "Very well done! Your order is currently being taste tested, inspected for any radioactive materials and sautéed for your pleasure!",
+    "My oh my, you wanted MY underwear? Oh you~",
+    "We asked Santa what you would like for christmas, so we got you the opposite of whatever that was! Enjoy!",
+    "Congrats, you just won yourself a trip to space! We will be catapulting you across the galaxy and see if you survive your way back to your home planet!!!",
   ];
   const note=notes[Math.floor(Math.random()*notes.length)];
-  deliveryRoot.innerHTML=`<div class="delivery-window"><button class="detail-close" id="closeDelivery">×</button><img src="assets/best-delivery.png" alt="Best delivery box"><h2>BEST DELIVERY FOR YOU!</h2><p>${esc(note)}</p><button id="acceptDelivery">WONDERFUL. THANK YOU.</button></div>`;
+  deliveryRoot.innerHTML=`<div class="delivery-window"><button class="detail-close" id="closeDelivery">×</button><img src="/assets/best-delivery.png" alt="Best delivery box"><h2>BEST DELIVERY FOR YOU!</h2><p>${esc(note)}</p><button id="acceptDelivery">THANK YOU!</button></div>`;
   deliveryRoot.classList.add("visible");
   document.getElementById("closeDelivery").addEventListener("click",closeDelivery);
   document.getElementById("acceptDelivery").addEventListener("click",closeDelivery);
@@ -3166,9 +3547,9 @@ function openCake(){
   }).join("");
   cakeRoot.innerHTML=`<section class="cake-window" role="dialog" aria-modal="true" aria-label="A surprise cake">
     <div class="cake-confetti">${confetti}</div><button class="cake-close" id="cakeClose">×</button>
-    <div class="cake-eyebrow">A SPECIAL BESTTV INTERRUPTION</div><h2>OH! A LITTLE SOMETHING FOR YOU.</h2>
+    <div class="cake-eyebrow">A SPECIAL BESTTV INTERRUPTION</div><h2>OH MY! A LITTLE SOMETHING FOR YOU!</h2>
     <button class="cake-button" id="cakeButton" aria-label="Grab a slice of cake">
-      <img class="cake-image" id="cakeImage" src="assets/cake-normal.png" alt="A decorated birthday cake">
+      <img class="cake-image" id="cakeImage" src="/assets/cake-normal.png" alt="birthday cake">
     </button><div class="cake-instruction" id="cakeInstruction">Grab a slice?</div></section>`;
   cakeRoot.classList.add("visible");
   document.getElementById("cakeClose").addEventListener("click",closeCake);
@@ -3178,8 +3559,8 @@ function openCake(){
     if(!button||button.classList.contains("exploding"))return;
     button.classList.add("exploding");playCakeExplosion();
     const cakeImage=document.getElementById("cakeImage");
-    cakeImage.src="assets/cake-exploded.png";
-    cakeImage.alt="The cake has exploded into pieces";
+    cakeImage.src="/assets/cake-exploded.png";
+    cakeImage.alt="cake exploded into pieces";
     const panel=cakeRoot.querySelector(".cake-window");
     for(let i=0;i<16;i++){
       const spark=document.createElement("i");spark.className="cake-spark";
@@ -3187,8 +3568,8 @@ function openCake(){
       spark.style.setProperty("--y",`${Math.sin(i/16*Math.PI*2)*(75+Math.random()*75)}px`);panel.appendChild(spark);
     }
     panel.classList.add("cake-claimed");
-    document.getElementById("cakeInstruction").textContent="YOU GOT THE WHOLE CAKE.";
-    burstConfetti(45);notify("CAKE SUCCESSFULLY CLAIMED.");
+    document.getElementById("cakeInstruction").textContent="OOPS! THE CAKE WAS A LIE!";
+    burstConfetti(45);
   });
 }
 function isTextEntry(target){
