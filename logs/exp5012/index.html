@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>8</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconGRI.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconGRI.png">
+
+<style>
+
+:root {
+  --log-color: #00ffcc;
+  --log-color-soft: rgba(0, 255, 204, 0.6);
+  --log-color-dim: rgba(0, 255, 204, 0.35);
+  --log-background: #000a0a;
+  --log-colorA1: #cc00ff;
+  --log-colorA1-soft: rgba(204, 0, 255, 0.22);
+  --log-colorA1-dim: rgba(204, 0, 255, 0.12);
+  --log-backgroundA1: #07000a;
+  --log-red: #ff4444;
+  --uv-color: #aaffed;
+  --uv-glow: rgba(0, 255, 220, 0.8);
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Courier New", monospace;
+  color: var(--log-color);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0, 190, 190,0.2), transparent 10%),
+    radial-gradient(circle at 80% 90%, rgba(0, 135, 140,0.2), transparent 20%),
+    radial-gradient(circle at center, #001c1a 0%, #000a0a 40%, #000 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,204,0.045) 0px,
+    rgba(0,255,204,0.045) 1px,
+    transparent 2px,
+    transparent 5px
+  );
+  pointer-events: none;
+  animation: scan 8s linear infinite;
+  z-index: 5;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--log-color) #100016;
+  scroll-behavior: smooth;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--log-color) #100016;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #100016;
+  border-left: 1px solid var(--log-color-dim);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--log-color), #71009a);
+  border: 2px solid #100016;
+  border-radius: 0;
+  box-shadow: inset 0 0 5px rgba(255,255,255,.12);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ef8cff;
+  box-shadow: 0 0 9px var(--log-color);
+}
+
+::-webkit-scrollbar-corner {
+  background: #100016;
+}
+
+@keyframes scan {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+.lore-page {
+  width: min(100%, 1120px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.lore-content { width: 100%; max-width: 760px; }
+
+h1 {
+  font-size: clamp(25px, 4vw, 34px);
+  margin: 0 0 16px;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: clamp(16px, 2.5vw, 20px);
+  margin: 0 0 22px;
+  font-weight: normal;
+}
+
+p {
+  font-size: clamp(16px, 2.2vw, 18px);
+  line-height: 1.65;
+  margin: 0 0 16px;
+}
+
+.code { color: var(--log-red); letter-spacing: 2px; }
+
+.char {
+  position: relative;
+  display: inline-block;
+  transition: color .2s ease;
+  white-space: pre;
+}
+
+.char.blackout::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: 52%;
+  height: 1.15em;
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  background: #050505;
+  animation: cover .35s forwards;
+}
+
+.keep { color: inherit; text-shadow: none; }
+.keep.blackout::after { display: none; }
+
+@keyframes cover {
+  to { transform: translateY(-50%) scaleX(1); }
+}
+
+.log-image {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 26px auto;
+  border: 2px solid var(--log-color-soft);
+  box-shadow: 0 0 18px var(--log-color-dim), inset 0 0 20px var(--log-color-dim);
+  background: #000;
+}
+
+.uv-secret {
+  position: relative;
+  z-index: 901;
+  color: transparent;
+  border-color: transparent;
+  text-shadow: none;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  clip-path: circle(0px at 0px 0px);
+  -webkit-clip-path: circle(0px at 0px 0px);
+}
+
+.uv-secret.uv-image { opacity: 0; }
+
+body.uv-active .uv-secret {
+  color: var(--uv-color);
+  text-shadow: 0 0 5px var(--uv-glow), 0 0 13px rgba(0,255,220,.4);
+}
+
+body.uv-active .uv-secret.uv-image {
+  opacity: 1;
+  filter: sepia(1) hue-rotate(105deg) saturate(3) drop-shadow(0 0 8px var(--uv-glow));
+}
+
+[data-action], .clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+}
+
+.clickable:hover { color: #fff; text-shadow: 0 0 8px var(--log-color); }
+
+.terminate, .log-button {
+  display: inline-block;
+  align-self: flex-start;
+  color: var(--log-red);
+  background: transparent;
+  border: 1px solid var(--log-red);
+  padding: 10px 24px;
+  text-decoration: none;
+  font: inherit;
+  font-size: 15px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.terminate:hover, .log-button:hover {
+  color: #fff;
+  background: rgba(255,68,68,.12);
+  box-shadow: 0 0 12px rgba(255,68,68,.18);
+}
+
+.feature-panel {
+  width: min(100%, 560px);
+  margin-top: 8px;
+  padding: 18px;
+  border: 1px solid var(--log-color-soft);
+  background: rgba(0,0,0,.28);
+}
+
+.feature-panel h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.code-entry-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+input[type="text"], input[type="password"] {
+  min-width: 0;
+  flex: 1 1 180px;
+  padding: 10px 12px;
+  color: var(--log-color);
+  background: #050007;
+  border: 1px solid var(--log-color-soft);
+  border-radius: 0;
+  outline: none;
+  font: inherit;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: var(--log-color);
+  box-shadow: 0 0 10px var(--log-color-dim);
+}
+
+.range-wrap { width: 100%; margin: 12px 0; }
+.range-heading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.range-heading output { color: #fff; }
+
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  margin: 10px 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: linear-gradient(to right, var(--log-color), rgba(204,0,255,.16));
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 18px;
+  border: 1px solid var(--log-color);
+  border-radius: 0;
+  background: #120018;
+  box-shadow: 0 0 8px var(--log-color-soft);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 16px;
+  border: 1px solid var(--log-color);
+  border-radius: 0;
+  background: #120018;
+  box-shadow: 0 0 8px var(--log-color-soft);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(to right, var(--log-color), rgba(204,0,255,.16));
+}
+
+#codeFeedback { min-height: 1.5em; margin: 10px 0 0; font-size: 14px; }
+
+.flashlight-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  background: radial-gradient(
+    circle var(--flashlight-radius, 145px) at var(--pointer-x, 50vw) var(--pointer-y, 50vh),
+    rgba(255,255,255,.055) 0%,
+    rgba(204,0,255,.035) 48%,
+    rgba(0,0,0,.28) 72%,
+    rgba(0,0,0,.94) 100%
+  );
+}
+
+body.flashlight-active .flashlight-overlay { display: block; }
+
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.82);
+}
+
+.popup-backdrop[hidden] { display: none; }
+
+.popup-window {
+  position: relative;
+  width: min(100%, 620px);
+  max-height: min(85vh, 850px);
+  overflow: auto;
+  padding: 26px;
+  border: 1px solid var(--log-color);
+  background: #08000d;
+  box-shadow: 0 0 28px var(--log-color-dim);
+}
+
+.popup-window h2 { color: var(--log-color); margin: 0 38px 16px 0; }
+.popup-window p { font-size: 16px; }
+.popup-window img { display: block; max-width: 100%; max-height: 55vh; margin: 16px 0; }
+
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  padding: 5px 9px;
+  color: var(--log-color);
+  background: transparent;
+  border: 1px solid var(--log-color-soft);
+  font: inherit;
+  cursor: pointer;
+}
+
+.popup-close:hover { border-color: var(--log-color); color: #fff; }
+
+[hidden] { display: none !important; }
+
+@media (max-width: 560px) {
+  .lore-page { gap: 24px; }
+  .popup-window { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+<div class="lore-page">
+  <main class="lore-content" id="logContent">
+    <h1>EIGHT: 8</h1>
+    <h2>[Author: █████ █████████]</h2>
+    <p class="code">8888 88 88</p>
+
+    <!-- TEXT -->
+    <div id="logText"></div>
+
+    <!-- IMG -->
+    <figure data-feature="images" hidden>
+      <img class="log-image" src="/assets/templogimage.png" alt="temp image">
+    </figure>
+
+    <!-- UV -->
+    <p class="uv-secret">[UV TRACE DETECTED: THE CLOCKS]</p>
+    <img class="log-image uv-secret uv-image" data-feature="images" hidden src="/assets/tempuvsymbol.png" alt="ultraviolet symbol">
+
+    <!--
+         <p data-action="show-note" class="clickable">Click this whole line to open a note.</p>
+         <p>Click only this <span data-action="activate-uv" class="clickable">word</span> to activate UV.</p>
+    -->
+    <a class="terminate" href="/">TERMIN8</a>
+  </main>
+</div>
+
+<div class="flashlight-overlay" aria-hidden="true"></div>
+
+<div class="popup-backdrop" id="popupBackdrop" hidden>
+  <section class="popup-window" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <button class="popup-close" id="popupClose" type="button">X</button>
+    <h2 id="popupTitle">MESSAGE</h2>
+    <p id="popupText"></p>
+    <img id="popupImage" alt="" hidden>
+  </section>
+</div>
+
+<script>
+const LOG_CONFIG = {
+  features: {
+    flashlight: false,
+    uvLight: false,
+    images: false,
+    clickActions: true,
+    blackout: true
+  },
+
+  flashlightRadius: 150,
+  uvRadius: 120,
+
+  // blackout, restoreText, feature, popup, event, redirect, clickAction.
+  sequenceTriggers: [
+    { sequence: "88888888", action: "blackout", once: true },
+    //{ sequence: "9292", action: "feature", feature: "uvLight", value: true, once: true },
+    //{ sequence: "12345", action: "popup", popup: { title: "FOUND", text: "A hidden message." } },
+    //{ sequence: "00000", action: "feature", feature: "flashlight", value: true },
+  ]
+};
+
+const KEEP_CHAR_INDEXES = [
+  39,115,119,133,
+  151,165,186,
+  245,279,292,
+  311,342,361,411,416,432,469
+];
+
+// { text: "...", action: "show-note" } { html: "..." } inline HTML
+const LOG_PARAGRAPHS = [
+  "8.",
+  "Is infinity.",
+  "Eight turned sideways becomes infinity.",
+  "Eight equals infinity.",
+  "Time is eight.",
+  "Eight... why eight?",
+  "What happened to the strange clocks?",
+  "Why is the number eight everywhere now?",
+  "Something happened.",
+  "I dont understand.",
+  "I had a collection in my basement.",
+  "I think they were meant to tell time.",
+  "Except now its an empty shelf.",
+  "Where my collection was.",
+  "The dust has blank spots, some circular.",
+  "Almost like it all vanished at once.",
+  "Yet I cant remember.",
+  "Every time I look...",
+  "I see that number.",
+  "8."
+];
+
+// data-action="its-name" popup, feature, redirect, event, blackout, restoreText.
+const LOG_ACTIONS = {
+  "show-note": {
+    type: "popup",
+    title: "FOUND NOTE",
+    text: "Replace this with the message you want the reader to find."
+  },
+  "activate-uv": {
+    type: "feature",
+    feature: "uvLight",
+    value: true
+  },
+  "go-to-file": {
+    type: "redirect",
+    url: "/another-log.html"
+  },
+  "trigger-secret-event": {
+    type: "event",
+    name: "log:secret-found",
+    detail: { source: "click" }
+  }
+};
+
+const logText = document.getElementById("logText");
+const popupBackdrop = document.getElementById("popupBackdrop");
+const popupTitle = document.getElementById("popupTitle");
+const popupText = document.getElementById("popupText");
+const popupImage = document.getElementById("popupImage");
+let pointerX = window.innerWidth / 2;
+let pointerY = window.innerHeight / 2;
+let sequenceBuffer = "";
+const firedSequences = new Set();
+let blackoutHasRun = false;
+
+function renderLogParagraphs() {
+  let characterIndex = 0;
+
+  LOG_PARAGRAPHS.forEach((entry) => {
+    const paragraph = document.createElement("p");
+    const item = typeof entry === "string" ? { text: entry } : entry;
+
+    if (item.action) paragraph.dataset.action = item.action;
+    if (item.className) paragraph.className = item.className;
+
+    if (typeof item.html === "string") {
+      paragraph.innerHTML = item.html;
+    } else {
+      [...(item.text || "")].forEach((character) => {
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = character;
+        if (KEEP_CHAR_INDEXES.includes(characterIndex)) span.classList.add("keep");
+        paragraph.appendChild(span);
+        characterIndex++;
+      });
+    }
+
+    logText.appendChild(paragraph);
+  });
+}
+
+function applyFeatureSettings() {
+  const features = LOG_CONFIG.features;
+  document.body.classList.toggle("flashlight-active", !!features.flashlight);
+  document.body.classList.toggle("uv-active", !!features.uvLight);
+
+  document.querySelectorAll("[data-feature]").forEach((element) => {
+    const featureName = element.dataset.feature;
+    element.hidden = !features[featureName];
+  });
+
+  document.documentElement.style.setProperty(
+    "--flashlight-radius", `${LOG_CONFIG.flashlightRadius}px`
+  );
+  document.documentElement.style.setProperty(
+    "--uv-radius", `${LOG_CONFIG.uvRadius}px`
+  );
+
+  updateUvClues();
+}
+
+function setFeature(featureName, value = true) {
+  if (!(featureName in LOG_CONFIG.features)) {
+    console.warn(`Unknown LOG feature: ${featureName}`);
+    return;
+  }
+  LOG_CONFIG.features[featureName] = !!value;
+  applyFeatureSettings();
+}
+
+function updatePointerPosition(x, y) {
+  pointerX = x;
+  pointerY = y;
+  document.documentElement.style.setProperty("--pointer-x", `${x}px`);
+  document.documentElement.style.setProperty("--pointer-y", `${y}px`);
+  updateUvClues();
+}
+
+function updateUvClues() {
+  const radius = LOG_CONFIG.uvRadius;
+  document.querySelectorAll(".uv-secret").forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    const localX = pointerX - rect.left;
+    const localY = pointerY - rect.top;
+    const clip = `circle(${radius}px at ${localX}px ${localY}px)`;
+    element.style.clipPath = clip;
+    element.style.webkitClipPath = clip;
+  });
+}
+
+function blackoutText() {
+  if (!LOG_CONFIG.features.blackout || blackoutHasRun) return;
+  blackoutHasRun = true;
+  document.querySelectorAll("#logText .char:not(.keep)").forEach((character, index) => {
+    window.setTimeout(() => character.classList.add("blackout"), index * 6);
+  });
+}
+
+function restoreText() {
+  blackoutHasRun = false;
+  document.querySelectorAll("#logText .char.blackout").forEach((character) => {
+    character.classList.remove("blackout");
+  });
+}
+
+function openPopup(details = {}) {
+  popupTitle.textContent = details.title || "MESSAGE";
+  popupText.textContent = details.text || "";
+
+  if (details.image && LOG_CONFIG.features.images) {
+    popupImage.src = details.image;
+    popupImage.alt = details.imageAlt || "Popup image";
+    popupImage.hidden = false;
+  } else {
+    popupImage.removeAttribute("src");
+    popupImage.hidden = true;
+  }
+
+  popupBackdrop.hidden = false;
+  document.getElementById("popupClose").focus();
+}
+
+function closePopup() {
+  popupBackdrop.hidden = true;
+}
+
+function runAction(action) {
+  if (!action) return;
+
+  switch (action.type) {
+    case "popup":
+      openPopup(action);
+      break;
+
+    case "feature": {
+      const nextValue = action.mode === "toggle"
+        ? !LOG_CONFIG.features[action.feature]
+        : (action.value ?? true);
+      setFeature(action.feature, nextValue);
+      break;
+    }
+
+    case "redirect":
+      if (action.url) window.location.href = action.url;
+      break;
+
+    case "event":
+      if (action.name) {
+        document.dispatchEvent(new CustomEvent(action.name, { detail: action.detail || {} }));
+      }
+      break;
+
+    case "blackout":
+      blackoutText();
+      break;
+
+    case "restoreText":
+      restoreText();
+      break;
+
+    case "clickAction":
+      runAction(LOG_ACTIONS[action.name]);
+      break;
+
+    default:
+      console.warn("Unknown LOG action:", action.type);
+  }
+}
+
+function runSequenceTrigger(trigger, index) {
+  const sequenceId = trigger.id || `${trigger.sequence}-${index}`;
+  if (trigger.once !== false && firedSequences.has(sequenceId)) return;
+  firedSequences.add(sequenceId);
+
+  if (trigger.action === "feature") {
+    runAction({
+      type: "feature",
+      feature: trigger.feature,
+      value: trigger.value,
+      mode: trigger.mode
+    });
+  } else if (trigger.action === "popup") {
+    runAction({ type: "popup", ...(trigger.popup || {}) });
+  } else if (trigger.action === "clickAction") {
+    runAction({ type: "clickAction", name: trigger.name });
+  } else {
+    runAction({ type: trigger.action, url: trigger.url, name: trigger.name, detail: trigger.detail });
+  }
+}
+
+function handleSequenceKey(event) {
+  if (event.ctrlKey || event.altKey || event.metaKey) return;
+  if (event.target && /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
+  if (event.key.length !== 1) return;
+
+  const key = event.key.toUpperCase();
+  sequenceBuffer += key;
+  const longestSequence = Math.max(
+    1,
+    ...LOG_CONFIG.sequenceTriggers.map((item) => String(item.sequence || "").length)
+  );
+  sequenceBuffer = sequenceBuffer.slice(-longestSequence);
+
+  LOG_CONFIG.sequenceTriggers.forEach((trigger, index) => {
+    const sequence = String(trigger.sequence || "").toUpperCase();
+    if (sequence && sequenceBuffer.endsWith(sequence)) {
+      runSequenceTrigger(trigger, index);
+    }
+  });
+}
+
+renderLogParagraphs();
+applyFeatureSettings();
+updatePointerPosition(pointerX, pointerY);
+
+document.addEventListener("pointermove", (event) => {
+  updatePointerPosition(event.clientX, event.clientY);
+}, { passive: true });
+
+window.addEventListener("resize", () => updateUvClues());
+window.addEventListener("scroll", () => updateUvClues(), true);
+document.addEventListener("pointerdown", (event) => {
+  updatePointerPosition(event.clientX, event.clientY);
+}, { passive: true });
+document.addEventListener("keydown", handleSequenceKey);
+
+document.addEventListener("click", (event) => {
+  if (!LOG_CONFIG.features.clickActions) return;
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+
+  const action = LOG_ACTIONS[target.dataset.action];
+  if (!action) return;
+  if (target.tagName === "A") event.preventDefault();
+  runAction(action);
+});
+
+document.getElementById("popupClose").addEventListener("click", closePopup);
+popupBackdrop.addEventListener("click", (event) => {
+  if (event.target === popupBackdrop) closePopup();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !popupBackdrop.hidden) closePopup();
+});
+
+const signalSlider = document.getElementById("signalSlider");
+const signalValue = document.getElementById("signalValue");
+signalSlider.addEventListener("input", () => {
+  signalValue.value = signalSlider.value;
+});
+
+document.addEventListener("log:secret-found", (event) => {
+  console.log("LOG secret event received:", event.detail);
+  // event response
+});
+</script>
+</body>
+</html>

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>EYESPY // SIGNAL INTERCEPT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" sizes="32x32" href="/eyespy/faviconE.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/eyespy/faviconE.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconE.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconE.png">
 
 <style>
 html, body {
@@ -16,9 +16,9 @@ html, body {
   font-family: "Courier New", monospace;
   color: #cc00ff;
   background:
-    radial-gradient(circle at 20% 10%, rgba(150,0,190,0.3), transparent 40%),
-    radial-gradient(circle at 80% 90%, rgba(90,0,140,0.3), transparent 50%),
-    radial-gradient(circle at center, #16001c 0%, #07000a 70%, #000 100%);
+    radial-gradient(circle at 20% 10%, rgba(150,0,190,0.2), transparent 0%),
+    radial-gradient(circle at 80% 90%, rgba(90,0,140,0.2), transparent 0%),
+    radial-gradient(circle at center, #16001c 0%, #07000a 40%, #000 100%);
 }
 
 body::before {
@@ -30,8 +30,8 @@ body::before {
     to bottom,
     rgba(204,0,255,0.055) 0px,
     rgba(204,0,255,0.055) 1px,
-    transparent 2px,
-    transparent 4px
+    transparent 4px,
+    transparent 8px
   );
   animation: scan 8s linear infinite;
   z-index: 999;
@@ -46,11 +46,65 @@ body::after {
     radial-gradient(circle at 50% 50%, rgba(204,0,255,0.035), transparent 55%),
     repeating-linear-gradient(
       90deg,
-      transparent 0,
-      transparent 3px,
+      transparent 4,
+      transparent 8px,
       rgba(204,0,255,0.012) 4px
     );
   z-index: 998;
+}
+
+body.site-dormant {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(145,145,145,0.22), transparent 0%),
+    radial-gradient(circle at 80% 90%, rgba(95,95,95,0.22), transparent 0%),
+    radial-gradient(circle at center, #181818 0%, #090909 70%, #000 100%);
+}
+
+body.site-dormant::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(175,175,175,0.045) 0px,
+    rgba(175,175,175,0.045) 1px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+body.site-dormant::after {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(175,175,175,0.025), transparent 55%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 4,
+      transparent 8px,
+      rgba(175,175,175,0.01) 4px
+    );
+}
+
+body.site-dormant .wake-overlay {
+  color: #aaa;
+  text-shadow: 0 0 10px rgba(170,170,170,0.35);
+}
+
+body.site-dormant .wake-message {
+  border-color: rgba(170,170,170,0.35);
+  box-shadow: 0 0 24px rgba(150,150,150,0.12);
+}
+
+body.site-dormant .music-mute {
+  color: #999;
+  border-color: #777;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+body.site-dormant .music-mute:hover {
+  box-shadow: 0 0 8px rgba(180,180,180,0.25);
+}
+
+body.site-dormant .music-mute:active {
+  background: #888;
+  color: #000;
 }
 
 @keyframes scan {
@@ -65,6 +119,74 @@ body::after {
   gap: 60px;
   align-items: center;
   justify-items: center;
+}
+
+.console-grid {
+  transition: filter 0.55s ease, opacity 0.55s ease;
+}
+
+body.site-dormant .console-grid {
+  filter: grayscale(1);
+  opacity: 0.28;
+  pointer-events: none;
+  user-select: none;
+}
+
+.wake-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  color: #e69aff;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.18);
+  text-shadow: 0 0 10px rgba(204,0,255,0.65);
+}
+
+.wake-overlay[hidden] {
+  display: none;
+}
+
+.wake-message {
+  border: 1px solid rgba(204,0,255,0.5);
+  background: rgba(0,0,0,0.78);
+  padding: 16px 22px;
+  letter-spacing: 2px;
+  font-size: 12px;
+  line-height: 1.8;
+  box-shadow: 0 0 24px rgba(120,0,160,0.25);
+}
+
+.music-mute {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1003;
+  background: #000;
+  color: #cc00ff;
+  border: 1px solid #cc00ff;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+}
+
+.music-mute:hover {
+  box-shadow: 0 0 8px rgba(204,0,255,0.55);
+}
+
+.music-mute:active {
+  background: #cc00ff;
+  color: #000;
+}
+
+#sonarCanvas {
+  touch-action: manipulation;
 }
 
 .device {
@@ -258,7 +380,13 @@ body::after {
 </style>
 </head>
 
-<body>
+<body class="site-dormant">
+
+<div class="wake-overlay" id="wakeOverlay" role="button" tabindex="0" aria-label="Activate console">
+</div>
+
+<button class="music-mute" id="musicMuteButton" type="button">MUTE</button>
+<audio id="backgroundAudio" loop preload="none"></audio>
 
 <div class="console-grid">
 
@@ -268,13 +396,12 @@ body::after {
       <canvas id="sonarCanvas"></canvas>
 
       <div class="sonar-stats" id="sonarStats">
-        GY: 0.0<br>
         FLUX: 0%<br>
-        WEIRD IDX: 0%<br>
+        GY: 0.0<br>
         NEURAL BIAS: 0<br>
         REALITY INTEGRITY: 100%<br>
         NOISE FLOOR: 0 LVL<br>
-        PORTAL TIDE: LOW
+        ODD TIDE: LOW
       </div>
 
       <div class="wave-label">ANOMALY: SIGNAL FLUX</div>
@@ -329,14 +456,78 @@ body::after {
 </div>
 
 <script>
-/* ===== SONAR ===== */
+
+const BACKGROUND_MUSIC_SRC = "/assets/captainslog.mp3";
+
+const stations = [
+  { x: 284, y: 713, src: "/assets/frequency1.mp3" },
+  { x: 401, y: 675, src: "/assets/frequency2.mp3" },
+  { x: 666, y: 451, src: "/assets/frequency3.mp3" },
+  { x: 777, y: 777, src: "/assets/frequency4.mp3" },
+  { x: 913, y: 332, src: "/assets/frequency5.mp3" }
+];
+
+/* ===== BG MUSIC ===== */
+const wakeOverlay = document.getElementById("wakeOverlay");
+const musicMuteButton = document.getElementById("musicMuteButton");
+const backgroundAudio = document.getElementById("backgroundAudio");
+let siteActive = false;
+
+backgroundAudio.src = BACKGROUND_MUSIC_SRC;
+backgroundAudio.loop = true;
+backgroundAudio.volume = 0.4;
+backgroundAudio.muted = false;
+
+function updateMusicMuteButton() {
+  musicMuteButton.textContent = backgroundAudio.muted ? "UNMUTE" : "MUTE";
+}
+
+async function activateSite() {
+  if (siteActive) return;
+
+  siteActive = true;
+  document.body.classList.remove("site-dormant");
+  wakeOverlay.hidden = true;
+  startSonar();
+  startSpecialDotTimer();
+  updateMusicMuteButton();
+
+  try {
+    await backgroundAudio.play();
+  } catch (error) {
+    console.warn("background music couldnt start:", error);
+  }
+}
+
+wakeOverlay.addEventListener("click", activateSite);
+wakeOverlay.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    activateSite();
+  }
+});
+
+musicMuteButton.addEventListener("click", async () => {
+  if (!siteActive) {
+    backgroundAudio.muted = !backgroundAudio.muted;
+    updateMusicMuteButton();
+    await activateSite();
+    return;
+  }
+
+  backgroundAudio.muted = !backgroundAudio.muted;
+  updateMusicMuteButton();
+});
+updateMusicMuteButton();
+
+/* ===== sonar ===== */
 const canvas = document.getElementById("sonarCanvas");
 const ctx = canvas.getContext("2d");
 const statsEl = document.getElementById("sonarStats");
 
 function resizeCanvas() {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  canvas.width = Math.max(1, canvas.clientWidth);
+  canvas.height = Math.max(1, canvas.clientHeight);
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
@@ -345,28 +536,14 @@ let angle = 0;
 let waveformPhase = 0;
 let blips = [];
 let statTick = 0;
-let statCache = {
-  flux: 0,
-  bias: 0,
-  noise: 0
-};
+let sonarRunning = false;
+let sonarFrameRequested = false;
+let specialDot = null;
+let specialDotTimer = null;
+let calibration = null;
+let statCache = { gy: 0, flux: 0, bias: 0, noise: 0 };
 const hiddenBinary = "11111111";
 
-function spawnBlip(cx, cy, radius) {
-  const a = Math.random() * Math.PI * 2;
-  const d = Math.random() * radius * 0.85;
-
-  blips.push({
-    x: cx + Math.cos(a) * d,
-    y: cy + Math.sin(a) * d,
-    life: 1,
-    baseSize: Math.random() * 2 + 2,
-    secret: Math.random() < 0.08,
-    pingBoost: 0
-  });
-}
-
-/* ===== GRID ===== */
 function drawGrid(cx, cy, radius) {
   ctx.strokeStyle = "rgba(255,0,204,0.2)";
   ctx.lineWidth = 1;
@@ -385,10 +562,8 @@ function drawGrid(cx, cy, radius) {
   ctx.stroke();
 }
 
-/* ===== SWEEP ===== */
 function drawSweep(cx, cy, radius) {
   const sweepWidth = 0.25;
-
   const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
   grad.addColorStop(0, "rgba(255,0,204,0.25)");
   grad.addColorStop(1, "rgba(255,0,204,0)");
@@ -408,10 +583,8 @@ function drawSweep(cx, cy, radius) {
   ctx.stroke();
 }
 
-/* ===== WAVE ===== */
 function drawWaveform(w, h) {
   const baseY = h - 28;
-
   ctx.strokeStyle = "#ff00cc";
   ctx.lineWidth = 1.2;
   ctx.beginPath();
@@ -419,12 +592,10 @@ function drawWaveform(w, h) {
   for (let x = 0; x < w; x++) {
     const bitIndex = Math.floor((x + waveformPhase) / 40) % hiddenBinary.length;
     const bit = hiddenBinary[bitIndex] === "1" ? 1 : 0;
-
     const amp = bit ? 24 : 5;
-    const y =
-      baseY +
-      Math.sin((x + waveformPhase) * 0.09) * amp
-      Math.sin((x + waveformPhase) * 0) * 4; //set to 0 if it looks too ugly wompwomp
+    const y = baseY
+      + Math.sin((x + waveformPhase) * 0.09) * amp
+      + Math.sin((x + waveformPhase) * 0) * 4;
 
     if (x === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
@@ -434,11 +605,53 @@ function drawWaveform(w, h) {
   waveformPhase += 0.75;
 }
 
-/* ===== STATS ===== */
-function updateStats(radius) {
-  statTick++;
+function spawnSpecialDot() {
+  if (!siteActive || stations.length === 0) return;
 
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const radius = Math.max(12, Math.min(cx, cy) - 22);
+  const a = Math.random() * Math.PI * 2;
+  const d = Math.random() * radius * 0.72;
+
+  specialDot = {
+    x: cx + Math.cos(a) * d,
+    y: cy + Math.sin(a) * d,
+    bornAt: Date.now()
+  };
+}
+
+function startSpecialDotTimer() {
+  if (specialDotTimer) clearInterval(specialDotTimer);
+  // dot appears 30 seconds after active
+  specialDotTimer = setInterval(spawnSpecialDot, 30000);
+}
+
+function drawSpecialDot() {
+  if (!specialDot) return;
+
+  const pulse = 1 + Math.sin(Date.now() / 180) * 0.22;
+  ctx.save();
+  ctx.shadowColor = "#00ffd0";
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = "#00ffd0";
+  ctx.beginPath();
+  ctx.arc(specialDot.x, specialDot.y, 5 * pulse, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = "rgba(0,255,208,0.85)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(specialDot.x, specialDot.y, 10 * pulse, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function updateStats() {
+  statTick++;
   if (statTick % 45 === 0) {
+    statCache.gy = (Math.random() * 10).toFixed(1);
     statCache.flux = Math.floor(Math.random() * 120);
     statCache.bias = Math.floor(Math.random() * 240);
     statCache.noise = Math.floor(Math.random() * 4);
@@ -446,11 +659,20 @@ function updateStats(radius) {
 
   const weird = Math.min(99, Math.floor(blips.length * 3));
   const integrity = Math.max(0, 100 - weird);
+  if (calibration && Date.now() >= calibration.expiresAt) {
+    calibration = null;
+  }
+
+  let gyValue = statCache.gy;
+  let fluxValue = `${statCache.flux}%`;
+  if (calibration) {
+    gyValue = String(calibration.y).padStart(3, "0");
+    fluxValue = String(calibration.x).padStart(3, "0");
+  }
 
   statsEl.innerHTML =
-    `GY: ${(radius / 80).toFixed(1)}<br>
-     FLUX: ${statCache.flux}%<br>
-     WEIRD IDX: ${weird}%<br>
+    `FLUX: ${fluxValue}<br>
+     GY: ${gyValue}<br>
      NEURAL BIAS: ${statCache.bias}<br>
      REALITY INTEGRITY: ${integrity}%<br>
      NOISE FLOOR: ${statCache.noise} LVL<br>
@@ -458,56 +680,85 @@ function updateStats(radius) {
 }
 
 function drawSonar() {
+  if (!sonarRunning) return;
+
   ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  const radius = Math.min(cx, cy) - 10;
+  const radius = Math.max(1, Math.min(cx, cy) - 10);
 
   drawGrid(cx, cy, radius);
   drawSweep(cx, cy, radius);
 
   if (Math.random() < 0.035) {
-    const d = Math.random()*radius*0.6 + radius*0.2;
+    const d = Math.random() * radius * 0.6 + radius * 0.2;
     blips.push({
-        x: cx+Math.cos(angle)*d,
-        y: cy+Math.sin(angle)*d,
-        life:1,
-        baseSize: Math.random() * 2 + 2,
-        secret: Math.random() < 0.08,
-        pingBoost: 0
-
+      x: cx + Math.cos(angle) * d,
+      y: cy + Math.sin(angle) * d,
+      life: 1,
+      baseSize: Math.random() * 2 + 2,
+      secret: Math.random() < 0.08,
+      pingBoost: 0
     });
   }
 
-  blips.forEach(b => {
-    const dx = b.x - cx;
-    const dy = b.y - cy;
-    const ang = Math.atan2(dy, dx);
-    const diff = Math.abs(ang - angle);
+  blips.forEach(blip => {
+    const pointAngle = Math.atan2(blip.y - cy, blip.x - cx);
+    const difference = Math.abs(pointAngle - angle);
+    if (difference < 0.08) blip.pingBoost = 1;
 
-    if (diff < 0.08) b.pingBoost = 1;
-
-    ctx.fillStyle = b.secret
-      ? `rgba(255,0,204,${b.life})`
-      : `rgba(255,0,204,${b.life})`;
+    ctx.fillStyle = `rgba(255,0,204,${blip.life})`;
     ctx.beginPath();
-    ctx.arc(b.x, b.y, 3, 0, Math.PI * 2);
+    ctx.arc(blip.x, blip.y, 3, 0, Math.PI * 2);
     ctx.fill();
-    
-    b.pingBoost *= 0.85;
-    b.life -= 0.008;
+
+    blip.pingBoost *= 0.85;
+    blip.life -= 0.008;
   });
 
-  blips = blips.filter(b => b.life > 0);
+  blips = blips.filter(blip => blip.life > 0);
+  drawSpecialDot();
   angle += 0.019;
-  
   drawWaveform(canvas.width, canvas.height);
-  updateStats(radius);
+  updateStats();
+  sonarFrameRequested = false;
   requestAnimationFrame(drawSonar);
+  sonarFrameRequested = true;
 }
-drawSonar();
+
+function startSonar() {
+  if (sonarRunning) return;
+  resizeCanvas();
+  sonarRunning = true;
+  if (!sonarFrameRequested) {
+    sonarFrameRequested = true;
+    requestAnimationFrame(drawSonar);
+  }
+}
+
+canvas.addEventListener("click", event => {
+  if (!siteActive || !specialDot) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const clickX = (event.clientX - rect.left) * scaleX;
+  const clickY = (event.clientY - rect.top) * scaleY;
+  const distance = Math.hypot(clickX - specialDot.x, clickY - specialDot.y);
+
+  if (distance > 16) return;
+
+  // dot selects a pair
+  const selectedStation = stations[Math.floor(Math.random() * stations.length)];
+  calibration = {
+    x: selectedStation.x,
+    y: selectedStation.y,
+    expiresAt: Date.now() + 10000
+  };
+  specialDot = null;
+});
 
 /* ===== RADIO ===== */
 const dialX = document.getElementById("dialX");
@@ -518,14 +769,8 @@ const hintX = document.getElementById("hintX");
 const hintY = document.getElementById("hintY");
 const volumeBar = document.getElementById("volumeBar");
 const muteBtn = document.getElementById("radioMute");
-
-const stations = [
-  { x:284, y:713, src:"/assets/frequency1.mp3" },
-  //{ x:401, y:675, src:"/assets/frequency2.mp3" },
-  //{ x:666, y:451, src:"/assets/frequency3.mp3" },
-  //{ x:777, y:777, src:"/assets/frequency4.mp3" },
-  //{ x:913, y:332, src:"/assets/frequency4.mp3" }
-];
+const volUp = document.getElementById("volUp");
+const volDown = document.getElementById("volDown");
 
 radioAudio.loop = true;
 radioAudio.volume = 0.6;
@@ -533,65 +778,73 @@ radioAudio.volume = 0.6;
 function updateDisplay() {
   const x = Number(dialX.value);
   const y = Number(dialY.value);
-  freqValue.textContent = `${x}.${String(y).padStart(3,"0")}`;
+  freqValue.textContent = `${x}.${String(y).padStart(3, "0")}`;
 
-  let matched = false;
+  const xLocked = stations.some(station => station.x === x);
+  const yLocked = stations.some(station => station.y === y);
+  const matchedStation = stations.find(station => station.x === x && station.y === y);
 
-  stations.forEach(st => {
-    if (x === st.x) hintX.classList.add("correct");
-    if (y === st.y) hintY.classList.add("correct");
+  hintX.classList.toggle("correct", xLocked);
+  hintY.classList.toggle("correct", yLocked);
 
-    if (x === st.x && y === st.y) {
-      radioAudio.src = st.src;
-      radioAudio.play().catch(()=>{});
-      matched = true;
+  if (siteActive && matchedStation) {
+    if (radioAudio.getAttribute("src") !== matchedStation.src) {
+      radioAudio.pause();
+      radioAudio.src = matchedStation.src;
+      radioAudio.load();
     }
-  });
-
-  if (!stations.some(s => s.x === x)) hintX.classList.remove("correct");
-  if (!stations.some(s => s.y === y)) hintY.classList.remove("correct");
-
-  if (!matched) radioAudio.pause();
+    if (radioAudio.paused) {
+      radioAudio.play().catch(error => {
+        console.warn("Radio recording could not play:", error);
+      });
+    }
+  } else {
+    radioAudio.pause();
+  }
 }
 
 dialX.addEventListener("input", updateDisplay);
 dialY.addEventListener("input", updateDisplay);
 updateDisplay();
 
-//volume stuff
 function updateVolumeUI() {
   volumeBar.style.width = `${radioAudio.volume * 100}%`;
 }
 updateVolumeUI();
 
-volUp.onclick = () => {
-  radioAudio.volume = Math.min(1, radioAudio.volume + 0.1);
+volUp.addEventListener("click", () => {
+  radioAudio.volume = Math.min(1, Math.round((radioAudio.volume + 0.1) * 10) / 10);
   updateVolumeUI();
-};
+});
 
-volDown.onclick = () => {
-  radioAudio.volume = Math.max(0, radioAudio.volume - 0.1);
+volDown.addEventListener("click", () => {
+  radioAudio.volume = Math.max(0, Math.round((radioAudio.volume - 0.1) * 10) / 10);
   updateVolumeUI();
-};
+});
 
-muteBtn.onclick = () => {
+muteBtn.addEventListener("click", () => {
   radioAudio.muted = !radioAudio.muted;
   muteBtn.textContent = radioAudio.muted ? "UNMUTE" : "MUTE";
-};
+});
 
-/* ===== MONITOR ===== */
+/* ===== 5MONITOR ===== */
 const responses = {
   "13314": "Code number 1",
+  "12345": "Code number 2",
+  "13452": "Code number 3",
+  "11111": "Code number 4",
+  "22222": "Code number 5",
+  "33333": "Code number 6",
+  "44444": "Code number 7",
+  "55555": "Code number 8",
+  "12121": "Code number 9",
 };
 
 const monitor = document.getElementById("monitorScreen");
 const buttons = document.querySelectorAll(".monitor-buttons button");
-
 let input = "";
 let locked = false;
 let resetTimer = null;
-
-//could change to 4? maybe
 const MAX_LEN = 5;
 
 function resetMonitor() {
@@ -600,23 +853,17 @@ function resetMonitor() {
   monitor.textContent = "AWAITING INPUT...";
 }
 
-buttons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    if (locked) return;
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (!siteActive || locked) return;
 
-    // if already at max length, reset before adding
-    if (input.length >= MAX_LEN) {
-      input = "";
-    }
-
-    input += btn.dataset.key;
+    if (input.length >= MAX_LEN) input = "";
+    input += button.dataset.key;
     monitor.textContent = input;
 
-    // checks the code
-    if (responses[input]) {
+    if (Object.prototype.hasOwnProperty.call(responses, input)) {
       monitor.textContent = responses[input];
       locked = true;
-
       clearTimeout(resetTimer);
       resetTimer = setTimeout(resetMonitor, 10000);
     }

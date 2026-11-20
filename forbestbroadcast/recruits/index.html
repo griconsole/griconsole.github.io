@@ -1,0 +1,3246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BESTTV // Forbest's Loop Broadcast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="/besttv/assets/faviconTV.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/besttv/assets/faviconTV.png">
+
+<style>
+
+:root {
+    --red: #a92f35;
+    --red-dark: #681b24;
+    --red-bright: #d84a45;
+    --gold: #efbd62;
+    --gold-light: #ffe2a0;
+    --cream: #fff1d0;
+    --ink: #130f12;
+    --ink-2: #21171a;
+    --ink-3: #302023;
+    --muted: #bba99b;
+    --green: #75d4ac;
+    --font: "Trebuchet MS", Arial, sans-serif;
+    --mono: "Courier New", monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 78% 10%, rgba(169,47,53,.18), transparent 33rem), radial-gradient(ellipse at 10% 40%, rgba(239,189,98,.08), transparent 30rem), var(--ink);
+    color: var(--cream);
+    font-family: var(--font);
+    overflow-x: hidden;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+    opacity: .11;
+    background: repeating-linear-gradient( to bottom, transparent 0, transparent 3px, rgba(0,0,0,.38) 4px );
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 29;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.42));
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes onair {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .45;
+    }
+}
+
+@keyframes pop {
+    from {
+        transform: scale(.94);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes confetti {
+    0% {
+        transform: translateY(-15px) rotate(0);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: .9;
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(540deg);
+        opacity: 0;
+    }
+}
+
+.top-strip {
+    height: 30px;
+    overflow: hidden;
+    background: var(--gold);
+    color: #29191a;
+    display: flex;
+    align-items: center;
+    font: 800 10px var(--mono);
+    letter-spacing: 2px;
+    border-bottom: 2px solid #5b2026;
+    position: relative;
+    z-index: 3;
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 32s linear infinite;
+}
+
+    .marquee-track span {
+        padding-right: 38px;
+        white-space: nowrap;
+    }
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 17px clamp(18px, 4vw, 62px);
+    background: rgba(15,11,13,.94);
+    border-bottom: 1px solid rgba(239,189,98,.24);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--gold);
+    font-weight: 1000;
+    font-size: 28px;
+    letter-spacing: -1px;
+    text-shadow: 3px 3px 0 var(--red-dark);
+    white-space: nowrap;
+}
+
+.logo-mark {
+    width: 29px;
+    height: 29px;
+    display: grid;
+    place-items: center;
+    background: var(--red);
+    border: 2px solid var(--gold);
+    color: var(--cream);
+    font-size: 15px;
+    box-shadow: 3px 3px 0 #080607;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+}
+
+    .nav-links button {
+        background: transparent;
+        border: 0;
+        color: #e7d9c7;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        padding: 8px 0;
+    }
+
+        .nav-links button:hover {
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+.nav-spacer {
+    flex: 1;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border-bottom: 1px solid rgba(239,189,98,.55);
+    padding: 5px 2px;
+    max-width: 230px;
+}
+
+    .search-box input {
+        width: 175px;
+        border: 0;
+        outline: 0;
+        color: var(--cream);
+        background: transparent;
+        font-size: 12px;
+    }
+
+        .search-box input::placeholder {
+            color: #9a8179;
+        }
+
+.delivery-button {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    width: 74px;
+    height: 49px;
+    flex: 0 0 auto;
+    transition: transform .2s;
+}
+
+    .delivery-button:hover {
+        transform: scale(1.12);
+    }
+
+    .delivery-button img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+.hero {
+    min-height: 465px;
+    position: relative;
+    overflow: hidden;
+    padding: 62px clamp(22px, 6vw, 92px) 48px;
+    background: linear-gradient(90deg, rgba(20,12,14,.98) 0%, rgba(35,15,18,.92) 48%, rgba(45,14,19,.45) 100%), repeating-linear-gradient(135deg, rgba(239,189,98,.045) 0 2px, transparent 2px 14px);
+    border-bottom: 3px solid var(--red);
+}
+
+    .hero::before {
+        content: "BEST";
+        position: absolute;
+        right: -35px;
+        top: -70px;
+        font-size: clamp(130px, 25vw, 360px);
+        font-weight: 1000;
+        letter-spacing: -.08em;
+        color: rgba(239,189,98,.045);
+        pointer-events: none;
+    }
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    width: min(660px, 62%);
+}
+
+.eyebrow {
+    color: var(--gold);
+    font: 800 11px var(--mono);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.on-air {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 9px;
+    margin-left: 8px;
+    color: white;
+    background: var(--red);
+    font: 900 10px var(--mono);
+    letter-spacing: 1px;
+    animation: onair 1.7s infinite;
+}
+
+    .on-air::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+.hero h1 {
+    margin: 17px 0 10px;
+    max-width: 660px;
+    color: var(--cream);
+    font-size: clamp(34px, 5vw, 62px);
+    line-height: .98;
+    letter-spacing: -2px;
+    text-shadow: 4px 4px 0 var(--red-dark);
+}
+
+.hero-copy {
+    max-width: 510px;
+    color: #d8c4b3;
+    line-height: 1.65;
+    font-size: 14px;
+}
+
+.hero-meta {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin: 18px 0 23px;
+    color: var(--gold-light);
+    font: 11px var(--mono);
+}
+
+    .hero-meta span {
+        border: 1px solid rgba(239,189,98,.35);
+        background: rgba(12,7,8,.32);
+        padding: 6px 8px;
+    }
+
+.hero-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.play-button, .secondary-button {
+    border: 0;
+    padding: 12px 18px;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: transform .15s, filter .15s;
+}
+
+.play-button {
+    background: var(--gold);
+    color: #281719;
+    box-shadow: 4px 4px 0 var(--red);
+}
+
+.secondary-button {
+    color: var(--cream);
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,241,208,.3);
+}
+
+    .play-button:hover, .secondary-button:hover {
+        transform: translateY(-3px);
+        filter: brightness(1.13);
+    }
+
+.hero-host {
+    position: absolute;
+    z-index: 2;
+    height: min(455px, 96%);
+    width: auto;
+    max-width: 46%;
+    object-fit: contain;
+    object-position: bottom;
+    right: clamp(0px, 6vw, 85px);
+    bottom: -7px;
+    filter: drop-shadow(12px 9px 0 rgba(0,0,0,.42));
+    animation: bob 4.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.hero-sticker {
+    position: absolute;
+    z-index: 4;
+    right: 35%;
+    bottom: 40px;
+    color: #29191a;
+    background: var(--gold);
+    padding: 8px 12px;
+    font: 900 10px var(--mono);
+    box-shadow: 3px 3px 0 var(--red-dark);
+}
+
+main {
+    padding: 0 clamp(17px, 4vw, 62px) 70px;
+}
+
+.section {
+    margin: 35px 0 42px;
+}
+
+.section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    margin: 0;
+    color: var(--cream);
+    font-size: 21px;
+    letter-spacing: -.5px;
+}
+
+.section-sub {
+    color: var(--muted);
+    font: 10px var(--mono);
+    margin-top: 4px;
+}
+
+.text-button {
+    border: 0;
+    background: transparent;
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 11px;
+}
+
+    .text-button:hover {
+        text-decoration: underline;
+    }
+
+.season-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.season-card {
+    min-height: 154px;
+    padding: 15px;
+    text-align: left;
+    color: var(--cream);
+    border: 1px solid rgba(239,189,98,.32);
+    background: linear-gradient(145deg, color-mix(in srgb, var(--season-color) 65%, #171014), #181114 75%);
+    box-shadow: 4px 4px 0 rgba(0,0,0,.4);
+    position: relative;
+    overflow: hidden;
+    transition: transform .18s, box-shadow .18s;
+}
+
+    .season-card::before {
+        content: attr(data-number);
+        position: absolute;
+        right: -3px;
+        bottom: -31px;
+        font-weight: 1000;
+        font-size: 115px;
+        color: rgba(255,241,208,.10);
+        line-height: 1;
+    }
+
+    .season-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 7px 9px 0 rgba(0,0,0,.48);
+    }
+
+    .season-card .season-kicker {
+        color: var(--gold-light);
+        font: 10px var(--mono);
+        letter-spacing: 2px;
+    }
+
+    .season-card h3 {
+        position: relative;
+        z-index: 1;
+        margin: 10px 0 6px;
+        font-size: 17px;
+    }
+
+    .season-card p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: #d4bfb0;
+        font-size: 11px;
+        line-height: 1.45;
+        max-width: 90%;
+    }
+
+    .season-card .season-count {
+        position: absolute;
+        left: 15px;
+        bottom: 12px;
+        z-index: 2;
+        color: var(--gold);
+        font: 10px var(--mono);
+    }
+
+    .season-card .season-state {
+        position: absolute;
+        right: 11px;
+        top: 11px;
+        z-index: 2;
+        color: #fff;
+        font: 9px var(--mono);
+        background: var(--red);
+        padding: 4px 6px;
+    }
+
+.shelf {
+    margin: 28px 0 35px;
+}
+
+.shelf-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+    .shelf-head h3 {
+        margin: 0;
+        color: var(--cream);
+        font-size: 17px;
+    }
+
+    .shelf-head span {
+        color: var(--muted);
+        font: 10px var(--mono);
+    }
+
+.episode-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(145px, 170px);
+    gap: 12px;
+    overflow-x: auto;
+    padding: 5px 4px 17px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--red) #231619;
+}
+
+    .episode-rail::-webkit-scrollbar {
+        height: 7px;
+    }
+
+    .episode-rail::-webkit-scrollbar-track {
+        background: #231619;
+    }
+
+    .episode-rail::-webkit-scrollbar-thumb {
+        background: var(--red);
+        border: 1px solid var(--gold);
+    }
+
+.episode-card {
+    min-width: 0;
+    text-align: left;
+    border: 1px solid rgba(239,189,98,.30);
+    background: #211619;
+    color: var(--cream);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    transition: transform .18s, filter .18s, border-color .18s;
+}
+
+    .episode-card:hover {
+        transform: translateY(-6px) scale(1.025);
+        border-color: var(--gold);
+        filter: brightness(1.16);
+        z-index: 2;
+    }
+
+.poster-art {
+    height: 108px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: end;
+    background: radial-gradient(circle at 75% 25%, rgba(255,255,255,.27), transparent 24%), linear-gradient(135deg, var(--poster-a), var(--poster-b));
+}
+
+    .poster-art::before {
+        content: "";
+        width: 88px;
+        height: 88px;
+        position: absolute;
+        right: -16px;
+        top: -25px;
+        border: 7px solid rgba(255,241,208,.37);
+        border-radius: 50%;
+        box-shadow: 0 0 0 9px rgba(0,0,0,.07), 0 0 0 20px rgba(0,0,0,.06);
+    }
+
+    .poster-art::after {
+        content: "BEST";
+        position: absolute;
+        right: 8px;
+        top: 9px;
+        color: rgba(255,241,208,.55);
+        font: 900 9px var(--mono);
+        letter-spacing: 2px;
+    }
+
+.poster-season {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: var(--cream);
+    background: rgba(15,8,10,.62);
+    padding: 4px 6px;
+    font: 9px var(--mono);
+    z-index: 1;
+}
+
+.poster-symbol {
+    position: absolute;
+    left: 13px;
+    top: 16px;
+    color: rgba(255,241,208,.64);
+    font-size: 43px;
+    line-height: 1;
+    text-shadow: 3px 3px 0 rgba(0,0,0,.16);
+}
+
+.poster-number {
+    position: absolute;
+    right: 9px;
+    bottom: 5px;
+    font: 900 27px var(--mono);
+    color: rgba(255,241,208,.34);
+}
+
+.episode-info {
+    padding: 10px;
+    min-height: 92px;
+}
+
+    .episode-info .episode-no {
+        color: var(--gold);
+        font: 9px var(--mono);
+        letter-spacing: 1px;
+    }
+
+    .episode-info h4 {
+        margin: 5px 0 8px;
+        font-size: 13px;
+        line-height: 1.22;
+    }
+
+    .episode-info .mini-rating {
+        color: var(--gold);
+        font: 10px var(--mono);
+    }
+
+.episode-card.locked {
+    filter: grayscale(.8);
+    opacity: .57;
+}
+
+    .episode-card.locked:hover {
+        transform: none;
+        filter: grayscale(.6);
+    }
+
+.locked-mark {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+    background: #151014;
+    color: #fff;
+    padding: 4px 6px;
+    font: 9px var(--mono);
+}
+
+.page-title-row {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 34px 0 17px;
+}
+
+    .page-title-row h1 {
+        margin: 0;
+        font-size: clamp(25px, 4vw, 40px);
+    }
+
+    .page-title-row p {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 7px 0 0;
+    }
+
+.back-button {
+    border: 1px solid rgba(239,189,98,.42);
+    color: var(--gold);
+    background: #1b1215;
+    padding: 9px 12px;
+    font-size: 11px;
+}
+
+.episode-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+}
+
+    .episode-grid .episode-card {
+        width: 100%;
+    }
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+}
+
+#modalRoot, #deliveryRoot {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    background: rgba(5,3,5,.84);
+    backdrop-filter: blur(5px);
+    padding: 22px;
+    align-items: center;
+    justify-content: center;
+}
+
+    #modalRoot.visible, #deliveryRoot.visible {
+        display: flex;
+    }
+
+.detail-window {
+    width: min(900px, 100%);
+    max-height: min(90vh, 900px);
+    overflow-y: auto;
+    background: #1a1115;
+    border: 2px solid var(--gold);
+    box-shadow: 9px 9px 0 var(--red-dark), 0 0 45px rgba(0,0,0,.7);
+    animation: pop .22s ease-out;
+    position: relative;
+}
+
+.detail-top {
+    min-height: 220px;
+    padding: 27px clamp(18px, 4vw, 40px);
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 85% 20%, rgba(255,255,255,.2), transparent 25%), linear-gradient(115deg, var(--detail-a, #6c2028), var(--detail-b, #a92f35));
+}
+
+    .detail-top::after {
+        content: "BEST";
+        position: absolute;
+        right: -8px;
+        bottom: -36px;
+        color: rgba(255,241,208,.10);
+        font-size: clamp(85px, 19vw, 180px);
+        font-weight: 1000;
+        letter-spacing: -.1em;
+    }
+
+    .detail-top > * {
+        position: relative;
+        z-index: 1;
+    }
+
+.detail-close {
+    position: sticky;
+    float: right;
+    top: 10px;
+    margin: 10px 10px -44px 0;
+    z-index: 4;
+    border: 1px solid rgba(255,241,208,.65);
+    color: var(--cream);
+    background: rgba(20,10,12,.55);
+    width: 35px;
+    height: 35px;
+    font-size: 19px;
+}
+
+.detail-top h2 {
+    max-width: 690px;
+    margin: 14px 0 8px;
+    font-size: clamp(27px, 5vw, 44px);
+    line-height: 1;
+    text-shadow: 3px 3px 0 #5b1820;
+}
+
+.detail-top p {
+    max-width: 610px;
+    line-height: 1.55;
+    color: #ffebd1;
+    font-size: 13px;
+}
+
+.detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--gold-light);
+    font: 10px var(--mono);
+}
+
+    .detail-meta span {
+        background: rgba(16,8,10,.35);
+        padding: 6px 8px;
+    }
+
+.detail-content {
+    padding: 22px clamp(18px, 4vw, 38px) 32px;
+}
+
+.detail-section {
+    margin-top: 18px;
+}
+
+    .detail-section h3 {
+        margin: 0 0 10px;
+        color: var(--gold);
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+.score-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    color: var(--gold-light);
+    font-size: 12px;
+}
+
+.big-score {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--gold);
+}
+
+.rate-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+    .rate-buttons button {
+        border: 1px solid rgba(239,189,98,.4);
+        color: var(--gold);
+        background: #24171b;
+        padding: 7px 10px;
+    }
+
+        .rate-buttons button:hover, .rate-buttons button.selected {
+            background: var(--gold);
+            color: #281719;
+        }
+
+.comment-list {
+    display: grid;
+    gap: 9px;
+}
+
+.comment {
+    border-left: 3px solid var(--red);
+    background: rgba(255,255,255,.035);
+    padding: 10px 12px;
+}
+
+    .comment strong {
+        color: var(--gold-light);
+        font-size: 11px;
+    }
+
+    .comment p {
+        margin: 5px 0 0;
+        color: #d9c8b8;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+.comment-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+    .comment-form input {
+        min-width: 0;
+        background: #0e0a0c;
+        border: 1px solid rgba(239,189,98,.34);
+        color: var(--cream);
+        padding: 10px;
+        outline: 0;
+    }
+
+        .comment-form input:focus {
+            border-color: var(--gold);
+        }
+
+    .comment-form button {
+        background: var(--gold);
+        color: #281719;
+        border: 0;
+        padding: 0 14px;
+        font-weight: 900;
+    }
+
+.watchlist-button {
+    border: 1px solid rgba(255,241,208,.45);
+    color: var(--cream);
+    background: rgba(10,5,7,.25);
+    padding: 9px 13px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+    .watchlist-button:hover {
+        background: rgba(255,255,255,.12);
+    }
+
+
+.detail-play-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 17px
+}
+
+.episode-play-button {
+    border: 0;
+    padding: 11px 17px;
+    color: #291719;
+    background: var(--gold);
+    font-size: 12px;
+    font-weight: 1000;
+    letter-spacing: 1px;
+    box-shadow: 4px 4px 0 var(--red-dark);
+    transition: transform .15s,filter .15s,opacity .25s
+}
+
+    .episode-play-button:hover:not(:disabled) {
+        transform: translateY(-3px);
+        filter: brightness(1.1)
+    }
+
+    .episode-play-button:active:not(:disabled) {
+        transform: translateY(1px) scale(.98)
+    }
+
+    .episode-play-button .play-count {
+        margin-left: 8px;
+        font: 10px var(--mono);
+        opacity: .75
+    }
+
+    .episode-play-button.breaking {
+        pointer-events: none;
+        animation: playBreak .85s ease-in forwards
+    }
+
+    .episode-play-button.broken {
+        opacity: .10;
+        filter: grayscale(1);
+        cursor: not-allowed;
+        pointer-events: none;
+        box-shadow: none
+    }
+
+@keyframes playBreak {
+    0% {
+        opacity: 1;
+        transform: translate(0);
+        filter: none
+    }
+
+    18% {
+        transform: translate(-4px,2px)
+    }
+
+    35% {
+        transform: translate(5px,-2px);
+        filter: contrast(2)
+    }
+
+    55% {
+        transform: translate(-7px,1px);
+        opacity: .75
+    }
+
+    100% {
+        transform: translate(12px,8px) scale(.72);
+        opacity: 0;
+        filter: grayscale(1) blur(2px)
+    }
+}
+
+.comment-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap
+}
+
+.comment-stars {
+    color: var(--gold);
+    font: 10px var(--mono);
+    letter-spacing: 1px;
+    white-space: nowrap
+}
+
+/* Enter 4 cake*/
+#cakeRoot {
+    position: fixed;
+    inset: 0;
+    z-index: 180;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(8,4,7,.88);
+    backdrop-filter: blur(5px);
+    overflow: hidden
+}
+
+    #cakeRoot.visible {
+        display: flex
+    }
+
+.cake-window {
+    position: relative;
+    width: min(470px,100%);
+    min-height: 390px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 25px 27px;
+    text-align: center;
+    color: var(--cream);
+    background: radial-gradient(circle at 50% 38%,rgba(239,189,98,.15),transparent 48%),#1a1115;
+    border: 2px solid var(--gold);
+    box-shadow: 9px 9px 0 var(--red-dark),0 0 55px rgba(0,0,0,.75);
+    animation: pop .24s ease-out
+}
+
+    .cake-window > :not(.cake-confetti) {
+        position: relative;
+        z-index: 2
+    }
+
+.cake-close {
+    position: absolute !important;
+    z-index: 5 !important;
+    right: 9px;
+    top: 9px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(255,241,208,.5);
+    background: rgba(0,0,0,.35);
+    color: var(--cream);
+    font-size: 19px
+}
+
+.cake-eyebrow {
+    color: var(--gold);
+    font: 900 10px var(--mono);
+    letter-spacing: 3px
+}
+
+.cake-window h2 {
+    margin: 9px 0 0;
+    font-size: 29px;
+    color: var(--cream);
+    text-shadow: 3px 3px 0 var(--red-dark)
+}
+
+.cake-instruction {
+    margin: 18px 0 0;
+    color: var(--gold-light);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: .5px
+}
+
+.cake-confetti {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1
+}
+
+.cake-confetti-piece {
+    position: absolute;
+    top: -14px;
+    width: 7px;
+    height: 12px;
+    opacity: .85;
+    animation: cakeRain var(--fall-duration) linear var(--fall-delay) infinite
+}
+
+@keyframes cakeRain {
+    0% {
+        transform: translate3d(0,-20px,0) rotate(0)
+    }
+
+    100% {
+        transform: translate3d(var(--drift),450px,0) rotate(650deg)
+    }
+}
+
+.cake-button {
+    position: relative !important;
+    width: 220px;
+    height: 185px;
+    border: 0;
+    padding: 0;
+    margin-top: 19px;
+    background: transparent;
+    cursor: pointer;
+    transform-origin: 50% 85%;
+    transition: transform .2s ease
+}
+
+    .cake-button:hover {
+        transform: translateY(-8px) scale(1.045);
+        animation: none
+    }
+
+    .cake-button:focus-visible {
+        outline: 2px dashed var(--gold);
+        outline-offset: 5px
+    }
+
+.cake-plate {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(#fff0d0,#bda58e);
+    box-shadow: 0 6px 0 rgba(0,0,0,.28)
+}
+
+.cake-body {
+    position: absolute;
+    left: 43px;
+    right: 43px;
+    bottom: 32px;
+    height: 82px;
+    border: 3px solid #6b252b;
+    background: repeating-linear-gradient(90deg,#c64d48 0 17px,#e9a95e 17px 24px);
+    border-radius: 8px 8px 13px 13px;
+    box-shadow: inset 0 -13px 0 rgba(88,25,31,.22),0 5px 0 #6b252b
+}
+
+.cake-frosting {
+    position: absolute;
+    left: 37px;
+    right: 37px;
+    bottom: 100px;
+    height: 32px;
+    border: 3px solid #8c3a3b;
+    border-radius: 50% 50% 9px 9px;
+    background: linear-gradient(#fff0d1,#efc58a);
+    box-shadow: 0 7px 0 #d89c6e
+}
+
+    .cake-frosting:after {
+        content: "";
+        position: absolute;
+        left: 6px;
+        right: 6px;
+        bottom: -12px;
+        height: 18px;
+        background: radial-gradient(ellipse at 12px 0,#efc58a 0 10px,transparent 11px) 0 0/37px 18px repeat-x
+    }
+
+.cake-candle {
+    position: absolute;
+    left: 50%;
+    bottom: 128px;
+    width: 10px;
+    height: 35px;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(135deg,#fff0d1 0 6px,#b63b43 6px 11px);
+    border: 1px solid #6b252b
+}
+
+.cake-flame {
+    position: absolute;
+    left: 50%;
+    top: -17px;
+    width: 11px;
+    height: 17px;
+    transform: translateX(-50%);
+    border-radius: 70% 30% 60% 40%;
+    background: #ffd56a;
+    box-shadow: 0 0 13px #ff9d42,0 0 25px rgba(255,157,66,.55);
+    animation: flameDance .25s infinite alternate
+}
+
+@keyframes flameDance {
+    from {
+        transform: translateX(-50%) scale(.92)
+    }
+
+    to {
+        transform: translateX(-50%) scale(1.08)
+    }
+}
+
+.cake-sprinkle {
+    position: absolute;
+    z-index: 2;
+    width: 4px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--gold);
+    transform: none;
+}
+
+.cake-button.exploding {
+    animation: cakeExplode .48s ease-out forwards !important;
+    pointer-events: none
+}
+
+@keyframes cakeExplode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1)
+    }
+
+    35% {
+        transform: scale(1.18);
+        opacity: 1;
+        filter: brightness(2.4)
+    }
+
+    100% {
+        transform: scale(.05);
+        opacity: 0;
+        filter: blur(9px)
+    }
+}
+
+.cake-spark {
+    position: absolute !important;
+    left: 50%;
+    top: 54%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 13px var(--gold);
+    pointer-events: none;
+    animation: sparkBurst .65s ease-out forwards
+}
+
+@keyframes sparkBurst {
+    from {
+        transform: translate(-50%,-50%) scale(.4);
+        opacity: 1
+    }
+
+    to {
+        transform: translate(var(--x),var(--y)) scale(0);
+        opacity: 0
+    }
+}
+
+.cake-claimed .cake-instruction {
+    color: var(--green)
+}
+
+.delivery-window {
+    width: min(470px, 100%);
+    text-align: center;
+    padding: 20px 24px 27px;
+    color: var(--cream);
+    background: #1a1115;
+    border: 2px solid var(--gold);
+    box-shadow: 8px 8px 0 var(--red-dark);
+    animation: pop .25s ease-out;
+}
+
+    .delivery-window img {
+        display: block;
+        width: 190px;
+        max-width: 70%;
+        margin: -2px auto 5px;
+    }
+
+    .delivery-window h2 {
+        color: var(--gold);
+        margin: 0 0 8px;
+        font-size: 25px;
+    }
+
+    .delivery-window p {
+        color: #d9c8b8;
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .delivery-window button {
+        border: 0;
+        color: #281719;
+        background: var(--gold);
+        padding: 10px 19px;
+        font-weight: 900;
+    }
+
+#toast {
+    position: fixed;
+    z-index: 200;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    color: #261719;
+    background: var(--gold);
+    padding: 11px 16px;
+    font: 900 11px var(--mono);
+    box-shadow: 4px 4px 0 var(--red-dark);
+    display: none;
+}
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 8px;
+    height: 13px;
+    z-index: 150;
+    pointer-events: none;
+    animation: confetti 2.2s ease-in forwards;
+}
+
+footer {
+    margin-top: 60px;
+    padding: 26px clamp(18px, 4vw, 62px);
+    border-top: 1px solid rgba(239,189,98,.22);
+    background: #0d090b;
+    color: #917b70;
+    font: 10px var(--mono);
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.footer-logo {
+    color: var(--gold);
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 1000px) {
+    .season-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .episode-grid, .results-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hero-host {
+        right: 0;
+        opacity: .83;
+    }
+
+    .hero-content {
+        width: 70%;
+    }
+}
+
+@media (max-width: 680px) {
+    .navbar {
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 13px 16px;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-spacer {
+        display: none;
+    }
+
+    .search-box {
+        flex: 1;
+        max-width: none;
+    }
+
+        .search-box input {
+            width: 100%;
+        }
+
+    .delivery-button {
+        width: 55px;
+        height: 38px;
+    }
+
+    .hero {
+        min-height: 570px;
+        padding-top: 38px;
+    }
+
+    .hero-content {
+        width: 100%;
+    }
+
+    .hero-host {
+        height: 285px;
+        max-width: 54%;
+        right: 0;
+        opacity: .42;
+    }
+
+    .hero-sticker {
+        right: 20px;
+        bottom: 18px;
+    }
+
+    .season-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .season-card {
+        min-height: 145px;
+        padding: 11px;
+    }
+
+        .season-card h3 {
+            font-size: 14px;
+        }
+
+        .season-card p {
+            font-size: 10px;
+        }
+
+    .episode-grid, .results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .page-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .comment-form {
+        grid-template-columns: 1fr;
+    }
+
+        .comment-form button {
+            padding: 10px;
+        }
+
+    #modalRoot, #deliveryRoot {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 390px) {
+    .season-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== SEASONS ===== */
+.seasons-page-intro {
+    margin: 32px 0 20px
+}
+
+    .seasons-page-intro h1 {
+        margin: 0;
+        font-size: clamp(27px,4vw,42px)
+    }
+
+    .seasons-page-intro p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5
+    }
+
+.season-strip-wrap {
+    width: 100%;
+    overflow-x: auto;
+    padding: 7px 5px 16px;
+    margin: 18px 0 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) #26181b
+}
+
+    .season-strip-wrap::-webkit-scrollbar {
+        height: 11px
+    }
+
+    .season-strip-wrap::-webkit-scrollbar-track {
+        background: #26181b;
+        border: 1px solid rgba(239,189,98,.25)
+    }
+
+    .season-strip-wrap::-webkit-scrollbar-thumb {
+        background: linear-gradient(90deg,var(--red),var(--gold));
+        border: 1px solid #ffe2a0
+    }
+
+.season-strip {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 265px;
+    gap: 13px;
+    width: max-content;
+    padding: 4px 5px 12px
+}
+
+.season-block {
+    height: 218px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    color: var(--cream);
+    border: 2px solid rgba(255,226,160,.7);
+    padding: 17px;
+    box-shadow: 5px 6px 0 rgba(0,0,0,.38);
+    isolation: isolate;
+    transition: transform .18s,box-shadow .18s,filter .18s
+}
+
+    .season-block:before {
+        content: attr(data-season-number);
+        position: absolute;
+        z-index: -1;
+        right: -8px;
+        bottom: -37px;
+        font-size: 150px;
+        font-weight: 1000;
+        line-height: 1;
+        color: rgba(255,241,208,.12)
+    }
+
+    .season-block:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background: linear-gradient(135deg,rgba(255,255,255,.12),transparent 42%,rgba(0,0,0,.28))
+    }
+
+    .season-block:hover, .season-block:focus-visible {
+        transform: translateY(-6px);
+        box-shadow: 8px 11px 0 rgba(0,0,0,.45);
+        filter: brightness(1.12)
+    }
+
+.season-block-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font: 10px var(--mono);
+    letter-spacing: 1px
+}
+
+.season-block h2 {
+    margin: auto 0 7px;
+    max-width: 92%;
+    font-size: 22px;
+    line-height: 1.05;
+    text-shadow: 2px 2px 0 rgba(0,0,0,.32)
+}
+
+.season-block-count {
+    font: 10px var(--mono);
+    color: var(--gold-light)
+}
+
+.season-hover-description {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 19px;
+    background: rgba(16,9,12,.95);
+    color: var(--cream);
+    font-size: 12px;
+    line-height: 1.55;
+    opacity: 0;
+    transform: translateY(9px);
+    transition: opacity .2s,transform .2s;
+    pointer-events: none;
+    border: 3px solid rgba(255,226,160,.48)
+}
+
+.season-block:hover .season-hover-description, .season-block:focus-visible .season-hover-description {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+.season-strip-help {
+    color: #ad978b;
+    font: 10px var(--mono);
+    letter-spacing: 1px;
+    margin: 6px 5px 0
+}
+
+.season-page-banner {
+    padding: 24px;
+    margin: 28px 0 20px;
+    border: 2px solid var(--gold);
+    color: var(--cream);
+    box-shadow: 6px 6px 0 rgba(0,0,0,.35)
+}
+
+    .season-page-banner h1 {
+        margin: 8px 0;
+        font-size: clamp(25px,4vw,39px)
+    }
+
+    .season-page-banner p {
+        color: #ffebd1;
+        font-size: 12px;
+        line-height: 1.5
+    }
+
+/* ===== RATING COMMENTS ==== */
+.rate-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px
+}
+
+    .rate-buttons button {
+        width: 38px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid rgba(239,189,98,.55);
+        color: var(--gold);
+        background: #24171b;
+        font-size: 20px;
+        line-height: 1
+    }
+
+        .rate-buttons button:hover, .rate-buttons button.selected {
+            background: var(--gold);
+            color: #281719
+        }
+
+.comment-form {
+    display: grid;
+    grid-template-columns: 145px minmax(0,1fr) auto;
+    gap: 8px;
+    margin-top: 12px;
+    align-items: stretch
+}
+
+    .comment-form .comment-author {
+        width: 100%;
+        min-width: 0
+    }
+
+    .comment-form .comment-text {
+        width: 100%;
+        min-width: 0
+    }
+
+    .comment-form input {
+        min-width: 0;
+        background: #0e0a0c;
+        border: 1px solid rgba(239,189,98,.34);
+        color: var(--cream);
+        padding: 10px;
+        outline: 0
+    }
+
+        .comment-form input:focus {
+            border-color: var(--gold)
+        }
+
+    .comment-form button {
+        background: var(--gold);
+        color: #281719;
+        border: 0;
+        padding: 0 14px;
+        font-weight: 900;
+        white-space: nowrap
+    }
+
+    .comment-form.shake {
+        animation: commentShake .36s ease
+    }
+
+@keyframes commentShake {
+    0%,100% {
+        transform: translateX(0)
+    }
+
+    20% {
+        transform: translateX(-7px)
+    }
+
+    40% {
+        transform: translateX(7px)
+    }
+
+    60% {
+        transform: translateX(-5px)
+    }
+
+    80% {
+        transform: translateX(4px)
+    }
+}
+
+.rating-reminder {
+    display: none;
+    width: fit-content;
+    margin-top: 9px;
+    padding: 6px 9px;
+    color: #fff0d0;
+    background: var(--red);
+    box-shadow: 3px 3px 0 var(--red-dark);
+    font: 10px var(--mono);
+    animation: reminderPop .18s ease-out
+}
+
+    .rating-reminder.visible {
+        display: block
+    }
+
+@keyframes reminderPop {
+    from {
+        opacity: 0;
+        transform: translateY(5px) scale(.94)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
+@media(max-width:680px) {
+    .season-strip {
+        grid-auto-columns: 245px
+    }
+
+    .comment-form {
+        grid-template-columns: 1fr
+    }
+
+        .comment-form .comment-author {
+            max-width: 220px
+        }
+
+        .comment-form button {
+            padding: 11px
+        }
+}
+
+
+.brand-logo {
+    display: block;
+    width: 92px;
+    height: 69px;
+    object-fit: contain;
+    filter: drop-shadow(3px 4px 0 rgba(0,0,0,.45));
+    transition: transform .18s ease;
+}
+
+.logo:hover .brand-logo {
+    transform: scale(1.08);
+}
+
+.footer-logo-art {
+    width: 75px;
+    height: 58px;
+    object-fit: contain;
+    align-self: center;
+    filter: drop-shadow(2px 3px 0 rgba(0,0,0,.4));
+}
+
+.hero h1, .section-title, .section-head h3, .season-card h3,
+.season-block h2, .detail-top h2, .season-page-banner h1,
+.page-title-row h1, .cake-window h2, .delivery-window h2,
+.hero-sticker, .play-button, .episode-play-button,
+.episode-info h4 {
+    font-family: 'Luckiest Guy', 'Trebuchet MS', sans-serif;
+    font-weight: 400;
+    letter-spacing: .035em;
+}
+
+.hero h1 {
+    letter-spacing: .015em;
+}
+
+.section-title {
+    letter-spacing: .045em;
+}
+
+.detail-top h2 {
+    letter-spacing: .025em;
+}
+
+.on-air-art {
+    display: inline-block;
+    width: 104px;
+    height: 48px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-left: 8px;
+    animation: onair 1.7s infinite;
+    filter: drop-shadow(2px 3px 0 rgba(0,0,0,.35));
+}
+
+.on-air-detail {
+    width: 95px;
+    height: 43px;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.season-on-air {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 88px;
+    height: 42px;
+    object-fit: contain;
+    z-index: 3;
+    filter: drop-shadow(2px 3px 0 rgba(0,0,0,.4));
+}
+
+.hero-frame-fill, .hero-frame-outline {
+    position: absolute;
+    right: clamp(30px, 8vw, 130px);
+    bottom: 10px;
+    height: min(415px, 90%);
+    width: auto;
+    aspect-ratio: 210 / 324;
+    object-fit: fill;
+    pointer-events: none;
+}
+
+.hero-frame-fill {
+    z-index: 1;
+    opacity: .96;
+    filter: drop-shadow(7px 7px 0 rgba(0,0,0,.28));
+}
+
+.hero-frame-outline {
+    z-index: 2;
+    opacity: .95;
+}
+
+.hero-host {
+    z-index: 3;
+    height: min(455px, 99%);
+    right: clamp(55px, 10vw, 155px);
+    max-width: 42%;
+}
+
+.hero-sticker {
+    background: transparent url('assets/box-horizontal-fill.png') center / 100% 100% no-repeat;
+    color: #69252b;
+    padding: 13px 21px;
+    min-width: 190px;
+    text-align: center;
+    text-shadow: none;
+    box-shadow: none;
+    font-size: 13px;
+}
+
+.season-card .season-kicker {
+    display: inline-block;
+    width: fit-content;
+    min-width: 145px;
+    padding: 7px 13px;
+    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+    color: var(--gold-light);
+}
+
+.season-card .season-count {
+    display: inline-block;
+    width: fit-content;
+    min-width: 142px;
+    padding: 7px 12px;
+    background: url('assets/box-horizontal-fill.png') center / 100% 100% no-repeat;
+    color: #6a282d;
+    font-weight: 900;
+}
+
+.section-sub {
+    display: inline-block;
+    padding: 7px 14px;
+    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+}
+
+.detail-meta span {
+    padding: 8px 12px;
+    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+}
+
+.episode-no {
+    display: inline-block;
+    width: fit-content;
+    padding: 5px 10px;
+    background: url('assets/box-horizontal-outline.png') center / 100% 100% no-repeat;
+}
+
+.poster-art {
+    height: 190px;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, var(--poster-a), var(--poster-b));
+}
+
+    .poster-art::before, .poster-art::after {
+        display: none;
+    }
+
+.poster-stock, .poster-frame-art {
+    position: absolute;
+    inset: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    object-fit: fill;
+    pointer-events: none;
+}
+
+.poster-stock {
+    z-index: 0;
+    opacity: .98;
+}
+
+.poster-frame-art {
+    z-index: 3;
+    opacity: .95;
+}
+
+.poster-season {
+    left: 15px;
+    top: 16px;
+    z-index: 2;
+    background: rgba(91,31,37,.88);
+    color: #fff1d0;
+}
+
+.poster-symbol {
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    transform: translate(-50%,-50%);
+    color: rgba(111,39,43,.78);
+    font-size: 74px;
+    text-shadow: 2px 3px 0 rgba(255,241,208,.55);
+}
+
+.poster-number {
+    right: 16px;
+    bottom: 12px;
+    z-index: 2;
+    color: rgba(111,39,43,.67);
+}
+
+.episode-card:hover .poster-symbol {
+    transform: translate(-50%,-50%) scale(1.12);
+}
+
+.episode-info {
+    background: #1d1417;
+}
+
+    .episode-info h4 {
+        letter-spacing: .015em;
+        font-size: 14px;
+    }
+
+.cake-button {
+    width: 245px;
+    height: 205px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: transform .18s ease;
+}
+
+    .cake-button:hover {
+        transform: translateY(-7px) scale(1.05);
+        animation: none;
+    }
+
+.cake-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 4px rgba(0,0,0,.3));
+    transition: filter .2s ease;
+}
+
+.cake-button:hover .cake-image {
+    filter: drop-shadow(0 12px 7px rgba(0,0,0,.38));
+}
+
+.cake-button.exploding {
+    animation: none !important;
+    transform: scale(1.04);
+    pointer-events: none;
+}
+
+    .cake-button.exploding .cake-image {
+        animation: cakeAssetBurst .48s ease-out forwards;
+    }
+
+@keyframes cakeAssetBurst {
+    0% {
+        transform: scale(.92);
+        opacity: .2;
+    }
+
+    35% {
+        transform: scale(1.12);
+        opacity: 1;
+        filter: brightness(1.2) drop-shadow(0 0 15px #efbd62);
+    }
+
+    100% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 680px) {
+    .brand-logo {
+        width: 78px;
+        height: 58px;
+    }
+
+    .hero-frame-fill, .hero-frame-outline {
+        height: 285px;
+        right: 10px;
+        bottom: 7px;
+    }
+
+    .hero-host {
+        right: 35px;
+        height: 300px;
+        max-width: 50%;
+    }
+
+    .hero-sticker {
+        min-width: 155px;
+        padding: 10px 14px;
+        font-size: 11px;
+    }
+
+    .on-air-art {
+        width: 88px;
+        height: 40px;
+    }
+
+    .poster-art {
+        height: 180px;
+    }
+}
+
+.logo:hover .brand-logo {
+    transform: scale(1.06);
+}
+
+.delivery-button {
+    transform: none;
+}
+
+    .delivery-button:hover {
+        transform: scale(1.08);
+    }
+
+.hero-sticker {
+    transform: none;
+}
+
+.play-button:hover, .secondary-button:hover {
+    transform: translateY(-3px);
+}
+
+.season-card:hover {
+    transform: translateY(-5px);
+}
+
+.episode-card:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+.season-block:hover, .season-block:focus-visible {
+    transform: translateY(-6px);
+}
+
+.episode-play-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+}
+
+.cake-button:hover {
+    transform: translateY(-7px) scale(1.05);
+    animation: none;
+}
+
+.poster-symbol {
+    width: 114px;
+    height: 118px;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    color: #8f5048;
+    font-size: 74px;
+    line-height: 1;
+    text-shadow: 2px 3px 0 rgba(255,241,208,.55);
+}
+
+.episode-card:hover .poster-symbol {
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.poster-symbol-image {
+  display: block;
+  max-width: 112px;
+  max-height: 112px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(34%) sepia(15%) saturate(1100%) hue-rotate(318deg) brightness(95%) contrast(90%);
+}
+
+.archive-badge-art {
+    display: inline-block;
+    width: 91px;
+    height: 48px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-left: 5px;
+    filter: drop-shadow(2px 3px 0 rgba(0,0,0,.28));
+}
+
+@keyframes cakeExplode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    35% {
+        transform: scale(1.16);
+        opacity: 1;
+        filter: brightness(2.2);
+    }
+
+    100% {
+        transform: scale(.05);
+        opacity: 0;
+        filter: blur(9px);
+    }
+}
+
+@keyframes cakeAssetBurst {
+    0% {
+        transform: scale(.92);
+        opacity: .25;
+    }
+
+    35% {
+        transform: scale(1.12);
+        opacity: 1;
+        filter: brightness(1.2) drop-shadow(0 0 15px #efbd62);
+    }
+
+    100% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+@keyframes flameDance {
+    from {
+        transform: translateX(-50%) scale(.92);
+    }
+
+    to {
+        transform: translateX(-50%) scale(1.08);
+    }
+}
+
+.cake-sprinkle {
+    transform: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="top-strip">
+  <div class="marquee-track">
+    <span>★ BESTTV ★ THE BEST IN ENTERTAINMENT, GUARANTEED ★ LIVE FROM THE OMNIVERSE ★ PLEASE KEEP YOUR HANDS, LIMBS, AND EXISTENTIAL DREADS INSIDE THE BROADCAST ★</span>
+    <span>★ BESTTV ★ THE BEST IN ENTERTAINMENT, GUARANTEED ★ LIVE FROM THE OMNIVERSE ★ PLEASE KEEP YOUR HANDS, LIMBS, AND EXISTENTIAL DREADS INSIDE THE BROADCAST ★</span>
+  </div>
+</div>
+
+<nav class="navbar">
+  <a class="logo" href="#" id="logoHome" aria-label="BestTV home">
+    <img class="brand-logo" src="assets/besttv-logo-full.png" alt="BEST TV">
+  </a>
+
+  <div class="nav-links">
+    <button id="navHome">HOME</button>
+    <button id="navSeasons">SEASONS</button>
+    <button id="navAll">ALL EPISODES</button>
+    <button id="navSaved">MY TAPES<span id="savedCount"></span></button>
+  </div>
+
+  <div class="nav-spacer"></div>
+
+  <div class="search-box">
+    <span>⌕</span>
+    <input id="searchInput" type="search" placeholder="Find a broadcast...">
+  </div>
+
+  <button class="delivery-button" id="deliveryButton" title="A delivery for you!">
+    <img src="assets/best-delivery.png" alt="Best delivery for you">
+  </button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="eyebrow hero-eyebrow">A BESTTV FEATURE PRESENTATION <img class="on-air-art" src="assets/on-air-sign.png" alt="ON AIR"></div>
+    <h1>COSMIC MACHINE<br>ADVENTURES</h1>
+    <p class="hero-copy">
+      Eight iterations! Countless loops! And one exceptionally handsome host!!!
+      Mr. Forbest is delighted to bring you the latest live collection of
+      recruit adventures, broadcasts, and other excellent television!
+    </p>
+    <div class="hero-meta">
+      <span>SEASON 08</span>
+      <span>35 / 60 EPISODES LIVE</span>
+      <span>LIVE LOOP</span>
+    </div>
+    <div class="hero-actions">
+      <button class="play-button" id="watchLatest">▶ WATCH LATEST</button>
+      <button class="secondary-button" id="browseArchive">BROWSE THE ARCHIVE</button>
+      <button class="secondary-button" id="surpriseMe">I FEEL LUCKY</button>
+    </div>
+  </div>
+
+  <img class="hero-frame-fill" src="assets/box-portrait-fill.png" alt="" aria-hidden="true">
+  <img class="hero-frame-outline" src="assets/box-portrait-outline.png" alt="" aria-hidden="true">
+  <img class="hero-host" src="assets/mr-forbest.png" alt="Mr. Forbest, BestTV host">
+  <div class="hero-sticker">YOUR FAVORITE SHOW! PROBABLY!</div>
+</section>
+
+<main id="mainContent">
+  <section class="section" id="seasonSection">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">PICK YOUR POISON</h2>
+        <div class="section-sub">EIGHT SEASONS OF PURE CHAOS WHILE WE JORK YOUR FUNNY BONE!!!</div>
+      </div>
+      <button class="text-button" id="viewAllSeasons">VIEW ALL SEASONS →</button>
+    </div>
+    <div class="season-grid" id="seasonGrid"></div>
+  </section>
+
+  <section class="section" id="episodeShelves">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">CATALOGUE</h2>
+        <div class="section-sub">A carefully cherrypicked collection of questionable life choices.</div>
+      </div>
+      <button class="text-button" id="viewEveryEpisode">ALL BROADCASTS →</button>
+    </div>
+    <div id="shelfContainer"></div>
+  </section>
+
+  <section class="section" id="savedSection" hidden>
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">YOUR TAPES</h2>
+        <div class="section-sub">The broadcasts you have kept for whatever reason!</div>
+      </div>
+    </div>
+    <div class="episode-grid" id="savedGrid"></div>
+  </section>
+</main>
+
+<footer>
+  <img class="footer-logo-art" src="assets/besttv-logo-wordmark.png" alt="BEST TV">
+  <span>INDEPENDENT OMNIVERSAL BROADCASTING SINCE ???</span>
+  <span>© MR. FORBEST. ALL REALITIES RESERVED.</span>
+</footer>
+
+<div id="modalRoot"></div>
+<div id="deliveryRoot"></div>
+<div id="cakeRoot"></div>
+<div id="toast"></div>
+
+<script>
+
+const SEASONS = [
+{"id":1,"name":"THE FIRST TRANSMISSION","tagline":"A new channel. A questionable idea. An excellent audience.","status":"COMPLETE","theme":"red",
+"episodes":[
+{"id":"s1e01","number":1,"title":"Dream World?!","available":true,"summary":""},
+{"id":"s1e02","number":2,"title":"Wizardary Lab & Bottomless Tower","available":true,"summary":""},
+{"id":"s1e03","number":3,"title":"Antigram & Syncope","available":true,"summary":""},
+{"id":"s1e04","number":4,"title":"Bad Dream","available":true,"summary":""},
+{"id":"s1e05","number":5,"title":"Infinity Train","available":true,"summary":""},
+{"id":"s1e06","number":6,"title":"The Creekside Killer","available":true,"summary":""},
+{"id":"s1e07","number":7,"title":"Once Upon a Wish","available":true,"summary":""},
+{"id":"s1e08","number":8,"title":"Old Wise Man's Words","available":true,"summary":""},
+{"id":"s1e09","number":9,"title":"THE Training Arc","available":true,"summary":""},
+{"id":"s1e10","number":10,"title":"Abducted by Aliens!!! We Are SO Getting Probed!!!","available":true,"summary":""},
+{"id":"s1e11","number":11,"title":"The Console?","available":true,"summary":""},
+{"id":"s1e12","number":12,"title":"Magical Enchantment","available":true,"summary":""},
+{"id":"s1e13","number":13,"title":"Carnival's In Town","available":true,"summary":""},
+{"id":"s1e14","number":14,"title":"A Previous Life","available":true,"summary":""},
+{"id":"s1e15","number":15,"title":"You Are Here","available":true,"summary":""},
+{"id":"s1e16","number":16,"title":"Zero Divided by Zero","available":true,"summary":""},
+{"id":"s1e17","number":17,"title":"Cue the Credits!","available":true,"summary":""},
+{"id":"s1e18","number":18,"title":"Directors Cut","available":true,"summary":""},
+{"id":"s1e19","number":19,"title":"The Ministry for Anomaly Observation","available":true,"summary":""},
+{"id":"s1e20","number":20,"title":"Downfall","available":true,"summary":""}
+]},
+
+{"id":2,"name":"CHANNEL SURFING","tagline":"The signal gets stronger. The reception gets stranger.","status":"COMPLETE","theme":"gold",
+"episodes":[
+{"id":"s2e01","number":1,"title":"UN/stimulated Simulation","available":true,"summary":""},
+{"id":"s2e02","number":2,"title":"session_title_not_found","available":true,"summary":""},
+{"id":"s2e03","number":3,"title":"Silent Snail Stare","available":true,"summary":""},
+{"id":"s2e04","number":4,"title":"The Big Red Damn Button","available":true,"summary":""},
+{"id":"s2e05","number":5,"title":"Family of Oil","available":true,"summary":""},
+{"id":"s2e06","number":6,"title":"A Journey to MT Sugar Peach","available":true,"summary":""},
+{"id":"s2e07","number":7,"title":"We Here Care For Our Employees","available":true,"summary":""},
+{"id":"s2e08","number":8,"title":"Here for the Long Game","available":true,"summary":""},
+{"id":"s2e09","number":9,"title":"Sixteen Pillars","available":true,"summary":""},
+{"id":"s2e10","number":10,"title":"Super Freaky High","available":true,"summary":""},
+{"id":"s2e11","number":11,"title":"Solaris Requiem: Free Bird","available":true,"summary":""},
+{"id":"s2e12","number":12,"title":"A Momentary Rest","available":true,"summary":""},
+{"id":"s2e13","number":13,"title":"Sleep Tight","available":true,"summary":""},
+{"id":"s2e14","number":14,"title":"Ring Around the Institute","available":true,"summary":""},
+{"id":"s2e15","number":15,"title":"The Dawn of a New Age","available":true,"summary":""},
+{"id":"s2e16","number":16,"title":"And Flow","available":true,"summary":""},
+{"id":"s2e17","number":17,"title":"The Creator","available":true,"summary":""},
+{"id":"s2e18","number":18,"title":"Numéro de Billet Téléphonique, Steuplait?","available":true,"summary":""},
+{"id":"s2e19","number":19,"title":"The RED EYE","available":true,"summary":""},
+{"id":"s2e20","number":20,"title":"Legend","available":true,"summary":""}
+]},
+
+{"id":3,"name":"PICTURE DISTORTION","tagline":"Somewhere between the static and the story, something is watching.","status":"COMPLETE","theme":"violet",
+"episodes":[
+{"id":"s3e01","number":1,"title":"Sanguineus Regina","available":true,"summary":""},
+{"id":"s3e02","number":2,"title":"Finis Omnium","available":true,"summary":""},
+{"id":"s3e03","number":3,"title":"The Night the Lights Went Out in Georgia","available":true,"summary":""},
+{"id":"s3e04","number":4,"title":"Freaky Summer Vibes","available":true,"summary":""},
+{"id":"s3e05","number":5,"title":"Jane Doe","available":true,"summary":""},
+{"id":"s3e06","number":6,"title":"3141","available":true,"summary":""},
+{"id":"s3e07","number":7,"title":"Anchor","available":true,"summary":""},
+{"id":"s3e08","number":8,"title":"Beneath the Vale","available":true,"summary":""},
+{"id":"s3e09","number":9,"title":"Confidential Wormhole Warranty","available":true,"summary":""},
+{"id":"s3e10","number":10,"title":"Noumenal","available":true,"summary":""},
+{"id":"s3e11","number":11,"title":"The Butterfly Effect","available":true,"summary":""},
+{"id":"s3e12","number":12,"title":"Beneath an Alien Sea","available":true,"summary":""},
+{"id":"s3e13","number":13,"title":"Dancers at the End of Time","available":true,"summary":""},
+{"id":"s3e14","number":14,"title":"Grapes of Wrath","available":true,"summary":""},
+{"id":"s3e15","number":15,"title":"I Robot","available":true,"summary":""},
+{"id":"s3e16","number":16,"title":"Journey to the Centre of the Earth","available":true,"summary":""},
+{"id":"s3e17","number":17,"title":"La Leyenda de la X","available":true,"summary":""},
+{"id":"s3e18","number":18,"title":"A Tragedy in Steel","available":true,"summary":""},
+{"id":"s3e19","number":19,"title":"The End Of All Songs","available":true,"summary":""},
+{"id":"s3e20","number":20,"title":"What the Moon Brings","available":true,"summary":""}
+]},
+
+{"id":4,"name":"OUT OF PROGRAMMING","tagline":"The schedule has changed. Nobody at the studio will explain why.","status":"COMPLETE","theme":"teal",
+"episodes":[
+{"id":"s4e01","number":1,"title":"The Shadow Out of Time","available":true,"summary":""},
+{"id":"s4e02","number":2,"title":"Little Glass Bottle","available":true,"summary":""},
+{"id":"s4e03","number":3,"title":"Adam's Apple","available":true,"summary":""},
+{"id":"s4e04","number":4,"title":"All Nightmare Long","available":true,"summary":""},
+{"id":"s4e05","number":5,"title":"All Quiet On The Western Front","available":true,"summary":""},
+{"id":"s4e06","number":6,"title":"The Battle of Evermore","available":true,"summary":""},
+{"id":"s4e07","number":7,"title":"Bloodbath & Beyond","available":true,"summary":""},
+{"id":"s4e08","number":8,"title":"Quark, Strangeness and Charm","available":true,"summary":""},
+{"id":"s4e09","number":9,"title":"Einstein's Brain","available":true,"summary":""},
+{"id":"s4e10","number":10,"title":"OK Computer","available":true,"summary":""},
+{"id":"s4e11","number":11,"title":"For Whom the Bell Tolls","available":true,"summary":""},
+{"id":"s4e12","number":12,"title":"Die Metamorphose","available":true,"summary":""},
+{"id":"s4e13","number":13,"title":"The Plot Sickens","available":true,"summary":""},
+{"id":"s4e14","number":14,"title":"The End is Never The End is Never The End is Never The End","available":true,"summary":""},
+{"id":"s4e15","number":15,"title":"Town Where The Girl Drowned","available":true,"summary":""},
+{"id":"s4e16","number":16,"title":"Apathy","available":true,"summary":""},
+{"id":"s4e17","number":17,"title":"Heart of the Story Engine","available":true,"summary":""},
+{"id":"s4e18","number":18,"title":"When the Good Ending is the Worst Ending","available":true,"summary":""},
+{"id":"s4e19","number":19,"title":"Impossible Console","available":true,"summary":""},
+{"id":"s4e20","number":20,"title":"Archeology back in Iraq","available":true,"summary":""}
+]},
+
+{"id":5,"name":"NO COMMERCIAL BREAK","tagline":"A marathon broadcast for viewers with unusually strong constitutions.","status":"COMPLETE","theme":"orange",
+"episodes":[
+{"id":"s5e01","number":1,"title":"Deus Ex Machine That Will End The World","available":true,"summary":""},
+{"id":"s5e02","number":2,"title":"Pixel Game World","available":true,"summary":""},
+{"id":"s5e03","number":3,"title":"Every Trick in the Book","available":true,"summary":""},
+{"id":"s5e04","number":4,"title":"Venus in Furs","available":true,"summary":""},
+{"id":"s5e05","number":5,"title":"Generation Loss","available":true,"summary":""},
+{"id":"s5e06","number":6,"title":"The Machine Stops","available":true,"summary":""},
+{"id":"s5e07","number":7,"title":"Sisyphean Task","available":true,"summary":""},
+{"id":"s5e08","number":8,"title":"Pipe Dreams","available":true,"summary":""},
+{"id":"s5e09","number":9,"title":"Joy Of Creation","available":true,"summary":""},
+{"id":"s5e10","number":10,"title":"Rescue Beyond the Veil","available":true,"summary":""},
+{"id":"s5e11","number":11,"title":"The Thing That Should Not Be","available":true,"summary":""},
+{"id":"s5e12","number":12,"title":"Iterum Conjunctae (Joined Again)","available":true,"summary":""},
+{"id":"s5e13","number":13,"title":"The Peace Advocate","available":true,"summary":""},
+{"id":"s5e14","number":14,"title":"Inspiration","available":true,"summary":""},
+{"id":"s5e15","number":15,"title":"The Fracture in All Things","available":true,"summary":""},
+{"id":"s5e16","number":16,"title":"Εις Σφιγγην (To the Sphinx)","available":true,"summary":""},
+{"id":"s5e17","number":17,"title":"Escape the Loop","available":true,"summary":""},
+{"id":"s5e18","number":18,"title":"Sympathy for the Devil","available":true,"summary":""},
+{"id":"s5e19","number":19,"title":"The Trolley Problem","available":true,"summary":""},
+{"id":"s5e20","number":20,"title":"The Winner Takes It All","available":true,"summary":""}
+]},
+
+{"id":6,"name":"THE STATIC BETWEEN","tagline":"A collection of transmissions from places that should not have channels.","status":"COMPLETE","theme":"blue",
+"episodes":[
+{"id":"s6e01","number":1,"title":"The Applause Was Pre-Recorded","available":true,"summary":""},
+{"id":"s6e02","number":2,"title":"A Small Matter of Perspective","available":true,"summary":""},
+{"id":"s6e03","number":3,"title":"Please Remain in Your Seats","available":true,"summary":""},
+{"id":"s6e04","number":4,"title":"The House Always Wins","available":true,"summary":""},
+{"id":"s6e05","number":5,"title":"A Very Normal Tuesday","available":true,"summary":""},
+{"id":"s6e06","number":6,"title":"The Unfinished Audience","available":true,"summary":""},
+{"id":"s6e07","number":7,"title":"Exit Through the Gift Shop","available":true,"summary":""},
+{"id":"s6e08","number":8,"title":"The Shape of a Question","available":true,"summary":""},
+{"id":"s6e09","number":9,"title":"Static Between Stations","available":true,"summary":""},
+{"id":"s6e10","number":10,"title":"A Door Marked Otherwise","available":true,"summary":""},
+{"id":"s6e11","number":11,"title":"The Seventh Attempt","available":true,"summary":""},
+{"id":"s6e12","number":12,"title":"Nobody Ordered the Weather","available":true,"summary":""},
+{"id":"s6e13","number":13,"title":"The Long Way Around","available":true,"summary":""},
+{"id":"s6e14","number":14,"title":"An Audience of One","available":true,"summary":""},
+{"id":"s6e15","number":15,"title":"The Unreliable Narrator","available":true,"summary":""},
+{"id":"s6e16","number":16,"title":"A Slight Change of Scenery","available":true,"summary":""},
+{"id":"s6e17","number":17,"title":"The Last Known Photograph","available":true,"summary":""},
+{"id":"s6e18","number":18,"title":"The Wonderful World of Maybe","available":true,"summary":""},
+{"id":"s6e19","number":19,"title":"A Commercial Break in Reality","available":true,"summary":""},
+{"id":"s6e20","number":20,"title":"Curtain Call for Nobody","available":true,"summary":""}
+]},
+
+{"id":7,"name":"THE LAST OTHER LOOP","tagline":"One more archive before the live feed takes over.","status":"COMPLETE","theme":"pink",
+"episodes":[
+{"id":"s7e01","number":1,"title":"Tonight's Guest Has No Face","available":true,"summary":""},
+{"id":"s7e02","number":2,"title":"The Channel That Watches Back","available":true,"summary":""},
+{"id":"s7e03","number":3,"title":"A Million Little Endings","available":true,"summary":""},
+{"id":"s7e04","number":4,"title":"The Sound of One Timeline","available":true,"summary":""},
+{"id":"s7e05","number":5,"title":"The Host Is in the Walls","available":true,"summary":""},
+{"id":"s7e06","number":6,"title":"House Lights, Please","available":true,"summary":""},
+{"id":"s7e07","number":7,"title":"An Extremely Brief Intermission","available":true,"summary":""},
+{"id":"s7e08","number":8,"title":"The Unscheduled Broadcast","available":true,"summary":""},
+{"id":"s7e09","number":9,"title":"Everything Must Go","available":true,"summary":""},
+{"id":"s7e10","number":10,"title":"A Good Place to Disappear","available":true,"summary":""},
+{"id":"s7e11","number":11,"title":"The Audience Participation Hour","available":true,"summary":""},
+{"id":"s7e12","number":12,"title":"A Mirror for the Missing","available":true,"summary":""},
+{"id":"s7e13","number":13,"title":"The Kindly Catastrophe","available":true,"summary":""},
+{"id":"s7e14","number":14,"title":"The World According to Forbest","available":true,"summary":""},
+{"id":"s7e15","number":15,"title":"No Refunds After Midnight","available":true,"summary":""},
+{"id":"s7e16","number":16,"title":"The Other Side of the Laugh Track","available":true,"summary":""},
+{"id":"s7e17","number":17,"title":"A Perfectly Ordinary Anomaly","available":true,"summary":""},
+{"id":"s7e18","number":18,"title":"The Final Commercial","available":true,"summary":""},
+{"id":"s7e19","number":19,"title":"The Applause Continues","available":true,"summary":""},
+{"id":"s7e20","number":20,"title":"Thank You for Watching","available":true,"summary":""}
+]},
+
+{"id":8,"name":"THE LIVE FEED","tagline":"The current group. The current loop. Broadcasting in progress.","status":"ON AIR","theme":"live",
+"episodes":[
+{"id":"s8e01","number":1,"title":"SESSION 01","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e02","number":2,"title":"SESSION 02","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e03","number":3,"title":"SESSION 03","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e04","number":4,"title":"SESSION 04","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e05","number":5,"title":"SESSION 05","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e06","number":6,"title":"SESSION 06","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e07","number":7,"title":"SESSION 07","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e08","number":8,"title":"SESSION 08","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e09","number":9,"title":"SESSION 09","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e10","number":10,"title":"SESSION 10","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e11","number":11,"title":"SESSION 11","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e12","number":12,"title":"SESSION 12","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e13","number":13,"title":"SESSION 13","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e14","number":14,"title":"SESSION 14","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e15","number":15,"title":"SESSION 15","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e16","number":16,"title":"SESSION 16","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e17","number":17,"title":"SESSION 17","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e18","number":18,"title":"SESSION 18","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e19","number":19,"title":"SESSION 19","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e20","number":20,"title":"SESSION 20","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e21","number":21,"title":"SESSION 21","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e22","number":22,"title":"SESSION 22","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e23","number":23,"title":"SESSION 23","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e24","number":24,"title":"SESSION 24","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e25","number":25,"title":"SESSION 25","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e26","number":26,"title":"SESSION 26","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e27","number":27,"title":"SESSION 27","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e28","number":28,"title":"SESSION 28","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e29","number":29,"title":"SESSION 29","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e30","number":30,"title":"SESSION 30","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e31","number":31,"title":"SESSION 31","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e32","number":32,"title":"SESSION 32","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e33","number":33,"title":"SESSION 33","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e34","number":34,"title":"SESSION 34","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e35","number":35,"title":"SESSION 35","available":true,"summary":"This recording has been added to the current loop archive. The episode title and programme notes have not yet been entered."},
+{"id":"s8e36","number":36,"title":"UPCOMING BROADCAST 01","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e37","number":37,"title":"UPCOMING BROADCAST 02","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e38","number":38,"title":"UPCOMING BROADCAST 03","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e39","number":39,"title":"UPCOMING BROADCAST 04","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e40","number":40,"title":"UPCOMING BROADCAST 05","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e41","number":41,"title":"UPCOMING BROADCAST 06","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e42","number":42,"title":"UPCOMING BROADCAST 07","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e43","number":43,"title":"UPCOMING BROADCAST 08","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e44","number":44,"title":"UPCOMING BROADCAST 09","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e45","number":45,"title":"UPCOMING BROADCAST 10","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e46","number":46,"title":"UPCOMING BROADCAST 11","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e47","number":47,"title":"UPCOMING BROADCAST 12","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e48","number":48,"title":"UPCOMING BROADCAST 13","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e49","number":49,"title":"UPCOMING BROADCAST 14","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e50","number":50,"title":"UPCOMING BROADCAST 15","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e51","number":51,"title":"UPCOMING BROADCAST 16","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e52","number":52,"title":"UPCOMING BROADCAST 17","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e53","number":53,"title":"UPCOMING BROADCAST 18","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e54","number":54,"title":"UPCOMING BROADCAST 19","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e55","number":55,"title":"UPCOMING BROADCAST 20","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e56","number":56,"title":"UPCOMING BROADCAST 21","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e57","number":57,"title":"UPCOMING BROADCAST 22","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e58","number":58,"title":"UPCOMING BROADCAST 23","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e59","number":59,"title":"UPCOMING BROADCAST 24","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."},
+{"id":"s8e60","number":60,"title":"UPCOMING BROADCAST 25","available":false,"summary":"This broadcast has not aired yet. Mr. Forbest has marked this slot as forthcoming."}
+]}
+];
+
+const SEASON_DESCRIPTIONS = {
+"1": "CAST FILE // Add the recruits from the first recorded loop here. Use this panel for the original ensemble and a short introduction to their opening broadcast.", 
+"2": "CAST FILE // Add this iteration's recruit names here. This panel is reserved for the second group's cast, recurring guests, and its particular brand of trouble.", 
+"3": "CAST FILE // Enter the third loop's cast here. Add a spoiler-free note about the people viewers will follow through this season's archive.", 
+"4": "CAST FILE // Add the fourth group's recruits and supporting cast here. This season gets its own description, separate from every other loop.", 
+"5": "CAST FILE // List the fifth iteration's cast here, then add a quick programme note about what makes their broadcasts distinct.", 
+"6": "CAST FILE // Add the sixth group's cast here. Use this space for its standout personalities, guests, and a brief introduction to the season.", 
+"7": "CAST FILE // Enter the last archived loop's cast here. Give viewers a short cast introduction before they explore this completed transmission.", 
+"8": "CAST FILE // Add the current campaign party and its supporting cast here. This is the live iteration, with new episodes still to come."};
+
+const SEASON_COLORS = {
+  red:["#711f2d","#d64b3e"], gold:["#8c512b","#e2b655"],
+  violet:["#41244f","#a04f72"], teal:["#a7de85","#667a59"],
+  orange:["#923c25","#e58a3e"], blue:["#243e62","#4d83aa"],
+  pink:["#6e294d","#d66b87"], live:["#18544d","#4da995"]
+};
+const POSTER_SYMBOLS = [
+  { glyph: "✦" }, { glyph: "◈" }, { glyph: "☼" }, { glyph: "✧" },
+  { glyph: "⌁" }, { glyph: "♢" }, { glyph: "✷" }, { glyph: "◉" },
+  { glyph: "⚑" }, { glyph: "✴" }, { glyph: "⌘" }, { glyph: "◇" },
+  { asset: "assets/poster-icons/gri-emblem.png" },
+  { asset: "assets/poster-icons/television.png" },
+  { asset: "assets/poster-icons/infinity.png" },
+  { asset: "assets/poster-icons/flying-saucer.png" },
+  { asset: "assets/poster-icons/coffee-cup.png" },
+  { asset: "assets/poster-icons/portal-ring.png" },
+  { asset: "assets/poster-icons/rift.png" },
+  { asset: "assets/poster-icons/cowboy-hat.png" },
+  { asset: "assets/poster-icons/computer-terminal.png" },
+  { asset: "assets/poster-icons/flamingo.png" },
+  { asset: "assets/poster-icons/figure.png" },
+  { asset: "assets/poster-icons/bowtie.png" },
+  { asset: "assets/poster-icons/atom-book.png" },
+  { asset: "assets/poster-icons/magnifying-glass.png" },
+  { asset: "assets/poster-icons/clock.png" }
+];
+const COMMENTERS = ["ChannelSurfer84","static_in_my_brain","BestieTV","TapeDeckEnjoyer","DefinitelyNotAClone","TheRealAudience"];
+const SAMPLE_COMMENTS = [
+  "Mr. Forbest called this one a masterpiece. I fear he may be right.",
+  "I blinked and somehow missed an entire subplot. Watching again.",
+  "The production value is incredible. The safety standards are not.",
+  "Five stars. One star deducted because my television started laughing.",
+  "Can we get a director's commentary? Preferably one that explains anything.",
+  "This is why I never skip the opening credits.",
+  "I showed this to my therapist. They asked me to stop.",
+  "A delightful use of my limited remaining sense of normality."
+];
+const BLURBS = [
+  "Mr. Forbest personally recommends this broadcast. The studio has declined to explain the glittering noise in the final reel.",
+  "A recovered favourite from the archive. Please enjoy the programme, and kindly disregard any contradictory advertisements.",
+  "The title card survived, the applause survived, and the production notes did not. A BestTV classic!",
+  "Forbest describes this episode as 'essential viewing'. The legal department has asked him to stop using that phrase.",
+  "A curious little transmission from an earlier loop. Best watched with snacks and a healthy respect for the impossible.",
+  "The audience demanded an encore. The broadcast system interpreted that request rather literally."
+];
+
+/* Add custom episode comments here. stars: 1-5 or null. */
+const CUSTOM_COMMENTS = [
+  // { season: 8, episode: 35, author: "Mr. Forbest", comment: "Simply television at its finest!", stars: 5 },
+  // { season: 2, episode: 4, author: "Anonymous Viewer", comment: "I am not pressing that button again.", stars: null }
+];
+
+const storage = {
+  read(key, fallback) {
+    try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
+    catch { return fallback; }
+  },
+  write(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  }
+};
+
+const PLAY_CRASH_LIMIT = 8;
+let watchlist = storage.read("besttv-watchlist", []);
+let comments = storage.read("besttv-comments", {});
+let ratings = storage.read("besttv-ratings", {});
+let playCounts = storage.read("besttv-play-counts", {});
+let sampleReviewCache = storage.read("besttv-sample-reviews", {});
+let soundContext = null;
+
+const mainContent = document.getElementById("mainContent");
+const HOME_TEMPLATE = mainContent.innerHTML;
+const hero = document.getElementById("hero");
+const modalRoot = document.getElementById("modalRoot");
+const deliveryRoot = document.getElementById("deliveryRoot");
+const cakeRoot = document.getElementById("cakeRoot");
+const searchInput = document.getElementById("searchInput");
+const savedCount = document.getElementById("savedCount");
+const toast = document.getElementById("toast");
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function allEpisodes() {
+  return SEASONS.flatMap(season => season.episodes.map(ep => ({...ep, season})));
+}
+function findEpisode(id) { return allEpisodes().find(ep => ep.id === id); }
+function paletteFor(season) { return SEASON_COLORS[season.theme] || SEASON_COLORS.red; }
+function ratingFor(ep) {
+  return Math.min(9.9, 7.4 + ((ep.number * 7 + ep.season.id * 11) % 24) / 10).toFixed(1);
+}
+function summaryFor(ep) {
+  if (!ep.available) return ep.summary || "This broadcast has not aired yet.";
+  if (ep.season.id === 8) return "A recording from the current group of recruits. Programme notes are awaiting Mr. Forbest's approval.";
+  return BLURBS[(ep.number + ep.season.id * 3) % BLURBS.length];
+}
+function notify(message, duration = 2100) {
+  toast.textContent = message;
+  toast.style.display = "block";
+  clearTimeout(notify.timer);
+  notify.timer = setTimeout(() => toast.style.display = "none", duration);
+}
+function burstConfetti(amount = 24) {
+  const colors = ["#efbd62","#a92f35","#fff1d0","#75d4ac","#6c91bd"];
+  for (let i = 0; i < amount; i++) {
+    const node = document.createElement("i");
+    node.className = "confetti";
+    node.style.left = Math.random() * 100 + "vw";
+    node.style.background = colors[i % colors.length];
+    node.style.animationDelay = Math.random() * .5 + "s";
+    document.body.appendChild(node);
+    setTimeout(() => node.remove(), 3000);
+  }
+}
+function updateSavedCount() {
+  const node = document.getElementById("savedCount");
+  if (node) node.textContent = watchlist.length ? `(${watchlist.length})` : "";
+}
+
+function episodeCard(ep) {
+  const colors = paletteFor(ep.season);
+  const locked = !ep.available;
+  return `
+    <button class="episode-card ${locked ? "locked" : ""}" data-episode="${ep.id}">
+      ${locked ? '<span class="locked-mark">COMING SOON</span>' : ""}
+      <div class="poster-art" style="--poster-a:${colors[0]};--poster-b:${colors[1]}">
+        <img class="poster-stock" src="assets/box-portrait-fill.png" alt="" aria-hidden="true">
+        <img class="poster-frame-art" src="assets/box-portrait-outline.png" alt="" aria-hidden="true">
+        <span class="poster-season">S${String(ep.season.id).padStart(2,"0")}</span>
+        <span class="poster-symbol">
+          ${(() => {
+            const symbol = POSTER_SYMBOLS[(ep.number + ep.season.id * 2) % POSTER_SYMBOLS.length];
+            return symbol.asset
+              ? `<img class="poster-symbol-image" src="${symbol.asset}" alt="">`
+              : esc(symbol.glyph);
+          })()}
+        </span>
+        <span class="poster-number">${String(ep.number).padStart(2,"0")}</span>
+      </div>
+      <div class="episode-info">
+        <div class="episode-no">EPISODE ${String(ep.number).padStart(2,"0")}</div>
+        <h4>${esc(ep.title)}</h4>
+        <div class="mini-rating">${locked ? "NOT YET AIRED" : `★ ${ratingFor(ep)}/10`}</div>
+      </div>
+    </button>`;
+}
+
+function renderSeasonCards() {
+  const grid = document.getElementById("seasonGrid");
+  if (!grid) return;
+  grid.innerHTML = SEASONS.map(season => {
+    const color = paletteFor(season)[0];
+    const available = season.episodes.filter(ep => ep.available).length;
+    return `
+      <button class="season-card" data-open-season="${season.id}" data-number="${String(season.id).padStart(2,"0")}" style="--season-color:${color}">
+        <div class="season-kicker">BESTTV ORIGINAL // S${String(season.id).padStart(2,"0")}</div>
+        ${season.id === 8 ? '<img class="season-on-air" src="assets/on-air-sign.png" alt="ON AIR">' : ""}
+        <h3>${esc(season.name)}</h3>
+        <p>${esc(season.tagline)}</p>
+        <div class="season-count">${available} / ${season.episodes.length} BROADCASTS</div>
+      </button>`;
+  }).join("");
+}
+function renderShelves() {
+  const container = document.getElementById("shelfContainer");
+  if (!container) return;
+  container.innerHTML = SEASONS.map(season => `
+    <section class="shelf">
+      <div class="shelf-head">
+        <h3>SEASON ${String(season.id).padStart(2,"0")} — ${esc(season.name)}</h3>
+        <span>${season.episodes.filter(ep => ep.available).length} / ${season.episodes.length} AVAILABLE</span>
+      </div>
+      <div class="episode-rail">
+        ${season.episodes.map(ep => episodeCard({...ep, season})).join("")}
+      </div>
+    </section>`).join("");
+}
+
+/* One render path per destination,, Home is restored from its original template uhh,
+   and every dynamic control is handled by like a document level delegation. */
+function renderHome() {
+  mainContent.innerHTML = HOME_TEMPLATE;
+  hero.hidden = false;
+  renderSeasonCards();
+  renderShelves();
+  updateSavedCount();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function showSeasons() {
+  hero.hidden = true;
+  const blocks = SEASONS.map(season => {
+    const colors = paletteFor(season);
+    const available = season.episodes.filter(ep => ep.available).length;
+    return `
+      <button class="season-block" data-open-season="${season.id}" data-season-number="${String(season.id).padStart(2,"0")}"
+        style="background:linear-gradient(135deg,${colors[0]},${colors[1]})">
+        <div class="season-block-top">
+          <span>BESTTV // SEASON ${String(season.id).padStart(2,"0")}</span>
+          <span>${season.id === 8 ? "● ON AIR" : "ARCHIVED"}</span>
+        </div>
+        <h2>${esc(season.name)}</h2>
+        <div class="season-block-count">${available} / ${season.episodes.length} BROADCASTS</div>
+        <div class="season-hover-description">${esc(SEASON_DESCRIPTIONS[season.id])}</div>
+      </button>`;
+  }).join("");
+  mainContent.innerHTML = `
+    <div class="seasons-page-intro">
+      <div class="eyebrow">THE COMPLETE LOOP ARCHIVE</div>
+      <h1>SEASONS OF BESTTV</h1>
+      <p>Eight transmissions, in chronological order. Hover for each season's cast notes, then select a season to browse its episodes.</p>
+    </div>
+    <div class="season-strip-wrap"><div class="season-strip">${blocks}</div></div>
+    <div class="season-strip-help">← DRAG OR SHIFT + SCROLL TO EXPLORE THE ARCHIVE →</div>`;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function showSeason(id) {
+  const season = SEASONS.find(s => s.id === id);
+  if (!season) return;
+  hero.hidden = true;
+  const colors = paletteFor(season);
+  const available = season.episodes.filter(ep => ep.available).length;
+  mainContent.innerHTML = `
+    <section class="season-page-banner" style="background:linear-gradient(115deg,${colors[0]},${colors[1]})">
+      <div class="eyebrow">BESTTV ORIGINAL // SEASON ${String(id).padStart(2,"0")}</div>
+      <h1>${esc(season.name)}</h1>
+      <p>${esc(season.tagline)} · ${available} of ${season.episodes.length} broadcasts available.</p>
+    </section>
+    <div class="page-title-row">
+      <div><h2>EPISODE GUIDE</h2><p>Browse the season's complete broadcast list.</p></div>
+      <button class="back-button" data-go-seasons>← ALL SEASONS</button>
+    </div>
+    <div class="episode-grid">${season.episodes.map(ep => episodeCard({...ep, season})).join("")}</div>`;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function showAllEpisodes() {
+  hero.hidden = true;
+  const results = allEpisodes().filter(ep => ep.available);
+  mainContent.innerHTML = `
+    <div class="page-title-row">
+      <div><div class="eyebrow">THE COMPLETE BESTTV LIBRARY</div><h1>ALL BROADCASTS</h1><p>${results.length} available recordings across the loop archive.</p></div>
+      <button class="back-button" data-go-home>← HOME</button>
+    </div>
+    <div class="results-grid">${results.map(episodeCard).join("")}</div>`;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function showSaved() {
+  hero.hidden = true;
+  const saved = watchlist.map(findEpisode).filter(Boolean).filter(ep => ep.available);
+  mainContent.innerHTML = `
+    <div class="page-title-row">
+      <div><div class="eyebrow">PERSONAL COLLECTION</div><h1>MY TAPE STACK</h1><p>${saved.length} broadcasts saved for later.</p></div>
+      <button class="back-button" data-go-home>← HOME</button>
+    </div>
+    ${saved.length ? `<div class="results-grid">${saved.map(episodeCard).join("")}</div>` : `<p style="color:var(--muted)">Your tape stack is empty. Open a broadcast and add it to your collection.</p>`}`;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function showSearchResults() {
+  const query = searchInput.value.trim().toLowerCase();
+  if (!query) { renderHome(); return; }
+  hero.hidden = true;
+  const results = allEpisodes().filter(ep =>
+    ep.available && `${ep.title} ${ep.season.name} season ${ep.season.id}`.toLowerCase().includes(query)
+  );
+  mainContent.innerHTML = `
+    <div class="page-title-row">
+      <div><div class="eyebrow">BESTTV SEARCH DESK</div><h1>YOU ASKED, WE FOUND.</h1><p>${results.length} matching broadcasts.</p></div>
+      <button class="back-button" data-go-home>← HOME</button>
+    </div>
+    ${results.length ? `<div class="results-grid">${results.map(episodeCard).join("")}</div>` : `<p style="color:var(--muted)">Nothing found. Try a different search.</p>`}`;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* player rating and the stupid episode comment data,, */
+function getEpisodeComments(ep) {
+  if (!sampleReviewCache[ep.id]) {
+    const seed = (ep.number + ep.season.id) % SAMPLE_COMMENTS.length;
+    sampleReviewCache[ep.id] = [0,1,2].map(i => ({
+      name: COMMENTERS[(seed+i) % COMMENTERS.length],
+      text: SAMPLE_COMMENTS[(seed+i*2) % SAMPLE_COMMENTS.length],
+      stars: Math.floor(Math.random()*5)+1
+    }));
+    storage.write("besttv-sample-reviews", sampleReviewCache);
+  }
+  const custom = CUSTOM_COMMENTS.filter(item =>
+    Number(item.season) === ep.season.id && Number(item.episode) === ep.number
+  ).map(item => ({name:item.author, text:item.comment, stars:item.stars == null || item.stars === "" ? null : Number(item.stars)}));
+  return [...sampleReviewCache[ep.id], ...custom, ...(comments[ep.id] || [])];
+}
+function renderComment(comment) {
+  const rated = comment.stars !== null && comment.stars !== undefined && comment.stars !== "" &&
+    Number.isFinite(Number(comment.stars)) && Number(comment.stars) >= 1 && Number(comment.stars) <= 5;
+  return `<div class="comment">
+    <div class="comment-meta"><strong>${esc(comment.name || "ANONYMOUS VIEWER")}</strong>
+      ${rated ? `<span class="comment-stars">${"★".repeat(Number(comment.stars))} ${Number(comment.stars)}/5</span>` : ""}
+    </div><p>${esc(comment.text)}</p>
+  </div>`;
+}
+
+const SFX = {
+  play: [
+    "assets/sfx/play-01.mp3",
+    "assets/sfx/play-02.mp3",
+    "assets/sfx/play-03.mp3",
+    "assets/sfx/play-04.mp3",
+    "assets/sfx/play-05.mp3"
+  ],
+  cake: "assets/sfx/cake-explosion.mp3",
+  rating1: "assets/sfx/rating-gasp-1star.mp3",
+  rating23: "assets/sfx/rating-awwsad-2or3star.mp3",
+  ratingClap: "assets/sfx/rating-clap-5star.mp3"
+};
+
+const audioTemplates = new Map();
+
+function preloadSfx() {
+  const paths = [
+    ...SFX.play,
+    SFX.cake,
+    SFX.rating1,
+    SFX.rating23,
+    SFX.ratingClap
+  ];
+
+  paths.forEach(path => {
+    const audio = new Audio(path);
+    audio.preload = "auto";
+    audio.load();
+    audioTemplates.set(path, audio);
+  });
+}
+
+/* returns promise resolvin when the clip ends or cant be played */
+function playSfx(path, volume = 1) {
+  let template = audioTemplates.get(path);
+  if (!template) {
+    template = new Audio(path);
+    template.preload = "auto";
+    audioTemplates.set(path, template);
+  }
+
+  const audio = template.cloneNode(true);
+  audio.volume = Math.max(0, Math.min(1, volume));
+  audio.currentTime = 0;
+
+  return new Promise(resolve => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(fallbackTimer);
+      audio.removeEventListener("ended", finish);
+      audio.removeEventListener("error", finish);
+      resolve();
+    };
+
+    const fallbackTimer = setTimeout(finish, 15000);
+    audio.addEventListener("ended", finish, { once: true });
+    audio.addEventListener("error", finish, { once: true });
+
+    const playback = audio.play();
+    if (playback && typeof playback.catch === "function") {
+      playback.catch(finish);
+    }
+  });
+}
+
+function playRandomEpisodeSfx() {
+  const path = SFX.play[Math.floor(Math.random() * SFX.play.length)];
+  return playSfx(path, 0.35);
+}
+
+function playRatingSfx(stars) {
+  if (stars === 1) {
+    return playSfx(SFX.rating1, 0.35);
+  }
+  if (stars === 2 || stars === 3) {
+    return playSfx(SFX.rating23, 0.25);
+  }
+  if (stars === 4) {
+    return playSfx(SFX.ratingClap, 0.15);
+  }
+  if (stars === 5) {
+    return playSfx(SFX.ratingClap, 0.25);
+  }
+  return Promise.resolve();
+}
+
+function playCakeExplosion() {
+  return playSfx(SFX.cake);
+}
+
+async function playEpisodeButton(id, button) {
+  if (!button || button.disabled) return;
+
+  const currentCount = Number(playCounts[id] || 0);
+  const nextCount = currentCount + 1;
+
+  if (nextCount < PLAY_CRASH_LIMIT) {
+    playCounts[id] = nextCount;
+    storage.write("besttv-play-counts", playCounts);
+    const label = button.querySelector(".play-count");
+    playRandomEpisodeSfx();
+    return;
+  }
+
+  playCounts[id] = 0;
+  storage.write("besttv-play-counts", playCounts);
+  button.disabled = true;
+  button.textContent = "OUCHY WOUCHY...";
+  await playRandomEpisodeSfx();
+
+  button.innerHTML = "SYSTEM FUCKY WUCKY!!!";
+  button.classList.remove("breaking");
+  void button.offsetWidth;
+  button.classList.add("breaking");
+
+  playCakeExplosion();
+  await new Promise(resolve => setTimeout(resolve, 900));
+
+  button.classList.remove("breaking");
+  button.disabled = false;
+
+  button.innerHTML =
+    `▶ PLAY EPISODE`;
+}
+
+function openEpisode(id) {
+  const ep=findEpisode(id); if(!ep)return;
+  const colors=paletteFor(ep.season);
+  const themeStyle=`--detail-a:${colors[0]};--detail-b:${colors[1]}`;
+  if(!ep.available){
+    modalRoot.innerHTML=`<div class="detail-window">
+      <button class="detail-close" id="closeDetail">×</button>
+      <div class="detail-top" style="${themeStyle}">
+        <div class="eyebrow">BESTTV // FUTURE PROGRAMMING</div><h2>${esc(ep.title)}</h2>
+        <p>Mr. Forbest has not broadcast this episode yet. Please enjoy this tasteful holding pattern while the studio prepares the next installment.</p>
+        <div class="detail-meta"><span>SEASON 08</span><span>EPISODE ${ep.number}</span><span>NOT YET AIRED</span></div>
+      </div><div class="detail-content"><h3>PLEASE STAY TUNED!</h3><p>There are ${60-ep.number} episodes scheduled after the current recording.</p></div>
+    </div>`;
+    modalRoot.classList.add("visible");
+    document.getElementById("closeDetail").addEventListener("click",closeModal);
+    modalRoot.onclick=e=>{if(e.target===modalRoot)closeModal();};
+    return;
+  }
+
+  const currentRating=Number(ratings[id]||0);
+  const playCount = Number(playCounts[id] || 0) % PLAY_CRASH_LIMIT;
+  const saved=watchlist.includes(id);
+  modalRoot.innerHTML=`
+    <article class="detail-window">
+      <button class="detail-close" id="closeDetail" aria-label="Close">×</button>
+      <div class="detail-top" style="${themeStyle}">
+        <div class="eyebrow detail-eyebrow">BESTTV ORIGINAL // LOOP ${ep.season.id} ${ep.season.id===8?'<img class="on-air-art on-air-detail" src="assets/on-air-sign.png" alt="ON AIR">':'<img class="archive-badge-art" src="assets/archive-badge.png" alt="Archived">'}</div>
+        <h2>${esc(ep.title)}</h2><p>${esc(summaryFor(ep))}</p>
+        <div class="detail-meta"><span>SEASON ${String(ep.season.id).padStart(2,"0")}</span><span>EPISODE ${String(ep.number).padStart(2,"0")}</span><span>${ep.season.id===8?"CURRENT LOOP":"COMPLETED LOOP"}</span></div>
+        <div class="detail-play-row">
+          <button type="button" class="episode-play-button" id="episodePlayButton"> ▶ PLAY EPISODE</button>
+        </div>
+      </div>
+      <div class="detail-content">
+        <div class="detail-section">
+          <h3>VIEWER SCORE</h3>
+          <div class="score-line"><span class="big-score">★ ${ratingFor(ep)}/10</span><span>Audience estimate</span><span>·</span><span>${(124+ep.number*37+ep.season.id*91).toLocaleString()} viewer ratings</span></div>
+          <div class="rate-buttons" aria-label="Your rating">
+            ${[1,2,3,4,5].map(n=>`<button type="button" data-rate="${n}" class="${currentRating>=n?"selected":""}" aria-label="${n} out of 5 stars">★</button>`).join("")}
+          </div>
+          <small style="display:block;color:var(--muted);margin-top:6px">YOUR RATING: <span id="yourRating">${currentRating?currentRating+"/5":"NOT RATED"}</span></small>
+        </div>
+        <div class="detail-section">
+          <h3>THE AUDIENCE HAS OPINIONS</h3>
+          <div class="comment-list">${getEpisodeComments(ep).map(renderComment).join("")}</div>
+          <form class="comment-form" id="commentForm" novalidate>
+            <input class="comment-author" id="commentAuthor" maxlength="40" placeholder="Your name" autocomplete="off" aria-label="Your name">
+            <input class="comment-text" id="commentInput" maxlength="240" placeholder="Add your two cents..." autocomplete="off" aria-label="Your comment">
+            <button type="submit">POST</button>
+          </form>
+          <div class="rating-reminder" id="ratingReminder">RATE THE EPISODE FIRST!</div>
+        </div>
+        <div class="detail-section"><button class="watchlist-button" id="watchlistButton">${saved?"✓ IN YOUR TAPE STACK":"+ ADD TO MY TAPE STACK"}</button></div>
+      </div>
+    </article>`;
+  modalRoot.classList.add("visible");
+  document.getElementById("closeDetail").addEventListener("click",closeModal);
+  modalRoot.onclick=e=>{if(e.target===modalRoot)closeModal();};
+
+  const playButton=document.getElementById("episodePlayButton");
+  if(playButton&&!playButton.disabled)playButton.addEventListener("click",()=>playEpisodeButton(id,playButton));
+
+  modalRoot.querySelectorAll("[data-rate]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      ratings[id]=Number(button.dataset.rate);
+      storage.write("besttv-ratings",ratings);
+      modalRoot.querySelectorAll("[data-rate]").forEach(star=>star.classList.toggle("selected",Number(star.dataset.rate)<=ratings[id]));
+      document.getElementById("yourRating").textContent=ratings[id]+"/5";
+      document.getElementById("ratingReminder").classList.remove("visible");
+      void playRatingSfx(ratings[id]);
+    });
+  });
+
+  document.getElementById("commentForm").addEventListener("submit",event=>{
+    event.preventDefault();
+    const form=document.getElementById("commentForm");
+    const text=document.getElementById("commentInput").value.trim();
+    const author=document.getElementById("commentAuthor").value.trim()||"ANONYMOUS VIEWER";
+    if(!ratings[id]){
+      form.classList.remove("shake"); void form.offsetWidth; form.classList.add("shake");
+      const reminder=document.getElementById("ratingReminder");
+      reminder.classList.add("visible");
+      clearTimeout(openEpisode.reminderTimer);
+      openEpisode.reminderTimer=setTimeout(()=>reminder.classList.remove("visible"),1900);
+      return;
+    }
+    if(!text){notify("WRITE A COMMENT FIRST!");document.getElementById("commentInput").focus();return;}
+    const list=comments[id]||[];
+    list.push({name:author,text,stars:Number(ratings[id])});
+    comments[id]=list; storage.write("besttv-comments",comments);
+    openEpisode(id); notify("COMMENT SENT TO THE STUDIO!");
+  });
+
+  document.getElementById("watchlistButton").addEventListener("click",()=>{
+    if(watchlist.includes(id)){
+      watchlist=watchlist.filter(item=>item!==id);notify("REMOVED FROM YOUR TAPE STACK");
+    }else{watchlist.push(id);burstConfetti();notify("DELIVERED TO YOUR TAPE STACK!");}
+    storage.write("besttv-watchlist",watchlist);updateSavedCount();openEpisode(id);
+  });
+}
+function closeModal(){modalRoot.classList.remove("visible");modalRoot.innerHTML="";modalRoot.onclick=null;}
+
+function playCakeExplosion(){
+  return playSfx(SFX.cake);
+}
+function openDelivery(){
+  const notes=[
+    "A little something from Mr. Forbest. He says not to open it near the space-time continuum. Again.",
+    "Congratulations! You have received one (1) complimentary television experience. Terms and conditions are somewhere in the walls.",
+    "Forbest personally packed this delivery. The fingerprints are mostly his.",
+    "Your order: entertainment. Your bonus item: a suspiciously cheerful host."
+  ];
+  const note=notes[Math.floor(Math.random()*notes.length)];
+  deliveryRoot.innerHTML=`<div class="delivery-window"><button class="detail-close" id="closeDelivery">×</button><img src="assets/best-delivery.png" alt="Best delivery box"><h2>BEST DELIVERY FOR YOU!</h2><p>${esc(note)}</p><button id="acceptDelivery">WONDERFUL. THANK YOU.</button></div>`;
+  deliveryRoot.classList.add("visible");
+  document.getElementById("closeDelivery").addEventListener("click",closeDelivery);
+  document.getElementById("acceptDelivery").addEventListener("click",closeDelivery);
+  deliveryRoot.onclick=e=>{if(e.target===deliveryRoot)closeDelivery();};burstConfetti();
+}
+function closeDelivery(){deliveryRoot.classList.remove("visible");deliveryRoot.innerHTML="";deliveryRoot.onclick=null;}
+
+function closeCake(){cakeRoot.classList.remove("visible");cakeRoot.innerHTML="";cakeRoot.onclick=null;}
+function openCake(){
+  if(cakeRoot.classList.contains("visible"))return;
+  const colors=["#efbd62","#a92f35","#fff1d0","#75d4ac","#d66b87","#6c91bd"];
+  const confetti=Array.from({length:54},(_,i)=>{
+    const duration=2.5+Math.random()*3.8;
+    return `<i class="cake-confetti-piece" style="left:${Math.random()*100}%;background:${colors[i%colors.length]};--fall-duration:${duration}s;--fall-delay:${-Math.random()*duration}s;--drift:${(Math.random()*120-60).toFixed(0)}px"></i>`;
+  }).join("");
+  cakeRoot.innerHTML=`<section class="cake-window" role="dialog" aria-modal="true" aria-label="A surprise cake">
+    <div class="cake-confetti">${confetti}</div><button class="cake-close" id="cakeClose">×</button>
+    <div class="cake-eyebrow">A SPECIAL BESTTV INTERRUPTION</div><h2>OH! A LITTLE SOMETHING FOR YOU.</h2>
+    <button class="cake-button" id="cakeButton" aria-label="Grab a slice of cake">
+      <img class="cake-image" id="cakeImage" src="assets/cake-normal.png" alt="A decorated birthday cake">
+    </button><div class="cake-instruction" id="cakeInstruction">Grab a slice?</div></section>`;
+  cakeRoot.classList.add("visible");
+  document.getElementById("cakeClose").addEventListener("click",closeCake);
+  cakeRoot.onclick=e=>{if(e.target===cakeRoot)closeCake();};
+  document.getElementById("cakeButton").addEventListener("click",()=>{
+    const button=document.getElementById("cakeButton");
+    if(!button||button.classList.contains("exploding"))return;
+    button.classList.add("exploding");playCakeExplosion();
+    const cakeImage=document.getElementById("cakeImage");
+    cakeImage.src="assets/cake-exploded.png";
+    cakeImage.alt="The cake has exploded into pieces";
+    const panel=cakeRoot.querySelector(".cake-window");
+    for(let i=0;i<16;i++){
+      const spark=document.createElement("i");spark.className="cake-spark";
+      spark.style.setProperty("--x",`${Math.cos(i/16*Math.PI*2)*(80+Math.random()*90)}px`);
+      spark.style.setProperty("--y",`${Math.sin(i/16*Math.PI*2)*(75+Math.random()*75)}px`);panel.appendChild(spark);
+    }
+    panel.classList.add("cake-claimed");
+    document.getElementById("cakeInstruction").textContent="YOU GOT THE WHOLE CAKE.";
+    burstConfetti(45);notify("CAKE SUCCESSFULLY CLAIMED.");
+  });
+}
+function isTextEntry(target){
+  return !!(target&&target.closest&&target.closest('input,textarea,select,[contenteditable="true"],[role="textbox"]'));
+}
+
+function restoreHome(){
+  searchInput.value="";searchInput.blur();renderHome();
+}
+function viewAllSeasons(){showSeasons();}
+
+document.addEventListener("click",event=>{
+  const season=event.target.closest("[data-open-season]");
+  if(season){showSeason(Number(season.dataset.openSeason));return;}
+  const episode=event.target.closest("[data-episode]");
+  if(episode){openEpisode(episode.dataset.episode);return;}
+  if(event.target.closest("[data-go-home]")){restoreHome();return;}
+  if(event.target.closest("[data-go-seasons]")){showSeasons();return;}
+  if(event.target.closest("#viewAllSeasons")){showSeasons();return;}
+  if(event.target.closest("#viewEveryEpisode")){showAllEpisodes();return;}
+});
+
+document.getElementById("logoHome").addEventListener("click",e=>{e.preventDefault();restoreHome();});
+document.getElementById("navHome").addEventListener("click",restoreHome);
+document.getElementById("navSeasons").addEventListener("click",showSeasons);
+document.getElementById("navAll").addEventListener("click",showAllEpisodes);
+document.getElementById("navSaved").addEventListener("click",showSaved);
+document.getElementById("browseArchive").addEventListener("click",showSeasons);
+document.getElementById("deliveryButton").addEventListener("click",openDelivery);
+document.getElementById("watchLatest").addEventListener("click",()=>openEpisode("s8e35"));
+document.getElementById("surpriseMe").addEventListener("click",()=>{
+  const available=allEpisodes().filter(ep=>ep.available);
+  const ep=available[Math.floor(Math.random()*available.length)];
+  if(ep)openEpisode(ep.id);
+});
+searchInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){e.preventDefault();showSearchResults();}
+});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    if(modalRoot.classList.contains("visible"))closeModal();
+    if(deliveryRoot.classList.contains("visible"))closeDelivery();
+    if(cakeRoot.classList.contains("visible"))closeCake();
+  }
+  if(event.key==="Enter"&&!event.repeat&&!cakeRoot.classList.contains("visible")&&!isTextEntry(event.target)){
+    event.preventDefault();openCake();
+  }
+});
+
+preloadSfx();
+renderHome();
+updateSavedCount();
+</script>
+</body>
+</html>
