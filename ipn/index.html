@@ -671,7 +671,6 @@
       text-align: left;
       font-size: 13px;
       line-height: 1.65;
-      /* Collapse template indentation while preserving intentional line breaks. */
       white-space: pre-line;
       overflow-wrap: break-word;
     }
@@ -794,7 +793,6 @@
       z-index: 3;
       opacity: 0.65;
     }
-
 
     @media (max-width: 1100px) {
       #app {
@@ -986,475 +984,441 @@
 const starterProfiles = [
 
     /* ==================== ASTROPHYSICS ==================== */
+{
+    id: "noah-pyxis",
+    division: "astrophysics",
+    //locked: true,
+    name: "Dr Noah Dipper Pyxis",
+    origin: "United States",
+    age: "84",
+    height: "5'9",
+    gender: "Male (He/him)",
+    rank: "Lead Doctor of Astrophysics",
+    likes: "Outer Space, Exotic Food, Teaching, Learning, Astronomy",
+    dislikes: "Arrogance, Condescension, People Who Verbally Belittle Others",
+    portrait: "/assets/portraits/head-astrophysics-noah.webp"
+},
 
-    {
-      id: "noah-pyxis",
-      division: "astrophysics",
-      locked: true,
-      name: "Dr Noah Dipper Pyxis",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/head-astrophysics-noah.webp"
-    },
+{
+    id: "claire-moonstone",
+    //locked: true,
+    division: "astrophysics",
+    name: "Claire Moonstone",
+    origin: "United States",
+    age: "23",
+    height: "5'5",
+    gender: "Female (She/her)",
+    rank: "Recruit of Astro",
+    likes: "Space Exploration, Cutesy Things, Herbal Teas",
+    dislikes: "Bad Smells, Poor Hygiene",
+    portrait: "/assets/portraits/astronaut-claire.webp"
+},
 
-    {
-      id: "claire-moonstone",
-      locked: true,
-      division: "astrophysics",
-      name: "Claire Moonstone",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/astronaut-claire.webp"
-    },
+{
+    id: "mark-fischbach",
+    //locked: true,
+    division: "astrophysics",
+    name: "Mark Edward Fischbach",
+    origin: "Korean/German",
+    age: "29",
+    height: "5'10",
+    gender: "Male (He/him)",
+    rank: "Senior of Astro",
+    likes: "Stroking His Ego, Leading, Space Exploration, Dramatic Entrances",
+    dislikes: "Failure, Being Proven Wrong, Losing Control, Being Ignored",
+    portrait: "/assets/portraits/astronaut-mark.webp"
+},
 
-    {
-      id: "mark-fischbach",
-      locked: true,
-      division: "astrophysics",
-      name: "Mark Edward Fischbach",
-      origin: "Korean/German",
-      age: "26",
-      height: "5'10",
-      gender: "",
-      rank: "Senior",
-      likes: "Stroking his Ego, Leading",
-      dislikes: "Failure, Being proven wrong",
-      personality: "Is really silly and goofy in person, puts on a serious tone during missions. Really loves space. Is quite energetic and charismatic. Caring and friendly.",
-      portrait: "/assets/portraits/astronaut-mark.webp"
-    },
+{
+    id: "milo",
+    division: "astrophysics",
+    name: "Milo Campbell",
+    //locked: true,
+    origin: "United Kingdom",
+    age: "24",
+    height: "6'0",
+    gender: "Male (He/him)",
+    rank: "Recruit of Astro",
+    likes: "Relaxing, Hanging Out With Friends, Taking Breaks",
+    dislikes: "Excessive Work, Constant Repairs",
+    portrait: "/assets/portraits/astronaut-milo.webp"
+},
 
-    {
-      id: "milo",
-      division: "astrophysics",
-      name: "Milo Campbell",
-      locked: true,
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/astronaut-milo.webp"
-    },
-
-    {
-      id: "miranda",
-      locked: true,
-      division: "astrophysics",
-      name: "Miranda Rodríguez",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/astronaut-miranda.webp"
-    },
-
+{
+    id: "miranda",
+    //locked: true,
+    division: "astrophysics",
+    name: "Miranda Rodríguez",
+    origin: "Spain",
+    age: "23",
+    height: "5'9",
+    gender: "Female (She/her)",
+    rank: "Recruit of Astro",
+    likes: "Spicy Food, Cooking, Video Games",
+    dislikes: "People Refusing Her Food, Negativity",
+    portrait: "/assets/portraits/astronaut-miranda.webp"
+},
 
     /* ==================== BIOLOGY ==================== */
 
-    {
-      id: "azazel-laufeyson",
-      division: "biology",
-      name: "Dr Azazel Laufeyson",
-      origin: "Denmark",
-      age: "32",
-      height: "6'2",
-      gender: "Transitioned Female, She/her",
-      rank: "Lead Doctor of Biology",
-      likes: "Silence, Dissecting, Undiscovered Creatures",
-      dislikes: "Humans, Arrogance, Boredom",
-      personality: "Prefers to work alone, helps tutor the four researchers under her. Has taken a liking to them despite them being humans. Doesn't like introducing herself to anyone, would rather not be called by name.",
-      portrait: "/assets/portraits/head-biology-azazel.webp"
-    },
+{
+    id: "azazel-laufeyson",
+    division: "biology",
+    name: "Dr Azazel Laufeyson",
+    origin: "Denmark",
+    age: "32",
+    height: "6'2",
+    gender: "Genderless (any)",
+    rank: "Lead Doctor of Biology",
+    likes: "Silence, Dissecting, Undiscovered Creatures",
+    dislikes: "Humans, Arrogance, Boredom",
+    portrait: "/assets/portraits/head-biology-azazel.webp"
+},
 
-    {
-      id: "aliss",
-      division: "biology",
-      name: "Aliss 9",
-      origin: "China",
-      age: "27",
-      height: "6'5",
-      gender: "Female (she/her)",
-      rank: "Senior of Botany",
-      likes: "Youth, Organic Matter",
-      dislikes: "Human Experiments, Uncertainty",
-      personality: "Stoic and tired. Cant stand to look at younger people. The 9th clone of the original Alice, which died due to stage 1-A cancer.",
-      portrait: "/assets/portraits/recruit-biology-aliss.webp"
-    },
+{
+    id: "aliss",
+    division: "biology",
+    name: "Aliss 9",
+    origin: "China",
+    age: "27",
+    height: "6'4",
+    gender: "Female (She/her)",
+    rank: "Senior of Biology",
+    likes: "Youth, Organic Matter",
+    dislikes: "Human Experiments, Uncertainty",
+    portrait: "/assets/portraits/recruit-biology-aliss.webp"
+},
 
-    {
-      id: "avery",
-      division: "biology",
-      name: "Avery Háo",
-      origin: "China",
-      age: "56",
-      height: "6'1",
-      gender: "",
-      rank: "Senior of Botany",
-      likes: "Curious People, Poppies",
-      dislikes: "Lazy People, Jokes",
-      personality: "Very serious in nature, likes to spend time alone but enjoys the company of people she deems worthy. Likes the smell of flowers.",
-      portrait: "/assets/portraits/apprentice-biology-avery.webp"
-    },
+{
+    id: "avery",
+    division: "biology",
+    name: "Avery Háo",
+    origin: "China",
+    age: "56",
+    height: "6'1",
+    gender: "Female (She/her)",
+    rank: "Senior of Biology",
+    likes: "Curious People, Poppies",
+    dislikes: "Lazy People, Jokes",
+    portrait: "/assets/portraits/apprentice-biology-avery.webp"
+},
 
-    {
-      id: "carnage",
-      division: "biology",
-      name: "Carnage",
-      origin: "Canada",
-      age: "17",
-      height: "5'1",
-      gender: "",
-      rank: "Recruit of Botany",
-      likes: "Nightmares, Lots of Teeth",
-      dislikes: "Nice People, Being Bored",
-      personality: "Is obsessed with the research of Fear and artificial nightmares. She advanced into plant-based chemicals that manifests into a person's worst fear. Loves the idea of 'killing', would never hurt a fly.",
-      portrait: "/assets/portraits/apprentice-biology-carnage.webp"
-    },
+{
+    id: "carnage",
+    division: "biology",
+    name: "Carnage",
+    origin: "Canada",
+    age: "18",
+    height: "5'1",
+    gender: "Female (She/her)",
+    rank: "Recruit of Biology",
+    likes: "Nightmares, Lots of Teeth",
+    dislikes: "Nice People, Being Bored",
+    portrait: "/assets/portraits/apprentice-biology-carnage.webp"
+},
 
-    {
-      id: "manny",
-      division: "biology",
-      name: "Manny Evans",
-      origin: "Costa Rica",
-      age: "23",
-      height: "6'6",
-      gender: "Male (he/him)",
-      rank: "Recruit of Botany",
-      likes: "Carnivorous Plants, Poison",
-      dislikes: "Antidotes, Venom",
-      personality: "Hates animals and thinks plants deserve to overtake humanity, not too vocal, only speaks when spoken to.",
-      portrait: "/assets/portraits/apprentice-biology-manny.webp"
-    },
+{
+    id: "manny",
+    division: "biology",
+    name: "Manny Evans",
+    origin: "Costa Rica",
+    age: "23",
+    height: "6'6",
+    gender: "Male (He/him)",
+    rank: "Recruit of Biology",
+    likes: "Carnivorous Plants, Poison",
+    dislikes: "Antidotes, Venom",
+    portrait: "/assets/portraits/apprentice-biology-manny.webp"
+},
 
     /* ==================== CHEMISTRY ==================== */
 
-    {
-      id: "dr-vale",
-      locked: true,
-      division: "chemistry",
-      name: "Vale",
-      origin: "??? (Germany)",
-      age: "??? (80something)",
-      height: "",
-      gender: "He/him",
-      rank: "Lead Doctor of Chemistry",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/head-chemistry-vale.webp"
-    },
+{
+    id: "dr-vale",
+    //locked: true,
+    division: "chemistry",
+    name: "Vale",
+    origin: "Germany",
+    age: "90?",
+    height: "???",
+    gender: "Male (He/him)",
+    rank: "Lead Doctor of Chemistry",
+    likes: "Chemistry, Recognition, Intellectual Superiority, Academic Achievement",
+    dislikes: "Incompetence, Being Contradicted, Amateur Research, Failure",
+    portrait: "/assets/portraits/head-chemistry-vale.webp"
+},
 
-    {
-      id: "lila",
-      locked: true,
-      division: "chemistry",
-      name: "Lila Rossi",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-chemistry-lila.webp"
-    },
+{
+    id: "lila",
+    //locked: true,
+    division: "chemistry",
+    name: "Lila Rossi",
+    origin: "United States",
+    age: "???",
+    height: "6'0",
+    gender: "Female (She/her)",
+    rank: "Recruit of Chemistry",
+    likes: "Social Games, Teasing People, Chemistry, Attention",
+    dislikes: "Slackers, Lack of Initiative, Boring Conversations",
+    portrait: "/assets/portraits/apprentice-chemistry-lila.webp"
+},
 
-    {
-      id: "luka",
-      locked: true,
-      division: "chemistry",
-      name: "Luka Diamandis",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-chemistry-luka.webp"
-    },
+{
+    id: "luka",
+    //locked: true,
+    division: "chemistry",
+    name: "Luka Diamandis",
+    origin: "United States",
+    age: "26",
+    height: "5'11",
+    gender: "Male (he/him)",
+    rank: "Recruit of Chemistry",
+    likes: "Pharmacology, Performance Enhancement",
+    dislikes: "Wrong Formulas, Wasted Materials",
+    portrait: "/assets/portraits/apprentice-chemistry-luka.webp"
+},
 
-    {
-      id: "scar",
-      locked: true,
-      division: "chemistry",
-      name: "Scar Ravenbloom",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-chemistry-scar.webp"
-    },
+{
+    id: "scar",
+    //locked: true,
+    division: "chemistry",
+    name: "Scar Ravenbloom",
+    origin: "United States",
+    age: "???",
+    height: "5'11",
+    gender: "Male (he/him)",
+    rank: "Recruit of Chemistry",
+    likes: "Chemical Weapons, Investigation",
+    dislikes: "Unexplained Decisions, Incomplete Answers",
+    portrait: "/assets/portraits/apprentice-chemistry-scar.webp"
+},
 
-    {
-      id: "Clause",
-      locked: true,
-      division: "chemistry",
-      name: "Clause Graves",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-chemistry-clause.webp"
-    },
-
+{
+    id: "Clause",
+    //locked: true,
+    division: "chemistry",
+    name: "Clause Graves",
+    origin: "United States",
+    age: "26",
+    height: "6'1",
+    gender: "Male (He/him)",
+    rank: "Recruit of Chemistry",
+    likes: "Luka, Chemical Reactions, Practical Applications",
+    dislikes: "Losing, Most People",
+    portrait: "/assets/portraits/apprentice-chemistry-clause.webp"
+},
 
     /* ==================== QUANTUM ==================== */
+{
+    id: "ebb-wittgenstein",
+    division: "quantum",
+    name: "Dr Ebb Wittgenstein",
+    origin: "Ireland",
+    age: "68",
+    height: "5'3",
+    gender: "Male (He/him)",
+    rank: "Lead Doctor of Quantum",
+    likes: "Chatting, Mathematics, Quiet Environments, Independent Research",
+    dislikes: "Small Spaces, Feeling Lost, Confrontation, Uncertainty",
+    portrait: "/assets/portraits/head-quantum-ebb.webp"
+},
 
-    {
-      id: "ebb-wittgenstein",
-      division: "quantum",
-      name: "Dr Ebb Wittgenstein",
-      origin: "Ireland",
-      age: "68",
-      height: "5'3",
-      gender: "Male, He/him",
-      rank: "Lead Doctor of Quantum",
-      likes: "Chatting, Alone Time",
-      dislikes: "Small Spaces, Feeling Lost",
-      personality: "Always keeps things to himself, likes to tutor people in his own weird way. Has social anxiety, really cryptic, reportedly likes to hide away. Always makes fast calculations in his head and likes drawing on air with his fingers. He keeps logs of each day of progress he makes on his computer.",
-      portrait: "/assets/portraits/head-quantum-ebb.webp"
-    },
+{
+    id: "jane-wolf",
+    //locked: true,
+    division: "quantum",
+    name: "Dr Jane Wolf",
+    origin: "England",
+    age: "68?",
+    height: "5'10",
+    gender: "Female (She/her)",
+    rank: "Lead of Quantum",
+    likes: "Jokes, Extraterrestrials, Exploration, Unusual Technology",
+    dislikes: "People Without Humor, Coffee, Arrogance",
+    portrait: "/assets/portraits/head-quantum-jane.webp"
+},
 
-    {
-      id: "jane-wolf",
-      locked: true,
-      division: "quantum",
-      name: "Dr Jane Wolf",
-      origin: "England",
-      age: "48",
-      height: "5'10",
-      gender: "Female, She/her",
-      rank: "Lead of Quantum",
-      likes: "Jokes, Extraterrestrials",
-      dislikes: "People with no humor, Coffee",
-      personality: "",
-      portrait: "/assets/portraits/head-quantum-jane.webp"
-    },
+{
+    id: "andi-manlow",
+    //locked: true,
+    division: "quantum",
+    name: "Andi Manlow",
+    origin: "???",
+    age: "21",
+    height: "4'11",
+    gender: "Male (He/him)",
+    rank: "Recruit of Quantum",
+    likes: "Animals, Wildlife, Exploration, Andrew",
+    dislikes: "Animal Cruelty, Confinement, His Mother and Father",
+    portrait: "/assets/portraits/andi-manlow.webp"
+},
 
-    {
-      id: "andi-manlow",
-      locked: true,
-      division: "quantum",
-      name: "Andi Manlow",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/andi-manlow.webp"
-    },
+{
+    id: "arden",
+    //locked: true,
+    division: "quantum",
+    name: "Arden",
+    origin: "???",
+    age: "27",
+    height: "4'6",
+    gender: "Male (He/him)",
+    rank: "Recruit of Quantum",
+    likes: "Plants, Animals, Nature",
+    dislikes: "???",
+    portrait: "/assets/portraits/arden.webp"
+},
 
-    {
-      id: "arden",
-      locked: true,
-      division: "quantum",
-      name: "Arden",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/arden.webp"
-    },
+{
+    id: "atticus-morningstar",
+    //locked: true,
+    division: "quantum",
+    name: "Atticus Morningstar",
+    origin: "???",
+    age: "27",
+    height: "6'1",
+    gender: "Male (He/him)",
+    rank: "Recruit of Quantum",
+    likes: "Technology, Cybersecurity, Hardlight Engineering",
+    dislikes: "Inefficiency, Outdated Systems",
+    portrait: "/assets/portraits/atticus-morningstar.webp"
+},
 
-    {
-      id: "atticus-morningstar",
-      locked: true,
-      division: "quantum",
-      name: "Atticus Morningstar",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/atticus-morningstar.webp"
-    },
+{
+    id: "louis-bordreaux",
+    //locked: true,
+    division: "quantum",
+    name: "Louis Boudreaux",
+    origin: "Louisiana, United States",
+    age: "42",
+    height: "6'0",
+    gender: "Male (He/him)",
+    rank: "Recruit of Quantum // Former ARA Field Operative",
+    likes: "Technology, Reliable Equipment, Personal Freedom",
+    dislikes: "Government Oversight, Surveillance",
+    portrait: "/assets/portraits/louis-bordreaux.webp"
+},
 
-    {
-      id: "louis-bordreaux",
-      locked: true,
-      division: "quantum",
-      name: "Louis Bordreaux",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/louis-bordreaux.webp"
-    },
+{
+    id: "avau",
+    //locked: true,
+    division: "quantum",
+    name: "AVAU-039",
+    origin: "???",
+    age: "???",
+    height: "6'8",
+    gender: "???",
+    rank: "Recruit of Quantum",
+    likes: "???",
+    dislikes: "???",
+    portrait: "/assets/portraits/avau.webp"
+},
 
-    {
-      id: "avau",
-      locked: true,
-      division: "quantum",
-      name: "AVAU",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/avau.webp"
-    },
+{
+    id: "damien-percy",
+    //locked: true,
+    division: "quantum",
+    name: "Damien Percy",
+    origin: "Germany",
+    age: "25",
+    height: "5'11",
+    gender: "Male (He/him)",
+    rank: "Recruit of Quantum",
+    likes: "New Concepts, Invention, Friendship, Helping Others",
+    dislikes: "Cruelty, Manipulation",
+    portrait: "/assets/portraits/damien-percy.webp"
+},
 
-    {
-      id: "damien-percy",
-      locked: true,
-      division: "quantum",
-      name: "Damien Percy",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/damien-percy.webp"
-    },
-
-    {
-      id: "diego-monde",
-      locked: true,
-      division: "quantum",
-      name: "Diego Monde",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/diego-monde.webp"
-    },
-
+{
+    id: "diego-monde",
+    //locked: true,
+    division: "quantum",
+    name: "Diego Monde",
+    origin: "France",
+    age: "37",
+    height: "5'8",
+    gender: "Male (He/him)",
+    rank: "Recruit of Quantum // Former C.A.T. Operative",
+    likes: "CRUMB Units",
+    dislikes: "???",
+    portrait: "/assets/portraits/diego-monde.webp"
+},
 
     /* ==================== ROBOTICS ==================== */
 
-    {
-      id: "dr-kt",
-      locked: true,
-      division: "robotics",
-      name: "Dr. KT",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/head-robotics-kt.webp"
-    },
+{
+    id: "dr-kt",
+    //locked: true,
+    division: "robotics",
+    name: "Dr. KT",
+    origin: "???",
+    age: "???",
+    height: "Approximately 6'0",
+    gender: "Male (He/him)",
+    rank: "Lead Doctor of Robotics",
+    likes: "Cats, Catnip, Robotics, Fish",
+    dislikes: "Cucumbers, Know-it-alls",
+    portrait: "/assets/portraits/head-robotics-kt.webp"
+},
 
-    {
-      id: "julian",
-      locked: true,
-      division: "robotics",
-      name: "Julian Giuliano",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-robotics-julian.webp"
-    },
+{
+    id: "julian",
+    //locked: true,
+    division: "robotics",
+    name: "Julian Giuliano",
+    origin: "Spain",
+    age: "26",
+    height: "5'10",
+    gender: "Male (He/him)",
+    rank: "Recruit of Robotics",
+    likes: "Mechs, Gambling, Entertainment, Lila Rossi",
+    dislikes: "Boredom, Restrictions, Excessive Regulations",
+    portrait: "/assets/portraits/apprentice-robotics-julian.webp"
+},
 
-    {
-      id: "faming-zhuanli",
-      locked: true,
-      division: "robotics",
-      name: "Fāmíng Zhuānlì",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-robotics-faming-zhuanli.webp"
-    },
+{
+    id: "faming-zhuanli",
+    //locked: true,
+    division: "robotics",
+    name: "Fāmíng Zhuānlì",
+    origin: "China",
+    age: "29",
+    height: "5'8",
+    gender: "Female (She/her)",
+    rank: "Recruit of Robotics",
+    likes: "Mechanical Engineering, Hardlight, Problem-Solving",
+    dislikes: "Carelessness, Rudeness",
+    portrait: "/assets/portraits/apprentice-robotics-faming-zhuanli.webp"
+},
 
-    {
-      id: "suzy",
-      locked: true,
-      division: "robotics",
-      name: "Suzy Goldberg",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-robotics-suzy.webp"
-    },
+{
+    id: "suzy",
+    //locked: true,
+    division: "robotics",
+    name: "Suzy Goldberg",
+    origin: "United Kingdom",
+    age: "17",
+    height: "5'4",
+    gender: "Female (She/her)",
+    rank: "Recruit of Robotics",
+    likes: "Cute Robots, Miniature Machines, Engineering",
+    dislikes: "Getting Bullied, People Mocking Her Creations",
+    portrait: "/assets/portraits/apprentice-robotics-suzy.webp"
+},
 
-    {
-      id: "tina",
-      locked: true,
-      division: "robotics",
-      name: "Tīnah Qureshi",
-      origin: "",
-      age: "",
-      height: "",
-      gender: "",
-      rank: "",
-      likes: "",
-      dislikes: "",
-      personality: "",
-      portrait: "/assets/portraits/apprentice-robotics-tina.webp"
-    }
+{
+    id: "tina",
+    //locked: true,
+    division: "robotics",
+    name: "Tīnah Qureshi",
+    origin: "United States",
+    age: "27",
+    height: "5'7",
+    gender: "Female (She/her)",
+    rank: "Recruit of Robotics",
+    likes: "Fighting, Winning, Traveling, Pranks, Relaxing",
+    dislikes: "Weak Opponents, Working, Being Underestimated",
+    portrait: "/assets/portraits/apprentice-robotics-tina.webp"
+},
   ];
 
 
@@ -1493,10 +1457,8 @@ const starterProfiles = [
     }
   ];
 
-
   let currentView = "overview";
   let searchTerm = "";
-
 
   const divisionNav = document.getElementById("divisionNav");
   const content = document.getElementById("content");
@@ -1531,9 +1493,6 @@ const starterProfiles = [
       .join("")
       .toUpperCase();
   }
-
-
-
 
   function countDivision(division) {
     return starterProfiles.filter(
@@ -1977,9 +1936,6 @@ const starterProfiles = [
     modalRoot.innerHTML = "";
   }
 
-
-  // Close a profile only when the user clicks the backdrop itself.
-  // This listener stays active across repeated modal openings.
   modalRoot.addEventListener("click", event => {
     if (event.target === modalRoot && modalRoot.classList.contains("visible")) {
       closeProfile();
