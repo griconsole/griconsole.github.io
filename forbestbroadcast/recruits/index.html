@@ -3060,7 +3060,7 @@ function ratingFor(ep) {
 }
 function summaryFor(ep) {
   if (!ep.available) return ep.summary || "This broadcast has not aired yet.";
-  if (ep.season.id === 8) return "[A recording from the current group of recruits- Programme notes are awaiting Mr. Forbest's approval]";
+  //if (ep.season.id === 8) return "[A recording from the current group of recruits- Programme notes are awaiting Mr. Forbest's approval]";
   const blurbs = typeof BLURBS !== "undefined" && Array.isArray(BLURBS) ? BLURBS : [];
   if (ep.summary) return ep.summary;
   if (blurbs.length) return blurbs[(ep.number + ep.season.id * 3) % blurbs.length];
