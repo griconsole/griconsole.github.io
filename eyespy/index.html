@@ -472,6 +472,8 @@ const wakeOverlay = document.getElementById("wakeOverlay");
 const musicMuteButton = document.getElementById("musicMuteButton");
 const backgroundAudio = document.getElementById("backgroundAudio");
 let siteActive = false;
+let backgroundManuallyMuted = false;
+let radioAudioIsPlaying = false;
 
 backgroundAudio.src = BACKGROUND_MUSIC_SRC;
 backgroundAudio.loop = true;
@@ -479,7 +481,13 @@ backgroundAudio.volume = 0.4;
 backgroundAudio.muted = false;
 
 function updateMusicMuteButton() {
-  musicMuteButton.textContent = backgroundAudio.muted ? "UNMUTE" : "MUTE";
+  backgroundAudio.muted = backgroundManuallyMuted || radioAudioIsPlaying;
+
+  if (radioAudioIsPlaying) {
+    musicMuteButton.textContent = "AUTO MUTE";
+  } else {
+    musicMuteButton.textContent = backgroundManuallyMuted ? "UNMUTE" : "MUTE";
+  }
 }
 
 async function activateSite() {
@@ -508,15 +516,12 @@ wakeOverlay.addEventListener("keydown", event => {
 });
 
 musicMuteButton.addEventListener("click", async () => {
-  if (!siteActive) {
-    backgroundAudio.muted = !backgroundAudio.muted;
-    updateMusicMuteButton();
-    await activateSite();
-    return;
-  }
-
-  backgroundAudio.muted = !backgroundAudio.muted;
+  backgroundManuallyMuted = !backgroundManuallyMuted;
   updateMusicMuteButton();
+
+  if (!siteActive) {
+    await activateSite();
+  }
 });
 updateMusicMuteButton();
 
@@ -794,13 +799,22 @@ function updateDisplay() {
       radioAudio.load();
     }
     if (radioAudio.paused) {
-      radioAudio.play().catch(error => {
-        console.warn("Radio recording could not play:", error);
-      });
+      radioAudio.play()
+        .then(() => {
+          radioAudioIsPlaying = !radioAudio.paused;
+          updateMusicMuteButton();
+        })
+        .catch(error => {
+          radioAudioIsPlaying = false;
+          updateMusicMuteButton();
+          console.warn("Radio recording could not play:", error);
+        });
     }
-  } else {
+    } else {
     radioAudio.pause();
-  }
+    radioAudioIsPlaying = false;
+    updateMusicMuteButton();
+    }
 }
 
 dialX.addEventListener("input", updateDisplay);
