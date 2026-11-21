@@ -899,14 +899,14 @@ buttons.forEach(button => {
       locked = true;
       monitor.textContent = "ACCESS BREACHED...";
       clearTimeout(resetTimer);
-      setTimeout(() => { window.location.href = "/logs/confdocs/";}, 500);
+      setTimeout(() => { window.location.href = "/logs/confdocs/"; resetMonitor();}, 500);
       return;
     }
     if (input === "12551") {
       locked = true;
       monitor.textContent = "ACCESS BREACHED...";
       clearTimeout(resetTimer);
-      setTimeout(() => { window.location.href = "/logs/log3140/";}, 500);
+      setTimeout(() => { window.location.href = "/logs/log3140/"; resetMonitor();}, 500);
       return;
     }
 

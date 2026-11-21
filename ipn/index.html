@@ -453,6 +453,26 @@
       transform: scaleX(1);
     }
 
+    .profile-card.is-locked {
+      cursor: not-allowed;
+      border-color: rgba(0,255,204,0.18);
+      background: rgba(0,255,204,0.008);
+    }
+
+    .profile-card.is-locked .profile-name,
+    .profile-card.is-locked .profile-index {
+      color: rgba(0,255,204,0.42);
+    }
+
+    .profile-card.is-locked .profile-rank {
+      color: rgba(0,255,204,0.55);
+    }
+
+    .profile-card.is-locked:hover {
+      border-color: rgba(0,255,204,0.28);
+      box-shadow: none;
+    }
+
     .profile-name {
       font-size: 17px;
       margin-bottom: 7px;
@@ -614,22 +634,23 @@
     }
 
     .field-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
       margin-top: 18px;
     }
 
     .field {
-      text-align: left;
-      border: 1px solid var(--line);
-      padding: 10px;
-      background: rgba(0,255,204,0.018);
       min-width: 0;
+      padding: 12px 0;
+      text-align: left;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
     }
 
     .field.full {
-      grid-column: 1 / -1;
+      grid-column: auto;
     }
 
     .field.longtext {
@@ -637,47 +658,30 @@
     }
 
     .field-label {
-      text-align: left;
+      margin: 0 0 5px;
       color: var(--text-dim);
-      font-size: 8px;
+      text-align: left;
+      font-size: 10px;
       letter-spacing: 1.5px;
-      margin-bottom: 7px;
     }
 
     .field-value {
-      text-align: left;
-      font-size: 12px;
-      line-height: 1.6;
-      white-space: pre-wrap;
       min-height: 15px;
-      overflow-wrap: anywhere;
+      color: var(--cyan);
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.65;
+      /* Collapse template indentation while preserving intentional line breaks. */
+      white-space: pre-line;
+      overflow-wrap: break-word;
     }
 
     .field.longtext .field-value {
-      max-height: 190px;
-      overflow-y: auto;
-      padding-right: 9px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0,255,204,0.72) rgba(0,255,204,0.035);
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
     }
 
-    .field.longtext .field-value::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    .field.longtext .field-value::-webkit-scrollbar-track {
-      background: rgba(0,255,204,0.025);
-      border-left: 1px solid rgba(0,255,204,0.08);
-    }
-
-    .field.longtext .field-value::-webkit-scrollbar-thumb {
-      background: rgba(0,255,204,0.4);
-      border: 1px solid rgba(0,255,204,0.7);
-    }
-
-    .field.longtext .field-value::-webkit-scrollbar-thumb:hover {
-      background: rgba(0,255,204,0.72);
-    }
 
     .field-empty {
       color: rgba(0,255,204,0.16);
@@ -791,19 +795,6 @@
       opacity: 0.65;
     }
 
-    #toast {
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      border: 1px solid var(--cyan);
-      background: #000;
-      color: var(--cyan);
-      padding: 9px 13px;
-      font-size: 10px;
-      z-index: 9000;
-      display: none;
-    }
 
     @media (max-width: 1100px) {
       #app {
@@ -879,17 +870,6 @@
         inset: 18px 25%;
       }
 
-      .field-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full {
-        grid-column: auto;
-      }
-
-      .field.longtext .field-value {
-        max-height: 170px;
-      }
     }
 
     @media (max-width: 520px) {
@@ -929,7 +909,7 @@
     <div class="gri-brand">
       <div class="gri-brand-title">G.R.I.</div>
       <div class="gri-brand-sub">
-        GEORGIA RESEARCH INSTITUTION<br>
+        GLOBAL RESEARCH INSTITUTE<br>
         INTERNAL PERSONNEL NETWORK<br>
         BUILD // 1996.01.01
       </div>
@@ -939,7 +919,7 @@
     <nav id="divisionNav"></nav>
 
     <div class="sidebar-footer">
-      ACCESS CLASS: INTERNAL<br>
+      ACCESS CLASS: AUTHORIZED VIEWER<br>
       PERSONNEL RECORDS: ACTIVE<br>
       DATABASE: <span class="status-live">ONLINE</span>
     </div>
@@ -958,8 +938,7 @@
 
       <div class="status-stack">
         SYSTEM: <span class="status-live">ONLINE</span><br>
-        DATABASE: PERSONNEL / 1996<br>
-        ACCESS: INTERNAL
+        GRI PERSONNEL DATABASE
       </div>
     </header>
 
@@ -983,7 +962,6 @@
 </div>
 
 <div id="modalRoot"></div>
-<div id="toast"></div>
 <div id="ambientLog"></div>
 
 <script>
@@ -1012,6 +990,7 @@ const starterProfiles = [
     {
       id: "noah-pyxis",
       division: "astrophysics",
+      locked: true,
       name: "Dr Noah Dipper Pyxis",
       origin: "",
       age: "",
@@ -1021,13 +1000,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/head-astrophysics-noah.webp"
     },
 
     {
       id: "claire-moonstone",
+      locked: true,
       division: "astrophysics",
       name: "Claire Moonstone",
       origin: "",
@@ -1038,13 +1016,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/astronaut-claire.webp"
     },
 
     {
       id: "mark-fischbach",
+      locked: true,
       division: "astrophysics",
       name: "Mark Edward Fischbach",
       origin: "Korean/German",
@@ -1055,8 +1032,6 @@ const starterProfiles = [
       likes: "Stroking his Ego, Leading",
       dislikes: "Failure, Being proven wrong",
       personality: "Is really silly and goofy in person, puts on a serious tone during missions. Really loves space. Is quite energetic and charismatic. Caring and friendly.",
-      motivation: "Just loves space, also wants to be the best at everything. Has a huge ego.",
-      abilities: "",
       portrait: "/assets/portraits/astronaut-mark.webp"
     },
 
@@ -1064,6 +1039,7 @@ const starterProfiles = [
       id: "milo",
       division: "astrophysics",
       name: "Milo Campbell",
+      locked: true,
       origin: "",
       age: "",
       height: "",
@@ -1072,13 +1048,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/astronaut-milo.webp"
     },
 
     {
       id: "miranda",
+      locked: true,
       division: "astrophysics",
       name: "Miranda Rodríguez",
       origin: "",
@@ -1089,8 +1064,6 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/astronaut-miranda.webp"
     },
 
@@ -1104,13 +1077,11 @@ const starterProfiles = [
       origin: "Denmark",
       age: "32",
       height: "6'2",
-      gender: "Female, She/her / he/him / any",
+      gender: "Transitioned Female, She/her",
       rank: "Lead Doctor of Biology",
       likes: "Silence, Dissecting, Undiscovered Creatures",
       dislikes: "Humans, Arrogance, Boredom",
       personality: "Prefers to work alone, helps tutor the four researchers under her. Has taken a liking to them despite them being humans. Doesn't like introducing herself to anyone, would rather not be called by name.",
-      motivation: "Her desire to dissect any new creatures has kept her sane in this line of work. Human bodies are boring and always the same. Has found multiple cures for diseases and cancer, but would much rather do work on other species at this point.",
-      abilities: "",
       portrait: "/assets/portraits/head-biology-azazel.webp"
     },
 
@@ -1121,13 +1092,11 @@ const starterProfiles = [
       origin: "China",
       age: "27",
       height: "6'5",
-      gender: "",
+      gender: "Female (she/her)",
       rank: "Senior of Botany",
       likes: "Youth, Organic Matter",
       dislikes: "Human Experiments, Uncertainty",
-      personality: "Stoic and tired. Only talks to people older than him. Cant stand to look at younger people.",
-      motivation: "Wants to find a cure to aging. Lost his mother at the age of 105. She lived a long life, but if it weren't for the effects of aging maybe she would have lived longer. Has 5 siblings.",
-      abilities: "",
+      personality: "Stoic and tired. Cant stand to look at younger people. The 9th clone of the original Alice, which died due to stage 1-A cancer.",
       portrait: "/assets/portraits/recruit-biology-aliss.webp"
     },
 
@@ -1143,8 +1112,6 @@ const starterProfiles = [
       likes: "Curious People, Poppies",
       dislikes: "Lazy People, Jokes",
       personality: "Very serious in nature, likes to spend time alone but enjoys the company of people she deems worthy. Likes the smell of flowers.",
-      motivation: "Her sister has been diagnosed with a deadly cancer, none of the cancer medications invented so far were effective so she decided to research into it herself while her sister is back at China.",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-biology-avery.webp"
     },
 
@@ -1160,8 +1127,6 @@ const starterProfiles = [
       likes: "Nightmares, Lots of Teeth",
       dislikes: "Nice People, Being Bored",
       personality: "Is obsessed with the research of Fear and artificial nightmares. She advanced into plant-based chemicals that manifests into a person's worst fear. Loves the idea of 'killing', would never hurt a fly.",
-      motivation: "She has been raised by a pack of wolves after her family seemingly abandoned her. She greatly values her wolf family and wants to give them the best life before they pass.",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-biology-carnage.webp"
     },
 
@@ -1172,13 +1137,11 @@ const starterProfiles = [
       origin: "Costa Rica",
       age: "23",
       height: "6'6",
-      gender: "",
+      gender: "Male (he/him)",
       rank: "Recruit of Botany",
       likes: "Carnivorous Plants, Poison",
       dislikes: "Antidotes, Venom",
       personality: "Hates animals and thinks plants deserve to overtake humanity, not too vocal, only speaks when spoken to.",
-      motivation: "His little sister once said that he reminded her of a pitcher plant, it was her favorite type of plant as well. After her death he got into the research of plants even though it was difficult for him. He keeps pitcher plants in his living areas.",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-biology-manny.webp"
     },
 
@@ -1186,6 +1149,7 @@ const starterProfiles = [
 
     {
       id: "dr-vale",
+      locked: true,
       division: "chemistry",
       name: "Vale",
       origin: "??? (Germany)",
@@ -1196,13 +1160,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/head-chemistry-vale.webp"
     },
 
     {
       id: "lila",
+      locked: true,
       division: "chemistry",
       name: "Lila Rossi",
       origin: "",
@@ -1213,13 +1176,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-chemistry-lila.webp"
     },
 
     {
       id: "luka",
+      locked: true,
       division: "chemistry",
       name: "Luka Diamandis",
       origin: "",
@@ -1230,13 +1192,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-chemistry-luka.webp"
     },
 
     {
       id: "scar",
+      locked: true,
       division: "chemistry",
       name: "Scar Ravenbloom",
       origin: "",
@@ -1247,13 +1208,12 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-chemistry-scar.webp"
     },
 
     {
       id: "Clause",
+      locked: true,
       division: "chemistry",
       name: "Clause Graves",
       origin: "",
@@ -1264,9 +1224,7 @@ const starterProfiles = [
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
-      portrait: "apprentice-chemistry-clause.webp""
+      portrait: "/assets/portraits/apprentice-chemistry-clause.webp"
     },
 
 
@@ -1283,19 +1241,13 @@ const starterProfiles = [
       rank: "Lead Doctor of Quantum",
       likes: "Chatting, Alone Time",
       dislikes: "Small Spaces, Feeling Lost",
-      personality: "Always keeps things to himself, likes to tutor people and make connections. Has social anxiety, really cryptic and a huge nerd. Always makes fast af calculations in his head and likes drawing on air with his fingers. He keeps logs of each day of progress he makes on the Machine. He installed a private console on his offices' computer. Wrote a will that if anything ever were to happen to him that their recruits should carry on his will...",
-      motivation: `He wants to open a portal to another dimension...
-Ebb had a dear friend by the name of Laine Coywright, they had many talks on philosophical matters and otherworldly theorems. Laine was a snarky individual for sure, she liked teasing Ebb. One day when Ebb had finally mustered up the courage to ask her out, she seemingly disappeared. Without a trace. Ebb went into their research space where he then found multiple schematics and sketches of what seemed to be a blueprint of a machine. And the fully built machine in front of him. Seemingly been activated at least a day ago... He lost her without even saying goodbye.
-
-After a big depressional era, he finally decides to go into more social events where he meets Vale in 1995, June 17th. Vale gives him an opportunity to study teach and research at the GRI, the infamous research institute.
-
-He finally reached the title of lead of quantum and had recruited researchers to help him with the building process of the machine. He used the schematics from way back then to create a bigger and more powerful machine that'd for sure find Laine`,
-      abilities: "",
+      personality: "Always keeps things to himself, likes to tutor people in his own weird way. Has social anxiety, really cryptic, reportedly likes to hide away. Always makes fast calculations in his head and likes drawing on air with his fingers. He keeps logs of each day of progress he makes on his computer.",
       portrait: "/assets/portraits/head-quantum-ebb.webp"
     },
 
     {
       id: "jane-wolf",
+      locked: true,
       division: "quantum",
       name: "Dr Jane Wolf",
       origin: "England",
@@ -1305,14 +1257,13 @@ He finally reached the title of lead of quantum and had recruited researchers to
       rank: "Lead of Quantum",
       likes: "Jokes, Extraterrestrials",
       dislikes: "People with no humor, Coffee",
-      personality: "Conceals her identity, quite knowledgeable about dimensional travel and has information on advanced Quantum Physics, more than anyone has ever figured out so far... Is actually Laine(?). Means no bad, wants to help the recruits get Ebb back and close the portal. Quite the workaholic. Doesn't want to approach the portal itself, knows that it's a bad idea to get near it.",
-      motivation: "Origins known to be England, but in reality she has been warped into existence. She doesn't know whether she was born a human or not. She wants to know more about this phenomenon. Her memories seemingly wiped... what was she?",
-      abilities: "",
+      personality: "",
       portrait: "/assets/portraits/head-quantum-jane.webp"
     },
 
     {
       id: "andi-manlow",
+      locked: true,
       division: "quantum",
       name: "Andi Manlow",
       origin: "",
@@ -1323,13 +1274,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/andi-manlow.webp"
     },
 
     {
       id: "arden",
+      locked: true,
       division: "quantum",
       name: "Arden",
       origin: "",
@@ -1340,13 +1290,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/arden.webp"
     },
 
     {
       id: "atticus-morningstar",
+      locked: true,
       division: "quantum",
       name: "Atticus Morningstar",
       origin: "",
@@ -1357,13 +1306,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/atticus-morningstar.webp"
     },
 
     {
       id: "louis-bordreaux",
+      locked: true,
       division: "quantum",
       name: "Louis Bordreaux",
       origin: "",
@@ -1374,13 +1322,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/louis-bordreaux.webp"
     },
 
     {
       id: "avau",
+      locked: true,
       division: "quantum",
       name: "AVAU",
       origin: "",
@@ -1391,13 +1338,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/avau.webp"
     },
 
     {
       id: "damien-percy",
+      locked: true,
       division: "quantum",
       name: "Damien Percy",
       origin: "",
@@ -1408,13 +1354,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/damien-percy.webp"
     },
 
     {
       id: "diego-monde",
+      locked: true,
       division: "quantum",
       name: "Diego Monde",
       origin: "",
@@ -1425,8 +1370,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/diego-monde.webp"
     },
 
@@ -1435,6 +1378,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
 
     {
       id: "dr-kt",
+      locked: true,
       division: "robotics",
       name: "Dr. KT",
       origin: "",
@@ -1445,13 +1389,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/head-robotics-kt.webp"
     },
 
     {
       id: "julian",
+      locked: true,
       division: "robotics",
       name: "Julian Giuliano",
       origin: "",
@@ -1462,13 +1405,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-robotics-julian.webp"
     },
 
     {
       id: "faming-zhuanli",
+      locked: true,
       division: "robotics",
       name: "Fāmíng Zhuānlì",
       origin: "",
@@ -1479,13 +1421,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-robotics-faming-zhuanli.webp"
     },
 
     {
       id: "suzy",
+      locked: true,
       division: "robotics",
       name: "Suzy Goldberg",
       origin: "",
@@ -1496,13 +1437,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-robotics-suzy.webp"
     },
 
     {
       id: "tina",
+      locked: true,
       division: "robotics",
       name: "Tīnah Qureshi",
       origin: "",
@@ -1513,8 +1453,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       likes: "",
       dislikes: "",
       personality: "",
-      motivation: "",
-      abilities: "",
       portrait: "/assets/portraits/apprentice-robotics-tina.webp"
     }
   ];
@@ -1525,7 +1463,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
       id: "madam-xiu-kuan",
       name: "Madam Xiu Kuan",
       role: "HANDLER",
-      notes: "",
+      notes: "Always has her bodyguard bot near her.",
       division: "INSTITUTION",
       portrait: "/assets/portraits/npc-madam-xiu-kuan.webp"
     },
@@ -1533,7 +1471,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
       id: "minister-kane",
       name: "Kane",
       role: "MINISTER OF INTELLIGENCE",
-      notes: "",
+      notes: "Visibly blind and needs a walking aid, can somehow still see.",
       division: "FOUNDER",
       portrait: "/assets/portraits/npc-minister-kane.webp"
     },
@@ -1541,7 +1479,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
       id: "minister-eva",
       name: "Eva",
       role: "MINISTER OF HEALTH",
-      notes: "",
+      notes: "Has cured many illnesses, doesn't care about money.",
       division: "FOUNDER",
       portrait: "/assets/portraits/npc-minister-eva.webp"
     },
@@ -1549,7 +1487,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
       id: "qin-ai-de",
       name: "Qin'ai De",
       role: "BODYGUARD",
-      notes: "Qin the protector robot",
+      notes: "Xiu's protector robot",
       division: "INSTITUTION",
       portrait: "/assets/portraits/npc-qin-ai-de.webp"
     }
@@ -1567,7 +1505,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
   const pageSubtitle = document.getElementById("pageSubtitle");
   const homeBtn = document.getElementById("homeBtn");
   const modalRoot = document.getElementById("modalRoot");
-  const toast = document.getElementById("toast");
   const ambientLog = document.getElementById("ambientLog");
 
 
@@ -1596,16 +1533,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
   }
 
 
-  function showToast(message) {
-    toast.textContent = message;
-    toast.style.display = "block";
-
-    clearTimeout(showToast.timer);
-
-    showToast.timer = setTimeout(() => {
-      toast.style.display = "none";
-    }, 1800);
-  }
 
 
   function countDivision(division) {
@@ -1705,11 +1632,13 @@ He finally reached the title of lead of quantum and had recruited researchers to
 
         ${list.map((profile, index) => `
           <article
-            class="profile-card"
+            class="profile-card${profile.locked ? " is-locked" : ""}"
             data-profile-id="${escapeHTML(profile.id)}"
+            data-profile-locked="${profile.locked ? "true" : "false"}"
+            aria-disabled="${profile.locked ? "true" : "false"}"
           >
             <div class="profile-index">
-              ${String(index + 1).padStart(2, "0")}
+              ${profile.locked ? "LOCKED" : String(index + 1).padStart(2, "0")}
             </div>
 
             <div class="profile-name">
@@ -1717,21 +1646,13 @@ He finally reached the title of lead of quantum and had recruited researchers to
             </div>
 
             <div class="profile-rank">
-              ${escapeHTML(profile.rank || "RANK UNASSIGNED")}
+              ${profile.locked ? "ACCESS RESTRICTED" : escapeHTML(profile.rank || "RANK UNASSIGNED")}
             </div>
 
             <div class="profile-meta">
-              ${profile.origin
-                ? "ORIGIN // " + escapeHTML(profile.origin) + "<br>"
-                : ""
-              }
-              ${profile.age
-                ? "AGE // " + escapeHTML(profile.age) + "<br>"
-                : ""
-              }
-              ${profile.height
-                ? "HEIGHT // " + escapeHTML(profile.height)
-                : ""
+              ${profile.locked
+                ? "AUTHORIZATION REQUIRED"
+                : `${profile.origin ? "ORIGIN // " + escapeHTML(profile.origin) + "<br>" : ""}${profile.age ? "AGE // " + escapeHTML(profile.age) + "<br>" : ""}${profile.height ? "HEIGHT // " + escapeHTML(profile.height) : ""}`
               }
             </div>
           </article>
@@ -1752,6 +1673,8 @@ He finally reached the title of lead of quantum and had recruited researchers to
 
         card.dataset.bound = "1";
 
+        if (card.dataset.profileLocked === "true") return;
+
         card.addEventListener("click", () => {
           openProfile(card.dataset.profileId);
         });
@@ -1766,9 +1689,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
     ["gender", "GENDER / PRONOUNS"],
     ["likes", "LIKES"],
     ["dislikes", "DISLIKES"],
-    ["personality", "PERSONALITY", true],
-    ["motivation", "MOTIVATION", true],
-    ["abilities", "ABILITIES"]
+    ["personality", "PERSONALITY", true]
   ];
 
 
@@ -1779,7 +1700,7 @@ He finally reached the title of lead of quantum and had recruited researchers to
         p => p.id === id
       );
 
-    if (!profile) return;
+    if (!profile || profile.locked) return;
 
 
     const fieldHTML =
@@ -1922,20 +1843,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
     document
       .getElementById("closeProfile")
       .addEventListener("click", closeProfile);
-
-
-    modalRoot.addEventListener(
-      "click",
-      e => {
-        if (e.target === modalRoot) {
-          closeProfile();
-        }
-      },
-      { once: true }
-    );
-
-
-    showToast("PERSONNEL RECORD OPENED");
   }
 
 
@@ -2062,16 +1969,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       .getElementById("closeInstitutional")
       .addEventListener("click", closeProfile);
 
-
-    modalRoot.addEventListener(
-      "click",
-      e => {
-        if (e.target === modalRoot) {
-          closeProfile();
-        }
-      },
-      { once: true }
-    );
   }
 
 
@@ -2081,25 +1978,16 @@ He finally reached the title of lead of quantum and had recruited researchers to
   }
 
 
+  // Close a profile only when the user clicks the backdrop itself.
+  // This listener stays active across repeated modal openings.
+  modalRoot.addEventListener("click", event => {
+    if (event.target === modalRoot && modalRoot.classList.contains("visible")) {
+      closeProfile();
+    }
+  });
+
+
   function renderOverview() {
-
-    const leadCount =
-      starterProfiles.filter(profile =>
-        (profile.rank || "")
-          .toLowerCase()
-          .includes("lead")
-      ).length;
-
-
-    const filledRecords =
-      starterProfiles.filter(profile =>
-        profile.origin ||
-        profile.age ||
-        profile.height ||
-        profile.personality ||
-        profile.motivation
-      ).length;
-
 
     pageTitle.textContent =
       "GRI // INSTITUTIONAL NETWORK";
@@ -2109,39 +1997,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
 
 
     content.innerHTML = `
-
-      <div class="dashboard-grid">
-
-        <div class="metric">
-          <div class="metric-label">PERSONNEL RECORDS</div>
-          <div class="metric-value">
-            ${starterProfiles.length}
-          </div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-label">RESEARCH DIVISIONS</div>
-          <div class="metric-value">
-            ${divisionOrder.length}
-          </div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-label">LEAD RECORDS</div>
-          <div class="metric-value">
-            ${leadCount}
-          </div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-label">POPULATED FILES</div>
-          <div class="metric-value">
-            ${filledRecords}
-          </div>
-        </div>
-
-      </div>
-
 
       <section class="dashboard-section">
 
@@ -2331,12 +2186,14 @@ He finally reached the title of lead of quantum and had recruited researchers to
 
               ${results.map((profile, index) => `
                 <article
-                  class="profile-card"
+                  class="profile-card${profile.locked ? " is-locked" : ""}"
                   data-profile-id="${escapeHTML(profile.id)}"
+                  data-profile-locked="${profile.locked ? "true" : "false"}"
+                  aria-disabled="${profile.locked ? "true" : "false"}"
                 >
 
                   <div class="profile-index">
-                    ${String(index + 1).padStart(2, "0")}
+                    ${profile.locked ? "LOCKED" : String(index + 1).padStart(2, "0")}
                   </div>
 
                   <div class="profile-name">
@@ -2344,21 +2201,13 @@ He finally reached the title of lead of quantum and had recruited researchers to
                   </div>
 
                   <div class="profile-rank">
-                    ${escapeHTML(
-                      profile.rank ||
-                      "RANK UNASSIGNED"
-                    )}
+                    ${profile.locked ? "ACCESS RESTRICTED" : escapeHTML(profile.rank || "RANK UNASSIGNED")}
                   </div>
 
                   <div class="profile-meta">
-                    ${escapeHTML(
-                      divisionNames[profile.division]
-                    )}<br>
-
-                    ${
-                      profile.origin
-                        ? escapeHTML(profile.origin)
-                        : "ORIGIN UNASSIGNED"
+                    ${profile.locked
+                      ? "AUTHORIZATION REQUIRED"
+                      : `${escapeHTML(divisionNames[profile.division])}<br>${profile.origin ? escapeHTML(profile.origin) : "ORIGIN UNASSIGNED"}`
                     }
                   </div>
 
@@ -2375,15 +2224,12 @@ He finally reached the title of lead of quantum and had recruited researchers to
       }
     `;
 
-
     bindProfileCards();
   }
-
 
   function render() {
 
     renderNavigation();
-
 
     if (
       currentView === "overview" &&
@@ -2393,7 +2239,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       return;
     }
 
-
     if (
       currentView === "overview" &&
       searchTerm
@@ -2402,7 +2247,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       return;
     }
 
-
     if (
       divisionOrder.includes(currentView)
     ) {
@@ -2410,9 +2254,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       return;
     }
   }
-
-
-  /* ===== SEARCH ===== */
 
   searchInput.addEventListener(
     "input",
@@ -2424,10 +2265,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
       render();
     }
   );
-
-
-  /* ===== HOME ===== */
-
   homeBtn.addEventListener(
     "click",
     () => {
@@ -2437,14 +2274,8 @@ He finally reached the title of lead of quantum and had recruited researchers to
       currentView = "overview";
 
       render();
-
-      showToast("OVERVIEW");
     }
   );
-
-
-  /* ===== ESC ===== */
-
   document.addEventListener(
     "keydown",
     e => {
@@ -2458,10 +2289,6 @@ He finally reached the title of lead of quantum and had recruited researchers to
 
     }
   );
-
-
-  /* ===== AMBIENT LOG ===== */
-
   const ambientLines = [
     "SYS CHECK OK",
     "PERSONNEL DATABASE ONLINE",
@@ -2484,25 +2311,16 @@ He finally reached the title of lead of quantum and had recruited researchers to
     "CURRENT STATUS: OPERATIONAL",
     "PERSONNEL RECORD ACCESS // GRANTED"
   ];
-
   let ambientBuffer = [];
-
-
   function addAmbientLine(text) {
-
     ambientBuffer.push(text);
-
     if (ambientBuffer.length > 6) {
       ambientBuffer.shift();
     }
-
     ambientLog.textContent =
       ambientBuffer.join("\n");
   }
-
-
   function randomAmbient() {
-
     const line =
       ambientLines[
         Math.floor(
@@ -2510,27 +2328,17 @@ He finally reached the title of lead of quantum and had recruited researchers to
           ambientLines.length
         )
       ];
-
     addAmbientLine(line);
   }
-
-
   setTimeout(() => {
-
     randomAmbient();
-
     setInterval(
       randomAmbient,
       3500
     );
-
   }, 1000);
-
-
   render();
-
 })();
 </script>
-
 </body>
 </html>
