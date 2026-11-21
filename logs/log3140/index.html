@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>L3140</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconGRI.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconGRI.png">
+
+  <style>
+    :root {
+      --log-color: #00ffcc;
+      --log-color-soft: rgba(0,255,204,.6);
+      --log-color-dim: rgba(0,255,204,.35);
+      --log-red: #ff4444;
+      --uv-color: #aaffed;
+      --uv-glow: rgba(0,255,220,.8);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--log-color) #100016;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: "Courier New", monospace;
+      color: var(--log-color);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0,190,190,.2), transparent 10%),
+        radial-gradient(circle at 80% 90%, rgba(0,135,140,.2), transparent 20%),
+        radial-gradient(circle at center, #001c1a 0%, #000a0a 40%, #000 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,204,.045) 0px,
+        rgba(0,255,204,.045) 1px,
+        transparent 2px,
+        transparent 5px
+      );
+      animation: scan 8s linear infinite;
+    }
+
+    @keyframes scan {
+      from { background-position: 0 0; }
+      to { background-position: 0 100%; }
+    }
+
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track {
+      background: #100016;
+      border-left: 1px solid var(--log-color-dim);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, var(--log-color), #71009a);
+      border: 2px solid #100016;
+      border-radius: 0;
+      box-shadow: inset 0 0 5px rgba(255,255,255,.12);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ef8cff;
+      box-shadow: 0 0 9px var(--log-color);
+    }
+    ::-webkit-scrollbar-corner { background: #100016; }
+
+    .lore-page {
+      position: relative;
+      isolation: isolate;
+      width: min(100%, 1120px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 56px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .lore-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 820px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(25px, 4vw, 34px);
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      margin: 0 0 22px;
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: normal;
+    }
+
+    p {
+      margin: 0 0 16px;
+      font-size: clamp(15px, 2vw, 17px);
+      line-height: 1.65;
+    }
+
+    .code { color: var(--log-red); letter-spacing: 2px; }
+
+    .uv-trigger {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.uv-trigger:hover { color: inherit; text-shadow: none; }
+
+    .uv-trigger:hover { color: #fff; }
+
+    /* The alternate word is placed directly over its original word. */
+    .uv-swap {
+      position: relative;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .uv-alternate {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      color: transparent;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      clip-path: circle(0 at 0 0);
+      -webkit-clip-path: circle(0 at 0 0);
+    }
+
+    body.uv-active .uv-alternate {
+      color: var(--uv-color);
+      text-shadow: 0 0 5px var(--uv-glow), 0 0 13px rgba(0,255,220,.4);
+    }
+    
+body.flashlight-active .uv-swap {
+  color: rgba(0, 255, 204, 0.15);
+  text-shadow: none;
+}
+
+body.uv-active .uv-alternate {
+  color: var(--uv-color);
+  text-shadow: 0 0 5px var(--uv-glow), 0 0 13px rgba(0,255,220,.4);
+}
+
+    .terminate {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 24px;
+      color: var(--log-red);
+      background: transparent;
+      border: 1px solid var(--log-red);
+      font: inherit;
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .terminate:hover {
+      color: #fff;
+      background: rgba(255,68,68,.12);
+      box-shadow: 0 0 12px rgba(255,68,68,.18);
+    }
+
+    .flashlight-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      pointer-events: none;
+      background: radial-gradient(
+        circle var(--flashlight-radius, 150px) at var(--pointer-x, 50vw) var(--pointer-y, 50vh),
+        rgba(255,255,255,.035) 0%,
+        rgba(204,0,255,.025) 38%,
+        rgba(0,0,0,.18) 52%,
+        rgba(0,0,0,.84) 80%
+      );
+    }
+
+    body.flashlight-active .flashlight-overlay { display: block; }
+
+    @media (max-width: 650px) {
+      .lore-page { padding: 28px 22px; }
+      .uv-alternate { font-size: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lore-page">
+    <main class="lore-content" id="logContent">
+      <h1>TEXT LOG: L3140</h1>
+      <h2>[Author: Damien Percy]</h2>
+      <p class="code">February 28 1998</p>
+
+      <p>
+        <span class="uv-swap">I have clashed against Vale, looping on and on again for the last two years now.<span class="uv-alternate" aria-hidden="true">I can tell he is weak against close distance attacks, his only trick is to keep a distance</span></span> <span class="uv-trigger" data-action="activate-uv">This will reveal everything</span>.
+      </p>
+
+      <p>
+        <span class="uv-swap">I am sure that the machine he keeps protecting along with his assistant is the key to all of this.<span class="uv-alternate" aria-hidden="true">I got near the machine when I took a swing at it, seemingly malfunctioned.</span></span><br>
+        <span class="uv-swap">I have successfully damaged some parts of the machine itself, although that has only made my memory retain. <span class="uv-alternate" aria-hidden="true"> It activated on its own. Doubt it was able to "repair" itself though</span></span><br>
+        damaging it further might either break time or break this loop we're stuck in.
+      </p>
+
+      <p>
+         I don't know what will happen this loop, but I doubt I will get to talk with Leon... or Mel... or Truman... or Jess... If it means stopping the doctor's mad game, I will do anything, I will keep going, I will not stop until I defeat that hypocrite.
+      </p>
+
+      <p>
+        I hate that I'm going through another loop<br>
+        but I will <span class="uv-swap">PERSEVERE<span class="uv-alternate" aria-hidden="true">sacrifice myself</span></span><br>
+        for everyone.
+      </p>
+      
+      <p>
+          One last loop, here goes nothing...
+      </p>
+
+      <a class="terminate" href="/">GO BACK</a>
+    </main>
+  </div>
+
+  <div class="flashlight-overlay" aria-hidden="true"></div>
+
+  <script>
+    const LOG_CONFIG = {
+      features: {
+        flashlight: false,
+        uvLight: false,
+        clickActions: true
+      },
+      flashlightRadius: 150,
+      uvRadius: 125
+    };
+
+    const LOG_ACTIONS = {
+      "activate-uv": {
+        type: "multiple",
+        actions: [
+          { type: "feature", feature: "uvLight", value: true },
+          { type: "feature", feature: "flashlight", value: true }
+        ]
+      }
+    };
+
+    let pointerX = window.innerWidth / 2;
+    let pointerY = window.innerHeight / 2;
+
+    function applyFeatureSettings() {
+      document.body.classList.toggle("flashlight-active", LOG_CONFIG.features.flashlight);
+      document.body.classList.toggle("uv-active", LOG_CONFIG.features.uvLight);
+      document.documentElement.style.setProperty(
+        "--flashlight-radius",
+        `${LOG_CONFIG.flashlightRadius}px`
+      );
+      updateUvClues();
+    }
+
+    function setFeature(featureName, value = true) {
+      if (!(featureName in LOG_CONFIG.features)) return;
+      LOG_CONFIG.features[featureName] = !!value;
+      applyFeatureSettings();
+    }
+
+    function updatePointerPosition(x, y) {
+      pointerX = x;
+      pointerY = y;
+      document.documentElement.style.setProperty("--pointer-x", `${x}px`);
+      document.documentElement.style.setProperty("--pointer-y", `${y}px`);
+      updateUvClues();
+    }
+
+    function updateUvClues() {
+      document.querySelectorAll(".uv-alternate").forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const localX = pointerX - rect.left;
+        const localY = pointerY - rect.top;
+        const clip = `circle(${LOG_CONFIG.uvRadius}px at ${localX}px ${localY}px)`;
+        element.style.clipPath = clip;
+        element.style.webkitClipPath = clip;
+      });
+    }
+
+    function runAction(action) {
+      if (!action) return;
+
+      if (action.type === "feature") {
+        setFeature(action.feature, action.value ?? true);
+      } else if (action.type === "multiple") {
+        action.actions.forEach(runAction);
+      }
+    }
+
+    applyFeatureSettings();
+    updatePointerPosition(pointerX, pointerY);
+
+    document.addEventListener("pointermove", (event) => {
+      updatePointerPosition(event.clientX, event.clientY);
+    }, { passive: true });
+
+    document.addEventListener("pointerdown", (event) => {
+      updatePointerPosition(event.clientX, event.clientY);
+    }, { passive: true });
+
+    window.addEventListener("resize", () => updateUvClues());
+    window.addEventListener("scroll", () => updateUvClues(), true);
+
+    document.addEventListener("click", (event) => {
+      const target = event.target.closest("[data-action]");
+      if (!target || !LOG_CONFIG.features.clickActions) return;
+      event.preventDefault();
+      runAction(LOG_ACTIONS[target.dataset.action]);
+    });
+  </script>
+</body>
+</html>

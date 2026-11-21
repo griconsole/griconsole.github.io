@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CipherList</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/faviconGRI.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/faviconGRI.png">
+
+<style>
+:root {
+  --log-color: #00ffcc;
+  --log-color-soft: rgba(0,255,204,.6);
+  --log-color-dim: rgba(0,255,204,.35);
+  --log-background: #000a0a;
+  --log-colorA1: #cc00ff;
+  --log-colorA1-soft: rgba(204,0,255,.22);
+  --log-colorA1-dim: rgba(204,0,255,.12);
+  --log-backgroundA1: #07000a;
+  --log-red: #ff4444;
+  --uv-color: #aaffed;
+  --uv-glow: rgba(0,255,220,.8);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--log-color) #100016;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Courier New", monospace;
+  color: var(--log-color);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0,190,190,.2), transparent 10%),
+    radial-gradient(circle at 80% 90%, rgba(0,135,140,.2), transparent 20%),
+    radial-gradient(circle at center, #001c1a 0%, #000a0a 40%, #000 100%);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,204,.045) 0px,
+    rgba(0,255,204,.045) 1px,
+    transparent 2px,
+    transparent 5px
+  );
+  animation: scan 8s linear infinite;
+}
+@keyframes scan {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track {
+  background: #100016;
+  border-left: 1px solid var(--log-color-dim);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--log-color), #71009a);
+  border: 2px solid #100016;
+  border-radius: 0;
+  box-shadow: inset 0 0 5px rgba(255,255,255,.12);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ef8cff;
+  box-shadow: 0 0 9px var(--log-color);
+}
+::-webkit-scrollbar-corner { background: #100016; }
+
+.lore-page {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 1120px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+.lore-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 820px;
+}
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(25px, 4vw, 34px);
+  letter-spacing: 1px;
+}
+h2 {
+  margin: 0 0 22px;
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: normal;
+}
+p {
+  margin: 0 0 16px;
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.65;
+}
+.code { color: var(--log-red); letter-spacing: 2px; }
+.section-label {
+  margin: 30px 0 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--log-color-dim);
+  color: var(--log-color);
+  font-size: 15px;
+  font-weight: normal;
+  letter-spacing: 1.5px;
+}
+.cipher-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 0 0 20px;
+}
+.cipher-entry {
+  min-width: 0;
+  padding: 11px 0 10px;
+  border-bottom: 1px solid rgba(0,255,204,.14);
+}
+.cipher-entry dt {
+  margin: 0 0 4px;
+  color: #b5fff0;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.cipher-entry dd {
+  margin: 0;
+  color: rgba(0,255,204,.82);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cipher-entry .origin {
+  color: rgba(204,0,255,.95);
+  font-size: 12px;
+  letter-spacing: .5px;
+}
+.uncertain .cipher-entry dt { color: #e5a8ff; }
+.uncertain .cipher-entry { border-bottom-color: rgba(204,0,255,.2); }
+
+.uv-trigger {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.uv-trigger:hover { color: inherit; text-shadow: none; }
+
+.uv-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+.uv-secret {
+  position: absolute;
+  color: transparent;
+  text-shadow: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  clip-path: circle(0px at 0px 0px);
+  -webkit-clip-path: circle(0px at 0px 0px);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  transform-origin: center;
+}
+body.uv-active .uv-secret {
+  color: var(--uv-color);
+  text-shadow: 0 0 5px var(--uv-glow), 0 0 13px rgba(0,255,220,.4);
+}
+.uv-a { top: 75px; right: 8%; transform: rotate(7deg); }
+.uv-b { top: 330px; left: 3%; transform: rotate(-8deg); }
+.uv-c { top: 590px; right: 3%; transform: rotate(4deg); }
+.uv-d { top: 890px; left: 17%; transform: rotate(-3deg); }
+.uv-e { top: 1190px; right: 12%; transform: rotate(8deg); }
+
+.terminate, .log-button {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 14px;
+  padding: 10px 24px;
+  color: var(--log-red);
+  background: transparent;
+  border: 1px solid var(--log-red);
+  font: inherit;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.terminate:hover, .log-button:hover {
+  color: #fff;
+  background: rgba(255,68,68,.12);
+  box-shadow: 0 0 12px rgba(255,68,68,.18);
+}
+.flashlight-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  background: radial-gradient(
+    circle var(--flashlight-radius, 145px) at var(--pointer-x, 50vw) var(--pointer-y, 50vh),
+    rgba(255,255,255,.035) 0%,
+    rgba(204,0,255,.025) 38%,
+    rgba(0,0,0,.18) 52%,
+    rgba(0,0,0,.84) 80%
+  );
+}
+body.flashlight-active .flashlight-overlay { display: block; }
+
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.82);
+}
+.popup-backdrop[hidden] { display: none; }
+.popup-window {
+  position: relative;
+  width: min(100%, 620px);
+  max-height: min(85vh, 850px);
+  overflow: auto;
+  padding: 26px;
+  border: 1px solid var(--log-color);
+  background: #08000d;
+  box-shadow: 0 0 28px var(--log-color-dim);
+}
+.popup-window h2 { margin: 0 38px 16px 0; }
+.popup-window p { font-size: 16px; }
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  padding: 5px 9px;
+  color: var(--log-color);
+  background: transparent;
+  border: 1px solid var(--log-color-soft);
+  font: inherit;
+  cursor: pointer;
+}
+.popup-close:hover { border-color: var(--log-color); color: #fff; }
+[hidden] { display: none !important; }
+
+@media (max-width: 650px) {
+  .lore-page { gap: 24px; }
+  .cipher-list { grid-template-columns: 1fr; }
+  .uv-secret { font-size: 10px; letter-spacing: 1px; }
+  .uv-a { top: 52px; right: 4%; }
+  .uv-b { top: 430px; left: 2%; }
+  .uv-c { top: 780px; right: 2%; }
+  .uv-d { top: 1120px; left: 8%; }
+  .uv-e { top: 1450px; right: 4%; }
+  .popup-window { padding: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="lore-page">
+  <main class="lore-content" id="logContent">
+    <h1>DOCUMENTED CIPHERS</h1>
+    <h2>[Author: Doctor Vale]</h2>
+    <p class="code">ACCESS: BREACHED</p>
+
+    <div id="logText">
+      <p>After several iterations of examining the archive, I have identified a number of methods used to conceal information within its files. Some entries are deliberately encoded, others have been altered before storage, and a few keeps updating as if I am not the only one using this Archive, which would clash with the confirmation I had with my contact.</p>
+
+      <p>Most of my own messages are encoded in <strong>Base64</strong>. It is convenient, consistent, and can be reconstructed from an ASCII source without altering the original information. Z, by contrast, favours the <strong>Caesar cipher</strong>. A simple yet effective alphabetic displacement.</p>
+
+      <p>I have found more unique ciphers scattered across unrelated records within the Archive, sometimes embedded in audio or image data. I cannot determine who utilizes them, whether they belong to an earlier iteration, or whether they were placed here deliberately for someone to discover.</p>      
+      
+      <p>Such methods that've been recorded are: BASE64, CAESAR, BINARY, MORSE, A1Z26, ATBASH, VIGENÈRE, POLYBIUS SQUARE and TAP CODE. I've not encountered with any other ciphers for now. If I do I might update this log in a future loop.</p>
+
+      <p>Either way, the format of a file should never be mistaken for the format of the information stored within it.</p>
+
+      <p>There are also several groups of values in the archive that none of these methods can resolve. Applying the known ciphers produces nothing but meaningless permutations. Some appear to be keys, but a key is useless without the correct arrangement, reference, or indexing method.</p>
+
+      <p>Which means that likely another archive log contains the necessary means of interpreting those values. I have deliberately omitted the values from this document; recording them without their context would only create another dead end.</p>
+
+      <p>For me in the future, I recommend a second <span class="uv-trigger" data-action="activate-uv">inspection</span> of the page itself. Perhaps you'll get a chance to see it in another light.</p>
+
+    </div>
+
+    <a class="terminate" href="/">TERMINATE</a>
+  </main>
+
+  <div class="uv-layer" aria-hidden="true">
+    <span class="uv-secret uv-a">khos ph</span>
+    <span class="uv-secret uv-b">54512</span>
+    <span class="uv-secret uv-c">jhw wr</span>
+    <span class="uv-secret uv-d">55252</span>
+    <span class="uv-secret uv-e">wkh txhhq</span>
+  </div>
+</div>
+
+<div class="flashlight-overlay" aria-hidden="true"></div>
+
+<div class="popup-backdrop" id="popupBackdrop" hidden>
+  <section class="popup-window" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+    <button class="popup-close" id="popupClose" type="button">X</button>
+    <h2 id="popupTitle">MESSAGE</h2>
+    <p id="popupText"></p>
+  </section>
+</div>
+
+<script>
+const LOG_CONFIG = {
+  features: {
+    flashlight: false,
+    uvLight: false,
+    images: false,
+    clickActions: true,
+    blackout: false
+  },
+  flashlightRadius: 150,
+  uvRadius: 125,
+  sequenceTriggers: []
+};
+
+const LOG_ACTIONS = {
+  "activate-uv": {
+    type: "multiple",
+    actions: [
+      { type: "feature", feature: "uvLight", mode: "toggle" },
+      { type: "feature", feature: "flashlight", mode: "toggle" }
+    ]
+  }
+};
+
+const popupBackdrop = document.getElementById("popupBackdrop");
+const popupTitle = document.getElementById("popupTitle");
+const popupText = document.getElementById("popupText");
+let pointerX = window.innerWidth / 2;
+let pointerY = window.innerHeight / 2;
+
+function applyFeatureSettings() {
+  document.body.classList.toggle("flashlight-active", !!LOG_CONFIG.features.flashlight);
+  document.body.classList.toggle("uv-active", !!LOG_CONFIG.features.uvLight);
+  document.documentElement.style.setProperty("--flashlight-radius", `${LOG_CONFIG.flashlightRadius}px`);
+  updateUvClues();
+}
+
+function setFeature(featureName, value = true) {
+  if (!(featureName in LOG_CONFIG.features)) return;
+  LOG_CONFIG.features[featureName] = !!value;
+  applyFeatureSettings();
+}
+
+function updatePointerPosition(x, y) {
+  pointerX = x;
+  pointerY = y;
+  document.documentElement.style.setProperty("--pointer-x", `${x}px`);
+  document.documentElement.style.setProperty("--pointer-y", `${y}px`);
+  updateUvClues();
+}
+
+function updateUvClues() {
+  document.querySelectorAll(".uv-secret").forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    const localX = pointerX - rect.left;
+    const localY = pointerY - rect.top;
+    const clip = `circle(${LOG_CONFIG.uvRadius}px at ${localX}px ${localY}px)`;
+    element.style.clipPath = clip;
+    element.style.webkitClipPath = clip;
+  });
+}
+
+function runAction(action) {
+  if (!action) return;
+
+  if (action.type === "feature") {
+    const nextValue = action.mode === "toggle"
+      ? !LOG_CONFIG.features[action.feature]
+      : (action.value ?? true);
+    setFeature(action.feature, nextValue);
+
+  } else if (action.type === "popup") {
+    popupTitle.textContent = action.title || "MESSAGE";
+    popupText.textContent = action.text || "";
+    popupBackdrop.hidden = false;
+    document.getElementById("popupClose").focus();
+
+  } else if (action.type === "redirect" && action.url) {
+    window.location.href = action.url;
+
+  } else if (action.type === "multiple") {
+    action.actions.forEach(runAction);
+  }
+}
+
+function closePopup() {
+  popupBackdrop.hidden = true;
+}
+
+applyFeatureSettings();
+updatePointerPosition(pointerX, pointerY);
+
+document.addEventListener("pointermove", (event) => {
+  updatePointerPosition(event.clientX, event.clientY);
+}, { passive: true });
+
+document.addEventListener("pointerdown", (event) => {
+  updatePointerPosition(event.clientX, event.clientY);
+}, { passive: true });
+
+window.addEventListener("resize", updateUvClues);
+window.addEventListener("scroll", updateUvClues, true);
+
+document.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-action]");
+  if (!target || !LOG_CONFIG.features.clickActions) return;
+  event.preventDefault();
+  runAction(LOG_ACTIONS[target.dataset.action]);
+});
+
+document.getElementById("popupClose").addEventListener("click", closePopup);
+popupBackdrop.addEventListener("click", (event) => {
+  if (event.target === popupBackdrop) closePopup();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !popupBackdrop.hidden) closePopup();
+});
+</script>
+</body>
+</html>

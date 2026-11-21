@@ -462,9 +462,9 @@ const BACKGROUND_MUSIC_SRC = "/assets/captainslog.mp3";
 const stations = [
   { x: 284, y: 713, src: "/assets/frequency1.mp3" },
   { x: 401, y: 675, src: "/assets/frequency2.mp3" },
-  { x: 666, y: 451, src: "/assets/frequency3.mp3" },
-  { x: 777, y: 777, src: "/assets/frequency4.mp3" },
-  { x: 913, y: 332, src: "/assets/frequency5.mp3" }
+  { x: 852, y: 546, src: "/assets/frequency3.mp3" },
+  { x: 666, y: 344, src: "/assets/frequency4.mp3" },
+  { x: 913, y: 132, src: "/assets/frequency5.mp3" }
 ];
 
 /* ===== BG MUSIC ===== */
@@ -829,15 +829,35 @@ muteBtn.addEventListener("click", () => {
 
 /* ===== 5MONITOR ===== */
 const responses = {
-  "13314": "Code number 1",
-  "12345": "Code number 2",
-  "13452": "Code number 3",
-  "11111": "Code number 4",
-  "22222": "Code number 5",
-  "33333": "Code number 6",
-  "44444": "Code number 7",
-  "55555": "Code number 8",
-  "12121": "Code number 9",
+  "14153": "nope wrong equation",
+  "34132": "still the wrong equation",
+  "34115": "you are considerably bad at math",
+  "34114": "try as you might, you are still bad at mathematics",
+  "12134": "something is wrong",
+  "11321": "something is correct",
+  "11111": "we are number one!",
+  "22222": "he",
+  "33333": "rule of three",
+  "44444": "death, comes four you",
+  "55555": "the untouchable number",
+  "55252": "vale is watching you, at all times... but how?",
+  "54512": "Z is hiding among the recruits, otherwise how could they have plugged the portal console?",
+  "34513": "The Archive is not as safe as those two think",
+  "12352": "Protocol V has been updated...",
+  "11211": "Check back at the archive, something has changed...",
+  "31314": "hey you're not supposed to find this >:(",
+  //F1
+  "12133": "cG9ydGFs",
+  //F2
+  "34142": "the library has a secret passageway, look at the bookshelves",
+  "34151": "access.personnel.files",
+  //F3
+  //"54511": "",
+  //"12551": "",
+  //F4 gaga
+  "34443": "Want a look in our archive of episodes? just type 'bestintv' in any suspiciously box shaped inputs!",
+  //F5 bingo
+  "25431": "Oh wow! Congrats on getting Bingo my friend! A friendly word of advice, just say 'I love 63' to get admitted into one of our secret clubs!",
 };
 
 const monitor = document.getElementById("monitorScreen");
@@ -860,6 +880,35 @@ buttons.forEach(button => {
     if (input.length >= MAX_LEN) input = "";
     input += button.dataset.key;
     monitor.textContent = input;
+
+    // VERY SECRET CODE :O
+    if (input === "33111") {
+      locked = true;
+      monitor.textContent = "ACCESS GRANTED...";
+      clearTimeout(resetTimer);
+      setTimeout(() => {
+        window.open(
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "_blank"
+        );
+        resetMonitor();
+      }, 500);
+      return;
+    }
+    if (input === "54511") {
+      locked = true;
+      monitor.textContent = "ACCESS BREACHED...";
+      clearTimeout(resetTimer);
+      setTimeout(() => { window.location.href = "/logs/confdocs/";}, 500);
+      return;
+    }
+    if (input === "12551") {
+      locked = true;
+      monitor.textContent = "ACCESS BREACHED...";
+      clearTimeout(resetTimer);
+      setTimeout(() => { window.location.href = "/logs/log3140/";}, 500);
+      return;
+    }
 
     if (Object.prototype.hasOwnProperty.call(responses, input)) {
       monitor.textContent = responses[input];
